@@ -1,0 +1,26 @@
+<urls>
+	<url>
+		<nombre>/inicio/**</nombre>
+		<permiso>app_login</permiso>
+	</url>
+	<url>
+		<nombre>/abm/usuario/**</nombre>
+		<permiso>usuario_sel</permiso>
+	</url>
+	<url>
+		<nombre>/abm/pais/**</nombre>
+		<permiso>Pais_sel</permiso>
+	</url>
+	<url>
+		<nombre>/abm/ciudad/**</nombre>
+		<permiso>Ciudad_sel</permiso>
+	</url>
+	<url>
+		<nombre>/abm/multipleSave/**</nombre>
+		<permiso>Tramite_sel</permiso>
+	</url>
+	<url>
+		<nombre>/abm/cargador/**</nombre>
+		<permiso>app_login</permiso>
+	</url>
+</urls>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="picker">
+
+<head>
+<title>Picker</title>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="shortcut icon" href="../../images/favicon.ico"
+	th:href="@{/images/favicon.ico}" type="image/x-icon" />
+
+<link href="../../css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+
+<link href="../../css/sb-admin-2.css" th:href="@{/css/sb-admin-2.css}"
+	rel="stylesheet" />
+
+<link href="../../css/jquery-ui.css" th:href="@{/css/jquery-ui.css}"
+	rel="stylesheet" />
+
+<link href="../../font-awesome-4.2.0/css/font-awesome.min.css"
+	th:href="@{/font-awesome-4.2.0/css/font-awesome.min.css}"
+	rel="stylesheet" />
+
+<link href="../../css/micss.css" th:href="@{/css/micss.css}"
+	rel="stylesheet" />
+
+<!-- jQuery Version 1.11.0 -->
+<script src="../../js/jquery-1.11.0.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="../../js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+	<div th:fragment="content">
+        <input type="hidden" th:id="'field_id_' + ${pickerId}" th:name="${idValue}"/>
+		<label> <span th:text="${fieldLbl}">Nombre del campo</span>
+		</label>
+		<div class="form-group input-group">
+			<input type="text" class="form-control" th:id="'field_value_' + ${pickerId}" th:name="${fieldName}" th:value="${fieldValue}"/><span
+				class="input-group-btn">
+				<button class="btn btn-default" type="button" data-toggle="modal"
+					data-target="#pickerId" th:attr="data-target='#'+${pickerId}">
+					<i class="fa fa-search"></i>
+				</button>
+
+			</span>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" th:id="${pickerId}" id="pickerId"
+			tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" id="pickerId_btn" th:id="${pickerId} + '_btn'" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel" th:text="${title}">Título
+							del Picker</h4>
+					</div>
+					<div class="modal-body">
+						<div th:include="fragments/picker_table::content(pickerId=${pickerId}, serverSide='false', source='/clase4/abm/usuario/rest', vc=${controlador}, fieldId='field_id_' + ${pickerId}, fieldValue='field_value_' + ${pickerId}, idColumnNumber=${idColumnNumber}, valueColumnNumber=${valueColumnNumber})">lista</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal" th:id="${pickerId} + '_btn'"
+							th:text="#{popup.cerrar}">Cerrar</button>
+
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+	</div>
+</body>
+
+</html>
+

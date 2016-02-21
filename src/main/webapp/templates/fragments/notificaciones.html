@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title></title>
+</head>
+<body>
+	<div th:fragment="content">
+		<div class="alert alert-success alert-dismissable"
+			th:unless="${vc.mensajeOk == null}">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<div th:text="${vc.mensajeOk}"></div>
+		</div>
+
+
+		<div class="alert alert-info alert-dismissable"
+			th:unless="${vc.info == null}">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<div th:text="${vc.info}"></div>
+		</div>
+
+		<div class="alert alert-warning alert-dismissable"
+			th:unless="${vc.mensajeAtencion == null}">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<div th:text="${vc.mensajeAtencion}"></div>
+		</div>
+
+
+		<div class="alert alert-danger alert-dismissable"
+			th:unless="${vc.mensajeError == null}">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<div th:text="${vc.mensajeError}"></div>
+		</div>
+	</div>
+</body>
+</html>

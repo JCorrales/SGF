@@ -1,0 +1,54 @@
+<queries>
+	<query>
+		<name>select_usuario</name>
+		<value>
+			SELECT id, codigo, nombre, apellido, COALESCE(email, '') AS
+			"email"
+			FROM usuario
+		</value>
+	</query>
+
+	<query>
+		<name>filter_usuario</name>
+		<value>id || codigo || nombre || apellido || COALESCE(email, '')
+		</value>
+	</query>
+
+	<query>
+		<name>select_roles_usuario</name>
+		<value> SELECT rol.id AS rolid, codigo AS codrol, descripcion AS
+			descriprol, ru.id IS NOT NULL AS selected
+			FROM rol LEFT JOIN
+			rolusuario ru
+			ON rol.id = ru.rol_id AND ru.usuario_id = ?
+		</value>
+	</query>
+
+	<query>
+		<name>select_paises</name>
+		<value>
+			SELECT id, codigo, nombre, nacionalidad FROM pais
+		</value>
+	</query>
+
+	<query>
+		<name>filter_paises</name>
+		<value>codigo||nombre
+		</value>
+	</query>
+
+	<query>
+		<name>select_ciudades</name>
+		<value>
+			SELECT c.id AS id, c.codigo AS codigo, c.nombre AS nombre, 
+			c.longitud AS longitud, c.latitud AS latitud, p.nombre AS pais
+			FROM ciudad c JOIN pais p ON c.pais_id = p.id
+		</value>
+	</query>
+
+	<query>
+		<name>filter_ciudades</name>
+		<value>c.codigo||c.nombre||p.nombre</value>
+	</query>
+	
+</queries>

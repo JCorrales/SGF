@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appconfig>
+<datasourcesconfig>
+	<datasourcesfilename>/usr/local/wildfly-9.0.2.Final/standalone/configuration/standalone.xml</datasourcesfilename>
+	<jerarquia>profile.subsystem.datasources.datasource</jerarquia>
+	<connection>
+		<min-pool-size>10</min-pool-size>
+        <max-pool-size>20</max-pool-size>
+        <idleTimeout>20</idleTimeout>
+	</connection>
+</datasourcesconfig>
+</appconfig>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>FORM</title>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="shortcut icon" href="../../../images/favicon.ico"
+	type="image/x-icon" />
+
+<link href="../../../css/bootstrap.min.css" rel="stylesheet" />
+<link href="../../../css/sb-admin-2.css" rel="stylesheet" />
+<link href="../../../css/jquery-ui.css" rel="stylesheet" />
+<link href="../../../font-awesome-4.2.0/css/font-awesome.min.css"
+	rel="stylesheet" />
+<link href="../../../css/htroot.css" />
+<script src="../../../js/jquery-1.11.0.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="../../../js/bootstrap.min.js"></script>
+<!-- Custom Theme JavaScript -->
+<script src="../../../js/sb-admin-2.js"></script>
+<script src="../../../js/jquery-ui.js"></script>
+</head>
+
+<body>
+	<div class="col-lg-12 col-md-12">
+		<div th:fragment="content">
+
+			<h4 class="page-header" th:value="#{usuario.form.titulo}">Usuario</h4>
+			<div id="notificaciones"
+				th:include="fragments/notificaciones :: content">notificiones</div>
+
+			<form action="#"
+				th:action="@{'/abm/usuario/op'+ '?' + ${_csrf.parameterName} + '=' + ${_csrf.token} + '&amp;recordId=' +${usuario.id}}"
+				th:object="${usuario}" method="post" role="form"
+				enctype="multipart/form-data"
+				onsubmit="return checkSize('foto',1048576);">
+
+				<div th:replace="fragments/form_errores :: content">errores</div>
+
+				<input type="hidden" th:field="*{id}" />
+
+				<div class="row">
+					<div class="col-lg-6 col-md-6" th:if="${usuario.id != null}">
+						<img id="userpic" th:src="@{/abm/usuario/foto/} + ${usuario.id}"
+							style="max-height: 150px; max-width: 100%" />
+					</div>
+					<div class="col-lg-6 col-md-6" th:if="${usuario.id == null}">
+						<img id="userpic" th:src="@{/images/nopic.png}"
+							style="max-height: 150px; max-width: 100%" />
+					</div>
+					<div class="form-group">
+						<input id="foto" type="file" th:field="*{tmpFoto}"
+							class="filestyle" data-input="false"
+							th:attr="data-buttonText=#{usuario.cambiar_foto.lbl}, size-error=#{usuario.foto.size}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="codigo" th:text="#{usuario.codigo.lbl}"
+						class="field-label">Codigo:</label> <input type="text"
+						th:field="*{codigo}" th:errorclass="invalid" class="form-control"
+						th:disabled="${vc.isFieldDisabled('codigo')}"
+						autofocus="autofocus" />
+				</div>
+
+				<div class="form-group">
+					<label for="nombre" th:text="#{usuario.nombre.lbl}"
+						class="field-label">Nombre:</label> <input type="text"
+						th:field="*{nombre}" th:errorclass="invalid" class="form-control"
+						th:disabled="${vc.isFieldDisabled('nombre')}" />
+				</div>
+
+				<div class="form-group">
+					<label for="apellido" th:text="#{usuario.apellido.lbl}"
+						class="field-label">Apellido:</label> <input type="text"
+						th:field="*{apellido}" th:errorclass="invalid"
+						class="form-control"
+						th:disabled="${vc.isFieldDisabled('apellido')}" />
+				</div>
+
+				<div class="form-group">
+					<label for="email" th:text="#{usuario.email.lbl}"
+						class="field-label">Email:</label> <input type="text"
+						th:field="*{email}" th:errorclass="invalid" class="form-control"
+						th:disabled="${vc.isFieldDisabled('email')}" />
+				</div>
+
+				<div class="form-group">
+					<label for="telefono" th:text="#{usuario.telefono.lbl}"
+						class="field-label">Telefono:</label> <input type="text"
+						th:field="*{telefono}" th:errorclass="invalid"
+						class="form-control"
+						th:disabled="${vc.isFieldDisabled('telefono')}" />
+				</div>
+
+				<div class="form-group">
+					<label for="password" th:text="#{usuario.password.lbl}"
+						class="field-label">Contraseña:</label> <input type="text"
+						th:field="*{password}" th:errorclass="invalid"
+						class="form-control"
+						th:disabled="${vc.isFieldDisabled('password')}" />
+				</div>
+
+				<div class="form-group">
+					<label for="fecha"> <span
+						th:text="#{usuario.fechaingreso.lbl}">Ultima Fecha</span>
+					</label> <input type="text" th:field="*{fechaUltimoAcceso}"
+						id="fechaUltimoAcceso" th:errorclass="fieldError"
+						class="form-control" />
+					<div
+						th:include="fragments/includes :: campo_fecha( campoId='fechaUltimoAcceso')"></div>
+				</div>
+
+				<div id="roles"></div>
+
+
+				<div th:replace="abm/formulario_botones :: content">botones</div>
+
+			</form>
+
+
+			<script th:inline="javascript"
+				th:unless="${usuario.id == null or !sesionUsuario.hasRole('asignar_roles')}">
+		
+		   $.ajax({
+			    url: [[@{/abm/usuario/roles?usuarioId=} + ${usuario.id}]],
+			    context: document.body
+			    }).done(function(response) {
+			         $("#roles").html(response);
+		        });
+
+			</script>
+			<script type="text/javascript">
+			//#foto es el input
+			$("#foto").change(function(){
+				previsualizar(this, '#userpic');//userpic es el id del tag img
+			});
+			</script>
+		</div>
+	</div>
+</body>
+</html>

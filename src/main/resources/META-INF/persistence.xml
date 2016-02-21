@@ -1,0 +1,28 @@
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://java.sun.com/xml/ns/persistence
+        http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="example">
+		<jta-data-source>java:jboss/datasources/sgfDS</jta-data-source>
+		<class>py.una.cnc.htroot.domain.Usuario</class>
+		<class>py.una.cnc.htroot.domain.Permiso</class>
+		<class>py.una.cnc.htroot.domain.PermisoUsuario</class>
+		<class>py.una.cnc.htroot.domain.Rol</class>
+		<class>py.una.cnc.htroot.domain.RolPermiso</class>
+		<class>py.una.cnc.htroot.domain.RolUsuario</class>
+		<class>py.una.cnc.htroot.domain.Config</class>
+		<class>py.una.cnc.htroot.domain.InfoConexion</class>
+		<properties>
+			<property name="jboss.entity.manager.factory.jndi.name"
+				value="java:jboss/sgf/persistence" />
+			<!-- Properties for Hibernate -->
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="false" />
+			<property
+				name="org.hibernate.envers.audit_strategy_validity_store_revend_timestamp"
+				value="true" />
+			<property name="org.hibernate.envers.default_schema" value="audit" />
+		</properties>
+	</persistence-unit>
+</persistence>

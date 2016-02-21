@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<div th:fragment="content">
+		<h4 class="page-header" th:text="${title}" th:unless="${hideTitle == True}">Titulo tabla.</h4>
+
+		<div class="table-responsive">
+			<table th:id="${name}"
+				class="table table-bordered table-hover table-striped display"
+				cellspacing="0" width="100%">
+				<thead>
+					<tr>
+						
+						<th th:each="columna : ${vc.tableColumns}" th:text="#{${name +'_' + columna + '_header'}}"></th>
+					</tr>
+				</thead>
+			</table>
+			<button type="button" class="btn btn-default"  th:id="${name}+'_pdf'"
+					 >
+					<img src="../../icons/16/pdf.png" th:src="@{/icons/16/pdf.png}"
+						class="nuevo-btn"/><span>PDF</span>
+				</button>
+				
+				
+		</div>
+			<div th:include="fragments/includes :: datatable_script(name=${name}, serverSide=${serverSide}, source=${source}, editUrl=${editUrl}, columns=${vc.tableColumnsStr})">lista</div>
+
+	</div>
+</body>
+
+</html>
+

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title></title>
+</head>
+<body>
+	<div th:fragment="content" >
+		<ul th:if="${#fields.hasErrors('*')}" class="fieldError">
+			<li th:each="err : ${#fields.errors('*')}" th:text="#{${err}}"
+				class="invalid">Input is incorrect</li>
+		</ul>
+	</div>
+</body>
+</html>

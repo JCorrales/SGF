@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Popup</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="shortcut icon" href="../../images/favicon.ico"
+	type="image/x-icon" />
+
+<link href="../../css/bootstrap.min.css" rel="stylesheet" />
+<link href="../../css/sb-admin-2.css" rel="stylesheet" />
+<link href="../../css/jquery-ui.css" rel="stylesheet" />
+<link href="../../font-awesome-4.2.0/css/font-awesome.min.css"
+	rel="stylesheet" />
+<link href="../../css/htroot.css" />
+<script src="../../js/jquery-1.11.0.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="../../js/bootstrap.min.js"></script>
+<!-- Custom Theme JavaScript -->
+<script src="../../js/sb-admin-2.js"></script>
+<script src="../../js/jquery-ui.js"></script>
+</head>
+<body>
+	<div th:fragment="content">
+		<!-- Modal -->
+		<div class="modal fade" th:id="${id}" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel"
+							th:text="${title}">Borrado de Registro</h4>
+					</div>
+					<div class="modal-body" th:text="${msg}">Desea
+						borrar registro de forma permanente?</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal"
+							th:text="${cancelText}">Cancelar</button>
+						<button type="button" class="btn btn-primary" th:text="${acceptText}" data-dismiss="modal" th:id="${id}+'_accept_btn'" th:onclick="${onclick}">Aceptar</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+	</div>
+</body>
+</html>

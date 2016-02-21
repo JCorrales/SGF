@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+                           http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                           http://www.springframework.org/schema/tx
+		                   http://www.springframework.org/schema/tx/spring-tx.xsd
+		                   http://www.springframework.org/schema/jee 
+		                   http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+
+	<!-- **************************************************************** -->
+	<!-- RESOURCE FOLDERS CONFIGURATION -->
+	<!-- Dispatcher configuration for serving static resources -->
+	<!-- **************************************************************** -->
+	<mvc:resources location="/images/" mapping="/images/**" />
+	<mvc:resources location="/css/" mapping="/css/**" />
+	<mvc:resources location="/icons/" mapping="/icons/**" />
+	<mvc:resources location="/js/" mapping="/js/**" />
+	<mvc:resources location="/font-awesome-4.2.0/" mapping="/font-awesome-4.2.0/**" />
+	<mvc:resources location="/fonts/" mapping="/fonts/**" />
+	
+
+
+	<!-- **************************************************************** -->
+	<!-- SPRING ANNOTATION PROCESSING -->
+	<!-- **************************************************************** -->
+	<mvc:annotation-driven conversion-service="conversionService" />
+	<context:component-scan base-package="py.*" />
+
+
+
+	<!-- **************************************************************** -->
+	<!-- CONVERSION SERVICE -->
+	<!-- Standard Spring formatting-enabled implementation -->
+	<!-- **************************************************************** -->
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+
+		<property name="converters">
+			<set>
+				<bean class="py.una.sgf.converters.CiudadConverter" />
+				<bean class="py.una.sgf.converters.PaisConverter" />
+				<bean class="py.una.cnc.htroot.converters.UsuarioConverter" />
+				<bean class="py.una.cnc.htroot.converters.GenericBeanConverter" />
+			</set>
+		</property>
+		<property name="formatters">
+			<set>
+				<bean class="py.una.cnc.htroot.util.DateFormatter" />
+			</set>
+		</property>
+	</bean>
+
+
+	<!-- **************************************************************** -->
+	<!-- THYMELEAF-SPECIFIC ARTIFACTS -->
+	<!-- TemplateResolver <- TemplateEngine <- ViewResolver -->
+	<!-- **************************************************************** -->
+
+
+
+	<bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
+		<property name="templateResolver" ref="templateResolver" />
+		<property name="additionalDialects">
+			<set>
+				<bean class="nz.net.ultraq.thymeleaf.LayoutDialect" />
+				<bean
+					class="org.thymeleaf.extras.springsecurity3.dialect.SpringSecurityDialect" />
+			</set>
+		</property>
+	</bean>
+
+	<bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+		<property name="templateEngine" ref="templateEngine" />
+	</bean>
+
+	<!-- JDNI name for EntityManagerFactory is defined in src/main/resources/META-INF/persistence.xml -->
+	<jee:jndi-lookup jndi-name="java:jboss/sgf/persistence"
+		id="entityManagerFactory" expected-type="javax.persistence.EntityManagerFactory" />
+
+	<bean id="entityManager"
+		class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<tx:jta-transaction-manager />
+
+	<tx:annotation-driven />
+	<bean id="applicationContextProvider" class="py.una.cnc.htroot.main.ApplicationContextProvider"></bean>
+
+
+
+	<!-- **************************************************************** -->
+	<!-- MESSAGE EXTERNALIZATION/INTERNATIONALIZATION -->
+	<!-- Standard Spring MessageSource implementation -->
+	<!-- **************************************************************** -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="Messages" />
+	</bean>
+
+	<!-- **************************************************************** -->
+	<!-- Multipart Resolvers -->
+	<!-- La idea es que cada bean sirva para rechazar un request antes de que 
+		se cargue en el servidor si el tamaño excede lo esperado, si se suben varios 
+		archivos lo que se verifica es la suma del tamaño de todos los archivos -->
+	<!-- **************************************************************** -->
+	<bean name="genericMultipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+
+		<!-- setting maximum upload size -->
+		<property name="maxUploadSize" value="-1" />
+
+	</bean>
+
+	<bean name="/sgf/abm/usuario/op"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+
+		<!-- setting maximum upload size -->
+		<property name="maxUploadSize" value="1048576" />
+		<property name="maxInMemorySize" value="1048576" />
+	</bean>
+
+</beans>
+
+

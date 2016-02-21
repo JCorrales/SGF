@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js canvas - geometry - cube</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				font-family: Monospace;
+				background-color: #f0f0f0;
+				margin: 0px;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<script src="js/jquery-1.11.0.js"></script>
+		<script src="js/three.min.js"></script>
+
+		<script src="js/renderers/Projector.js"></script>
+		<script src="js/renderers/CanvasRenderer.js"></script>
+
+		<script src="js/libs/stats.min.js"></script>
+
+		<script src="js/controls/FlyControls.js"></script>
+		<script src="js/controls/OrbitControls.js"></script>
+		<script src="js/cargador.js"></script>
+
+
+		<div id="pantalla"></div>
+
+			<script>
+
+			init([{"ancho":233,"alto":220,"largo":587,"x":293,"y":110,"z":116,"color":"#00000f"},{"ancho":76,"alto":30,"largo":108,"x":66,"y":192,"z":190,"color":"#eb0b0b"},{"ancho":76,"alto":30,"largo":108,"x":66,"y":192,"z":114,"color":"#eb0b0b"},{"ancho":30,"alto":76,"largo":108,"x":66,"y":63,"z":187,"color":"#eb0b0b"},{"ancho":76,"alto":30,"largo":108,"x":66,"y":187,"z":38,"color":"#eb0b0b"},{"ancho":30,"alto":76,"largo":108,"x":66,"y":139,"z":161,"color":"#eb0b0b"},{"ancho":43,"alto":25,"largo":110,"x":65,"y":12,"z":193,"color":"#000000"},{"ancho":99,"alto":73,"largo":120,"x":60,"y":36,"z":122,"color":"#f3eb00"},{"ancho":73,"alto":99,"largo":120,"x":60,"y":122,"z":109,"color":"#f3eb00"},{"ancho":73,"alto":99,"largo":120,"x":60,"y":49,"z":36,"color":"#f3eb00"},{"ancho":30,"alto":76,"largo":108,"x":66,"y":63,"z":217,"color":"#eb0b0b"},{"ancho":81,"alto":55,"largo":92,"x":194,"y":173,"z":160,"color":"#4feb11"},{"ancho":76,"alto":30,"largo":108,"x":186,"y":88,"z":38,"color":"#eb0b0b"},{"ancho":30,"alto":108,"largo":76,"x":202,"y":87,"z":213,"color":"#eb0b0b"},{"ancho":120,"alto":73,"largo":99,"x":190,"y":182,"z":60,"color":"#f3eb00"},{"ancho":99,"alto":73,"largo":120,"x":180,"y":36,"z":148,"color":"#f3eb00"},{"ancho":99,"alto":73,"largo":120,"x":180,"y":36,"z":49,"color":"#f3eb00"},{"ancho":120,"alto":73,"largo":99,"x":190,"y":109,"z":136,"color":"#f3eb00"},{"ancho":28,"alto":33,"largo":81,"x":199,"y":16,"z":212,"color":"#0e27ed"},{"ancho":120,"alto":73,"largo":99,"x":289,"y":36,"z":60,"color":"#f3eb00"},{"ancho":33,"alto":28,"largo":81,"x":298,"y":189,"z":49,"color":"#0e27ed"},{"ancho":108,"alto":30,"largo":76,"x":301,"y":190,"z":153,"color":"#eb0b0b"},{"ancho":73,"alto":120,"largo":99,"x":289,"y":60,"z":156,"color":"#f3eb00"},{"ancho":81,"alto":55,"largo":92,"x":293,"y":147,"z":176,"color":"#4feb11"},{"ancho":33,"alto":28,"largo":81,"x":298,"y":168,"z":16,"color":"#0e27ed"},{"ancho":81,"alto":55,"largo":92,"x":293,"y":147,"z":95,"color":"#4feb11"},{"ancho":55,"alto":81,"largo":92,"x":293,"y":113,"z":27,"color":"#4feb11"},{"ancho":33,"alto":28,"largo":81,"x":298,"y":189,"z":82,"color":"#0e27ed"},{"ancho":81,"alto":55,"largo":92,"x":385,"y":27,"z":40,"color":"#4feb11"},{"ancho":92,"alto":55,"largo":81,"x":390,"y":189,"z":46,"color":"#4feb11"},{"ancho":55,"alto":81,"largo":92,"x":385,"y":95,"z":27,"color":"#4feb11"},{"ancho":55,"alto":81,"largo":92,"x":385,"y":40,"z":163,"color":"#4feb11"},{"ancho":55,"alto":81,"largo":92,"x":385,"y":121,"z":82,"color":"#4feb11"},{"ancho":108,"alto":30,"largo":76,"x":393,"y":188,"z":146,"color":"#eb0b0b"},{"ancho":55,"alto":81,"largo":92,"x":385,"y":40,"z":108,"color":"#4feb11"},{"ancho":55,"alto":81,"largo":92,"x":385,"y":121,"z":137,"color":"#4feb11"},{"ancho":55,"alto":92,"largo":81,"x":390,"y":127,"z":192,"color":"#4feb11"},{"ancho":108,"alto":30,"largo":76,"x":474,"y":162,"z":54,"color":"#eb0b0b"},{"ancho":55,"alto":92,"largo":81,"x":471,"y":101,"z":27,"color":"#4feb11"},{"ancho":55,"alto":92,"largo":81,"x":471,"y":138,"z":174,"color":"#4feb11"},{"ancho":92,"alto":55,"largo":81,"x":471,"y":119,"z":101,"color":"#4feb11"},{"ancho":92,"alto":55,"largo":81,"x":471,"y":27,"z":46,"color":"#4feb11"},{"ancho":55,"alto":92,"largo":81,"x":471,"y":46,"z":174,"color":"#4feb11"},{"ancho":55,"alto":92,"largo":81,"x":471,"y":46,"z":119,"color":"#4feb11"},{"ancho":108,"alto":30,"largo":76,"x":474,"y":199,"z":162,"color":"#eb0b0b"},{"ancho":108,"alto":30,"largo":76,"x":474,"y":192,"z":54,"color":"#eb0b0b"},{"ancho":120,"alto":99,"largo":73,"x":548,"y":148,"z":60,"color":"#f3eb00"},{"ancho":120,"alto":99,"largo":73,"x":548,"y":49,"z":60,"color":"#f3eb00"},{"ancho":81,"alto":92,"largo":55,"x":557,"y":166,"z":160,"color":"#4feb11"},{"ancho":99,"alto":120,"largo":73,"x":548,"y":60,"z":169,"color":"#f3eb00"},{"ancho":28,"alto":81,"largo":33,"x":568,"y":160,"z":215,"color":"#0e27ed"}]);
+			animate();
+		</script>
+
+	</body>
+</html>

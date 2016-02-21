@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<div th:fragment="content">
+		<div class="table-responsive">
+			<table id="rolpicker"
+				class="table table-bordered display"
+				cellspacing="0" width="100%">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>ROLID</th>
+						<th>CODIGO</th>
+						<th>DESCRIPCION</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		<div
+			th:include="fragments/includes :: rol_picker_script(tableId='rolpicker', source=${source}, columns=${columns})">lista</div>
+
+	</div>
+</body>
+
+</html>
+

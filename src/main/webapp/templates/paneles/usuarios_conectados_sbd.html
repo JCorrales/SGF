@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:include="paneles/panel_ancestro :: page(iconClass='fa fa-user fa-5x',  panelClass='panel panel-green', footerUrl='/usuarios_conectados_sbd?modo=full', includeFooter=${includeFooter}, footerText=#{ver_todas_las_conexiones})">
+
+<div th:fragment="panelHeader">
+	<div class="huge" th:text="${cantidadConexiones}">7</div>
+	<div th:text="#{usuarios_conectados_sbd}">Conexiones a SBD</div>
+</div>
+
+<div class="panel-body" th:fragment="panelBody">
+	<div class="list-group">
+		<a th:each="conexionSbd : ${conexionesSbd}"
+			th:href="@{/perfil_usuario/} + ${conexionSbd.usuario.codigo}"
+			class="list-group-item"> <img
+			th:src="@{'/userpic/' + ${conexionSbd.usuario.codigo}}"
+			class="circular-profile-small" /> <span
+			th:text="${conexionSbd.codusuario + ' - ' + conexionSbd.usuario.nombre + ' ' + conexionSbd.usuario.apellido}"></span>
+			<span class="pull-right text-muted small"><em
+				th:text="${conexionSbd.base + ' (' + conexionSbd.cantidad + ')'}"></em> </span>
+		</a>
+	</div>
+</div>
+
+
+</html>

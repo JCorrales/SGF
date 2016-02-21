@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<div th:fragment="content">
+		<div class="table-responsive">
+			<table th:id="${pickerId} + '_dt'"
+				class="table table-bordered display"
+				cellspacing="0" width="100%">
+				<thead>
+					<tr>
+						<th>Accion</th>
+						<th th:each="columna : ${vc.tableColumns}" th:text="${columna}"
+							th:unless="${columna == 'id'}"></th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		<div
+			th:include="fragments/includes :: picker_script(pickerId=${pickerId}, serverSide=${serverSide}, source=${source}, columns=${vc.tableColumnsStr}, fieldId=${fieldId}, fieldValue=${fieldValue},idColumnNumber=${idColumnNumber}, valueColumnNumber=${valueColumnNumber})">lista</div>
+
+	</div>
+</body>
+
+</html>
+

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Pais</title>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="shortcut icon" href="../../../images/favicon.ico"
+	type="image/x-icon" />
+
+<link href="../../../css/bootstrap.min.css" rel="stylesheet" />
+<link href="../../../css/sb-admin-2.css" rel="stylesheet" />
+<link href="../../../css/jquery-ui.css" rel="stylesheet" />
+<link href="../../../font-awesome-4.2.0/css/font-awesome.min.css"
+	rel="stylesheet" />
+<link href="../../../css/htroot.css" />
+<script src="../../../js/jquery-1.11.0.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="../../../js/bootstrap.min.js"></script>
+<!-- Custom Theme JavaScript -->
+<script src="../../../js/sb-admin-2.js"></script>
+<script src="../../../js/jquery-ui.js"></script>
+</head>
+
+<body>
+	<div class="col-lg-12 col-lm-12">
+		<div th:fragment="content">
+
+			<h4 class="page-header" th:text="#{pais.form.titulo}">País</h4>
+			<div th:replace="fragments/notificaciones :: content">notificiones</div>
+
+			<form action="#" th:action="@{/abm/pais/op}"
+				th:object="${pais}" method="post" role="form">
+
+				<div th:replace="fragments/form_errores :: content">errores</div>
+
+				<input type="hidden" th:field="*{id}" />
+
+				<div class="form-group required">
+					<label for="codpais" th:text="#{pais.codigo.lbl}"
+						class="field-label">Codigo:</label> <input type="text"
+						th:field="*{codigo}" class="form-control" autofocus="autofocus" maxlength="2" />
+				</div>
+
+				<div class="form-group required">
+					<label for="nombre" th:text="#{pais.nombre.lbl}"
+						class="field-label">Nombre:</label> <input type="text"
+						th:field="*{nombre}" class="form-control" maxlength="100"/>
+				</div>
+				
+				<div class="form-group required">
+					<label for="nacionalidad" th:text="#{pais.nacionalidad.lbl}"
+						class="field-label">Nacionalidad:</label> <input type="text"
+						th:field="*{nacionalidad}" class="form-control" maxlength="50"/>
+				</div>
+
+				<div th:replace="abm/formulario_botones :: content">botones</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

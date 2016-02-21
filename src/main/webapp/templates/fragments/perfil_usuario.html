@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title th:text="#{login.nombre.sistema}">Perfil usuario</title>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="shortcut icon" href="../../images/favicon.ico"
+	th:href="@{/images/favicon.ico}" type="image/x-icon" />
+
+<link href="../../css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+
+<link href="../../css/sb-admin-2.css" th:href="@{/css/sb-admin-2.css}"
+	rel="stylesheet" />
+
+<link href="../../css/jquery-ui.css" th:href="@{/css/jquery-ui.css}"
+	rel="stylesheet" />
+
+<link href="../../font-awesome-4.2.0/css/font-awesome.min.css"
+	th:href="@{/font-awesome-4.2.0/css/font-awesome.min.css}"
+	rel="stylesheet" />
+
+<link href="../../css/htroot.css" th:href="@{/css/htroot.css}"
+	rel="stylesheet" />
+</head>
+
+<body>
+
+	<div id="page-wrapper">
+		<div class="row">
+			<div class="col-lg-4">
+				<img src="../../images/100/male_user.png"
+					th:src="@{'/userpic/' + ${hash}}" class="user-profile" />
+			</div>
+			<div class="col-lg-6 col-md-6">
+				<h2 th:text="${usuario.nombre + ' ' + usuario.apellido + ' (' + usuario.codigo+ ')'}">Juan
+					Perez (jperez)</h2>
+				<div class="list-group">
+					<a href="#" class="list-group-item">
+						<img src="../../icons/16/run.png" th:src="@{/icons/16/run.png}" />
+						<span th:text="#{lbl_email}">Email: </span>
+						<span th:text="${usuario.email}">root@gmail.com</span>
+					</a>
+					
+					<a href="#" class="list-group-item">
+						<img src="../../icons/16/run.png" th:src="@{/icons/16/run.png}" />
+						<span th:text="#{lbl_celular}">Celular: </span> 
+						<span th:text="${usuario.celular}">(0972) 798 327</span>
+					</a>
+					
+					<a href="#" class="list-group-item">
+						<img src="../../icons/16/run.png" th:src="@{/icons/16/run.png}" />
+						<span th:text="#{lbl_direccion}">Dirección: </span> 
+						<span th:text="${usuario.direccion}">España y Florida 1170</span>
+					</a>
+				</div>
+			</div>
+			
+			
+			<div class="col-lg-2 col-md-6">
+
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-3">
+								<i class="fa fa-gears fa-2x"></i>
+							</div>
+							<div class="col-xs-9 text-right">
+								<div>Acciones</div>
+							</div>
+						</div>
+					</div>
+					<div class="perfil-usuario-opciones">
+						<a href="#" class="list-group-item"> <i class="fa fa-edit fa"></i>Editar
+							Perfil
+						</a> <a href="#" class="list-group-item"> <i class="fa fa-plus fa"></i>Agregar
+							Usuario
+						</a> <a href="#" class="list-group-item"> <i class="fa fa-lock fa"></i>Bloquear
+							Usuario
+						</a> <a href="#" class="list-group-item"> <i
+							class="fa fa-minus-circle fa"></i>Borrar Usuario
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<hr />
+
+	</div>
+
+
+</body>
+
+
+</html>

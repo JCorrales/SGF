@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" th:fragment="page">
+
+<body>
+	
+	
+		<h4 class="page-header" th:text="${titulo}">Lista
+			de Usuarios.</h4>
+
+		<div class="table-responsive">
+
+			<table id="${nombre}"
+				class="table table-bordered table-hover table-striped display"
+				cellspacing="0" width="100%">
+
+				<div th:include="this :: thead">
+				<thead>
+					<tr>
+						<th>Accion</th>
+						<th>codigo</th>
+						<th>Nombre</th>
+						<th>Apellido</th>
+
+					</tr>
+				</thead>
+				</div>
+			</table>
+		</div>
+
+		<div
+			th:include="fragments/includes :: datatable_script(name=${nombre}, serverSide=${serverSide}, source=${source}, columns=${columns})">lista</div>
+
+
+</body>
+</html>
