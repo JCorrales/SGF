@@ -93,9 +93,9 @@
 
 <body>
 	<div id="wrapper">
-		<div th:replace="fragments/navigation :: nav">Navigation</div>
-
-		<div th:include="this :: content">CONTENIDO</div>
+		<div th:replace="fragments/menu :: menu">Navigation</div>
+		<div th:replace="this :: content">CONTENIDO</div>
+		<div th:replace="fragments/footer :: footer">[SGF] Sistema de gestión de la flota.</div>
 	</div>
 </body>
 

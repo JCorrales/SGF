@@ -19,12 +19,12 @@
 
 	var cube, plane;
 
-	var windowHalfX = (window.innerWidth / 2) -280;
-	var windowHalfY = (window.innerHeight / 2) -50;
 	var clock = new THREE.Clock();
 
 	function init(data) {
 		container = $('#pantalla');
+		var width = container.css('width').replace('px', '');
+		var height = container.css('height').replace('px', '');
 
 		var info = document.createElement( 'div' );
 		info.style.position = 'absolute';
@@ -34,25 +34,26 @@
 		info.innerHTML = 'Drag to spin the cube';
 		$('#pantalla').append( info );
 
-		camera = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, 
-			window.innerHeight / 2, window.innerHeight / - 2, -10000, 10000 );//-10000 10000 frustum view
-		//camera.position.y = 150;
-		//camera.position.x = 80;
+		camera = new THREE.OrthographicCamera( width / - 2, width / 2, 
+			height / 2, height / - 2, -10000, 10000 );//-10000 10000 frustum view
+		camera.position.y = 500;
+		camera.position.x = 500;
 		camera.position.z = 1000;//10 metros
 		//camera.rotation.y = 0.5;
 
 		scene = new THREE.Scene();
 		var datos = data.valueOf();
+
 		//contenedor
 	
 		var geometry = new THREE.BoxGeometry( datos[0].largo, datos[0].alto, datos[0].ancho);
-		var material = new THREE.MeshBasicMaterial( { color:datos[0].color, opacity: 0.1, wireframe:true});
-		var cube = new THREE.Mesh( geometry, material );
+		var material = new THREE.MeshBasicMaterial( { color:datos[0].color, opacity: 0.5, wireframe: true, transparent: true});
+		var contenedor = new THREE.Mesh( geometry, material );
 
-		cube.position.x = datos[0].x;
-		cube.position.y = datos[0].y;
-		cube.position.z = datos[0].z;
-		scene.add( cube );
+		contenedor.position.x = datos[0].x;
+		contenedor.position.y = datos[0].y;
+		contenedor.position.z = datos[0].z;
+		scene.add( contenedor );
 
 		// paquetes
 		
@@ -66,22 +67,35 @@
 			var color = datos[i].color;
 		
 			var geometry = new THREE.BoxGeometry( largo, alto, ancho );
-			var material = new THREE.MeshBasicMaterial( { color:color, opacity: 1});
+			var material = new THREE.MeshBasicMaterial( { color:color, transparent: true, opacity: 0.7});
 			var cube = new THREE.Mesh( geometry, material );
 
 			cube.position.x = x;
 			cube.position.y = y;
 			cube.position.z = z;
+
+			//para los bordes de los cubos
+			var helper = new THREE.BoxHelper( cube );
+    		helper.material.color.set( 0xffffff );
+    		helper.material.linewidth = 1;
+    		scene.add( helper );
 			scene.add( cube );
 			//break;
 		}
 
-		renderer = new THREE.CanvasRenderer();
+		//renderer = new THREE.CanvasRenderer();
+		if ( webglAvailable() ) {
+			renderer = new THREE.WebGLRenderer();
+		} else {
+			renderer = new THREE.CanvasRenderer();
+		}
 		renderer.setClearColor( 0xf0f0f0 );
 		renderer.setPixelRatio( window.devicePixelRatio );
-		renderer.setSize( window.innerWidth, window.innerHeight);
+		renderer.setSize( width, height);
 		
-		controls = new THREE.OrbitControls( camera, renderer.domElement );
+		//controls
+		var target = new THREE.Vector3(datos[0].x, datos[0].y, datos[0].z);//no funciona si uso la variable contenedor
+		controls = new THREE.OrbitControls( camera, renderer.domElement, target );
 		//controls.addEventListener( 'change', render ); // add this only if there is no animation loop (requestAnimationFrame)
 		controls.enableDamping = true;
 		controls.dampingFactor = 0.25;
@@ -110,35 +124,15 @@
 
 		}
 
-
-
-
-
-//nada que ver
-function serializer(obj) {
-
-	var t = typeof (obj);
-	if (t != "object" || obj === null) {
-
-		// simple data type
-		if (t == "string") obj = '"'+obj+'"';
-		return String(obj);
-
-	}
-	else {
-
-		// recurse array or object
-		var n, v, json = [], arr = (obj && obj.constructor == Array);
-
-		for (n in obj) {
-			v = obj[n]; t = typeof(v);
-
-			if (t == "string") v = '"'+v+'"';
-			else if (t == "object" && v !== null) v = JSON.stringify(v);
-
-			json.push((arr ? "" : '"' + n + '":') + String(v));
+		function webglAvailable() {
+			try {
+				var canvas = document.createElement( 'canvas' );
+				return !!( window.WebGLRenderingContext && (
+					canvas.getContext( 'webgl' ) ||
+					canvas.getContext( 'experimental-webgl' ) )
+				);
+			} catch ( e ) {
+				return false;
+			}
 		}
 
-		return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
-	}
-};

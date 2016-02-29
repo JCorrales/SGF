@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>three.js canvas - geometry - cube</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <style>
+            body {
+                font-family: Monospace;
+                background-color: #f0f0f0;
+                margin: 0px;
+                overflow: hidden;
+            }
+        </style>
+    </head>
+    <body>
+        <script src="js/jquery-1.11.0.js"></script>
+        <script src="js/three.min.js"></script>
+<script src="js/three.min.js"></script>
+        <script src="js/renderers/Projector.js"></script>
+        <script src="js/renderers/CanvasRenderer.js"></script>
+
+        <script src="js/libs/stats.min.js"></script>
+
+        <script src="js/controls/FlyControls.js"></script>
+        <script src="js/controls/OrbitControls.js"></script>
+        <script src="js/cargador.js"></script>
+
+
+        <div id="pantalla"></div>
+
+            <script>
+
+ // Simple Three.js example
+
+var mesh, renderer, scene, camera, controls;
+
+init();
+animate();
+
+function init() {
+
+    // renderer
+    if ( true ) {
+        renderer = new THREE.WebGLRenderer();
+    } else {
+        renderer = new THREE.CanvasRenderer();
+    }
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    document.body.appendChild( renderer.domElement );
+    renderer.setClearColor( 0xf0f0f0 );
+
+    // scene
+    scene = new THREE.Scene();
+    
+    // camera
+    camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
+    camera.position.set( 20, 20, 20 );
+
+    // controls
+    controls = new THREE.OrbitControls( camera );
+    
+    // ambient
+    scene.add( new THREE.AmbientLight( 0x222222 ) );
+    
+    // light
+    var light = new THREE.PointLight( 0xffffff, 1 );
+    light.position = camera.position;
+    scene.add( light );
+    
+    // axes
+    scene.add( new THREE.AxisHelper( 20 ) );
+
+    // geometry
+    var geometry = new THREE.BoxGeometry( 5, 5, 5 );
+    
+    // material
+    var material = new THREE.MeshLambertMaterial( {
+        color: 0xff0000, 
+        polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1,
+        shading: THREE.FlatShading,
+        transparent: true,
+        opacity: 0.5,
+        overdraw: 0.1 // for canvasRenderer only
+    } );
+    
+    // mesh
+    mesh = new THREE.Mesh( geometry, material );
+    scene.add( mesh );
+    
+    var helper = new THREE.BoxHelper( mesh );
+    helper.material.color.set( 0xffffff );
+    helper.material.linewidth = 3;
+    scene.add( helper );
+
+}
+
+function animate() {
+
+    requestAnimationFrame( animate );
+    
+    controls.update();
+
+    renderer.render( scene, camera );
+
+}
+        </script>
+
+    </body>
+</html>
+
+
+
+
+
+
+
+
+
+
