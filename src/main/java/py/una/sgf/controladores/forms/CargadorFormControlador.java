@@ -64,21 +64,26 @@ public class CargadorFormControlador extends FormControladorAncestro<Cargador> {
 			int largo = bean.getContenedor().getLargo();
 			int ancho = bean.getContenedor().getAncho();
 			int alto = bean.getContenedor().getAlto();
-			/*
-			 * List<PaqueteEntrada> paquetesArray = new
-			 * ArrayList<PaqueteEntrada>(); for (int i = 0; i <
-			 * bean.getPaquetesEntrada().length; i++) {
-			 * paquetesArray.add(bean.getPaquetesEntrada()[i]); }
-			 */
+
 			com.packing.slide.Contenedor contenedor2 = new com.packing.slide.Contenedor(ancho, largo, alto);
 			Resultado resultado = cargadorBC.cargar(contenedor2, bean.getPaquetesEntrada());
 
 			sesionUsuario.addObject("contenedor", contenedor2);
 			sesionUsuario.addObject("resultado", resultado);
-			return "abm/cargador/render";
+			return "redirect:/abm/cargador/render";
 		} else if (operacionParam.equals("agregar")) {
 			bean.getPaquetesEntrada().add(new PaqueteEntrada());
 			model.addAttribute(getNombreObjeto(), bean);
+			addExtraAttributes(bean, model);
+		} else {
+			// puede ser el indice a remover
+			try {
+				if (bean.getPaquetesEntrada().size() > 1) {
+					bean.getPaquetesEntrada().remove(new Integer(operacionParam).intValue());
+				}
+			} catch (NumberFormatException e) {
+				// no se altera la lista
+			}
 			addExtraAttributes(bean, model);
 		}
 		return getAbmUrl();

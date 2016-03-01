@@ -39,28 +39,28 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand nav" href="/pagosuna/">Inicio</a>
+				<a class="navbar-brand nav" href="/sgf/">Inicio</a>
 			</div>
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse"
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="#">Historial de pagos</a></li>
-					<li><a href="#">Boletas de pago</a></li>
+					<!-- menu desplegable 1 -->
+					<li class="dropdown"><a class="dropdown-toggle"
+						data-toggle="dropdown" href="/sgf/abm/cargador/">Cargador <i
+							class="fa fa-caret-down"></i></a>
+						<ul class="dropdown-menu dropdown-user ">
+							<li><a href="/sgf/abm/cargador/">
+									Nueva Carga</a></li>
+							<li class="divider"></li>
+							<li><a href="/sgf/abm/cargador/render">Renderizar ultimo</a></li>
+						</ul></li>
+					<!-- fin menu desplegable 1 -->
+					<li><a href="#">ejemplo</a></li>
 					<!-- /.dropdown -->
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li class="dropdown"><a style="width:400px" class="dropdown-toggle"
-						data-toggle="dropdown" href="#"> <i style="width:100%"
-							class="fa fa-institution fa-fw"
-							th:text="${sesionUsuario.getObject('institucion')}">Centro
-								Nacional de Computación</i>
 
-					</a>
-						<ul class="dropdown-menu" style="background-color: black;">
-						<li th:each="institucion: ${instituciones}"><a style="width:400px" th:attr="href=${'/pagosuna/cambiar_institucion?codfacul='+institucion.getCodigo()}"> <i class="fa fa-institution fa-fw" th:text="${institucion}">Centro Nacional de Computación</i></a>
-						</li>
-						</ul></li>
 					<li class="dropdown"><a class="dropdown-toggle"
 						data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
 							<i class="fa fa-caret-down"></i>

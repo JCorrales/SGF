@@ -29,6 +29,10 @@ public class CargadorRenderControlador {
 		String[] colores = (String[]) sesionUsuario.getObject("colores");
 		List<EmpaquetadoJSON> em = new ArrayList<>();
 
+		if (contenedor == null || colores == null) {
+			return em;
+		}
+
 		// el primero es el contenedor
 
 		EmpaquetadoJSON contenedorJSON = new EmpaquetadoJSON();
@@ -53,5 +57,17 @@ public class CargadorRenderControlador {
 			em.add(empaquetado);
 		}
 		return em;
+	}
+
+	@RequestMapping(value = "render", method = RequestMethod.GET)
+	public String render(Model model) {
+
+		Contenedor contenedor = (Contenedor) sesionUsuario.getObject("contenedor");
+		String[] colores = (String[]) sesionUsuario.getObject("colores");
+
+		if (contenedor == null || colores == null) {
+			return "redirect:/inicio";
+		}
+		return "/abm/cargador/render";
 	}
 }

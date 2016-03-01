@@ -30,7 +30,10 @@
 	<div class="col-lg-12 col-lm-12">
 		<div th:fragment="content">
 
-			<div th:replace="fragments/notificaciones :: content">notificiones</div>
+			<div class="alert alert-info alert-dismissable">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<div>Complete los siguientes campos. Ingrese las dimensiones preferentemente en centimetros</div>
+			</div>
 
 			<form action="#" th:action="@{/abm/cargador/op}" method="post"
 				role="form" th:object="${cargador}">
@@ -64,8 +67,8 @@
 				<h4 class="page-header" th:text="#{paquete.form.titulo}">Paquetes</h4>
 				<div th:each="paqueteEntrada, rowStat : *{paquetesEntrada}">
 					<div th:id="'paqueteInput'+${rowStat.index}" class="well">
-						<button class="close" type="button" style="opacity: 1 !important"
-							th:onclick="'borrarHtml(\''+'paqueteInput'+${rowStat.index}+'\')'">
+						<button class="close" name="operacion" th:value="${rowStat.index}" 
+							style="opacity: 1 !important">
 							<img src="../../icons/16/delete.png"
 								th:src="@{/icons/16/delete.png}" class="nuevo-btn" />
 						</button>

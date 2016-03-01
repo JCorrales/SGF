@@ -32,15 +32,15 @@
 <link href="../css/htroot.css" th:href="@{/css/htroot.css}"
 	rel="stylesheet" />
 
-	
+
 <link href="../css/jquery-ui.css" th:href="@{/css/jquery-ui.css}"
 	rel="stylesheet" />
 
-<link href="../css/plugins/dataTables.bootstrap.css" th:href="@{/css/plugins/dataTables.bootstrap.css}"
-	rel="stylesheet" />
-	
-	
-	
+<link href="../css/plugins/dataTables.bootstrap.css"
+	th:href="@{/css/plugins/dataTables.bootstrap.css}" rel="stylesheet" />
+
+
+
 <script src="../../js/jquery-1.11.0.js" th:src="@{/js/jquery-1.11.0.js}"></script>
 
 <!-- Bootstrap Core JavaScript -->
@@ -60,28 +60,31 @@
 <script src="../js/htroot.js" th:src="@{/js/htroot.js}"></script>
 <script src="../js/magicsuggest.js" th:src="@{/js/magicsuggest.js}"></script>
 
-<link href="../css/magicsuggest.css"
-	th:href="@{/css/magicsuggest.css}" rel="stylesheet" />
-	
+<link href="../css/magicsuggest.css" th:href="@{/css/magicsuggest.css}"
+	rel="stylesheet" />
+
 <script
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNz0eplbMTQXrWsn8Pv9TAZHf7WxSKgHQ"
 	th:src="@{https://maps.googleapis.com/maps/api/js}">
 </script>
-<script type="text/javascript" 
-	src="../../js/bootstrap-filestyle.min.js" 
+<script type="text/javascript" src="../../js/bootstrap-filestyle.min.js"
 	th:src="@{/js/bootstrap-filestyle.min.js}"> 
 </script>
 
 <!-- three.js -->
 <script src="../js/three.js" th:src="@{/js/three.js}"></script>
 <script src="../js/three.min.js" th:src="@{/js/three.min.js}"></script>
-<script src="../js/renderers/CanvasRenderer.js" th:src="@{/js/renderers/CanvasRenderer.js}"></script>
-<script src="../js/renderers/Projector.js" th:src="@{/js/renderers/Projector.js}"></script>
+<script src="../js/renderers/CanvasRenderer.js"
+	th:src="@{/js/renderers/CanvasRenderer.js}"></script>
+<script src="../js/renderers/Projector.js"
+	th:src="@{/js/renderers/Projector.js}"></script>
 
 <script src="js/libs/stats.min.js" th:src="@{/js/libs/stats.min.js}"></script>
 
-<script src="js/controls/FlyControls.js" th:src="@{/js/controls/FlyControls.js}"></script>
-<script src="js/controls/OrbitControls.js" th:src="@{/js/controls/OrbitControls.js}"></script>
+<script src="js/controls/FlyControls.js"
+	th:src="@{/js/controls/FlyControls.js}"></script>
+<script src="js/controls/OrbitControls.js"
+	th:src="@{/js/controls/OrbitControls.js}"></script>
 
 <script src="js/cargador.js" th:src="@{/js/cargador.js}"></script>
 
@@ -92,11 +95,12 @@
 
 
 <body>
-	<div id="wrapper">
-		<div th:replace="fragments/menu :: menu">Navigation</div>
-		<div th:replace="this :: content">CONTENIDO</div>
-		<div th:replace="fragments/footer :: footer">[SGF] Sistema de gestión de la flota.</div>
-	</div>
+
+	<div th:replace="fragments/menu :: menu">Navigation</div>
+	<div th:replace="this :: content">CONTENIDO</div>
+	<div th:replace="fragments/footer :: footer">[SGF] Sistema de
+		gestión de la flota.</div>
+
 </body>
 
 </html>
