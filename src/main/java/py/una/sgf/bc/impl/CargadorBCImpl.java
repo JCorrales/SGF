@@ -36,6 +36,7 @@ public class CargadorBCImpl extends BusinessControllerImpl<Cargador> implements 
 
 	@Autowired
 	SesionUsuario sesionUsuario;
+	private boolean algunaRotacion = false;
 
 	@Override
 	public Resultado cargar(Contenedor contenedor, List<PaqueteEntrada> paquetesEntrada) {
@@ -45,71 +46,40 @@ public class CargadorBCImpl extends BusinessControllerImpl<Cargador> implements 
 			List<PackingInput> instancias = new ArrayList<>();
 			Constantes.VERSION = 2;
 
-			// ************ regularizar contenedor
-			int largo = contenedor.getLargo();
-			int ancho = contenedor.getAncho();
-			int alto = contenedor.getAlto();
-			Rotacion rotacionInicial = Rotacion.SinRotacion;
-			// Chequeo que la mayor medida sea en el ancho
-			int aux;
-			if (ancho < largo) {
-				// aux=largo;
-				// largo=ancho;
-				// ancho=aux;
-				rotacionInicial = Rotacion.GiroSobreY;
-			}
-			if (ancho < alto) {
-				// aux=alto;
-				// alto=ancho;
-				// ancho=aux;
-				if (rotacionInicial == Rotacion.SinRotacion) {
-					rotacionInicial = Rotacion.Abajo;
-				} else {
-					rotacionInicial = Rotacion.GiroSobreYAbajo;
-				}
-			}
-			// Guardo en una variable global la rotacin para poder deshacerla al
-			// final de terminado el algoritmo
-			Globals.rotacionInicial = rotacionInicial;
-			// *************** fin de regularizar contenedor
+			sesionUsuario.addObject("contenedor", contenedor);
 
-			// ************* regularizar paquetes
-			List<Paquete> paquetes = new ArrayList<>();
-			Set<Rotacion> rotacionesPermitidas;
-			String[] colores = new String[paquetesEntrada.get(0).getTotal()];
+			regularizarContenedor(contenedor);
+			List<Paquete> paquetes = regularizarPaquetes(paquetesEntrada);
 
-			int id = -1;// para que tengan diferentes id
-			for (PaqueteEntrada paqueteEntrada : paquetesEntrada) {
-				for (int i = 1; i <= paqueteEntrada.getCantidad(); i++) {
-					Paquete paquete = new Paquete(paqueteEntrada.getLargoActual(), paqueteEntrada.getAltoActual(),
-							paqueteEntrada.getAnchoActual(), ++id);
-					colores[id] = paqueteEntrada.getColor();
-					rotacionesPermitidas = new HashSet<Rotacion>();
-					rotacionesPermitidas.add(Rotacion.SinRotacion);
-					if (paqueteEntrada.isRotacionLateral()) {
-						rotacionesPermitidas.add(Rotacion.Abajo);
-						rotacionesPermitidas.add(Rotacion.AbajoIzquierda);
-					}
-					if (paqueteEntrada.isRotacionLongitudinal()) {
-						rotacionesPermitidas.add(Rotacion.GiroSobreY);
-						rotacionesPermitidas.add(Rotacion.GiroSobreYAbajo);
-					}
-					if (paqueteEntrada.isRotacionVertical()) {
-						rotacionesPermitidas.add(Rotacion.Izquierda);
-					}
-					paquete.setRotacionesPermitidas(rotacionesPermitidas);
-					paquetes.add(paquete);
-				}
-			}
-			sesionUsuario.addObject("colores", colores);
-			// ************* fin de regularizar paquetes
+			Contenedor contenedor2 = new Contenedor(contenedor.getAncho(), contenedor.getLargo(), contenedor.getAlto());
+			List<Paquete> paquetes2 = clonarPaquetes(paquetes);
 
+			// primera aproximacion
 			PackingInput packinInput = new PackingInput(paquetes, contenedor);
 			instancias.add(packinInput);
 
 			ManejadorPaquetes mp = ManejadorPaquetes.getInstance();
 			Resultado resultado = packing.ejecutar(1, instancias, mp, 1, 0);
+			// segunda aproximacion
+			if (algunaRotacion) {
+				getLogger().info("preparando segundo intento sin rotaciones");
+				PackingInput packingInput2 = new PackingInput(paquetes2, contenedor2);
+				instancias.add(1, packingInput2);
+				PackingController packing2 = new PackingController();
+				Resultado resultado2 = packing2.ejecutar(1, instancias, mp, 1, 1);
+
+				if (resultado2.getValor() > resultado.getValor()) {
+					getLogger().info("cambiando resultados");
+					resultado = resultado2;
+					packinInput = packingInput2;
+					contenedor = contenedor2;
+				}
+			}
+
 			trasladarCoordenadas(contenedor);
+			sesionUsuario.addObject("contenedor", contenedor);
+			sesionUsuario.addObject("packingInput", packinInput);
+			sesionUsuario.addObject("resultado", resultado);
 			return resultado;
 
 		} catch (Exception e) {
@@ -132,6 +102,83 @@ public class CargadorBCImpl extends BusinessControllerImpl<Cargador> implements 
 			index++;
 		}
 
+	}
+
+	private void regularizarContenedor(Contenedor contenedor) {
+
+		int largo = contenedor.getLargo();
+		int ancho = contenedor.getAncho();
+		int alto = contenedor.getAlto();
+		Rotacion rotacionInicial = Rotacion.SinRotacion;
+		// Chequeo que la mayor medida sea en el ancho
+		if (ancho < largo) {
+			// aux=largo;
+			// largo=ancho;
+			// ancho=aux;
+			rotacionInicial = Rotacion.GiroSobreY;
+		}
+		if (ancho < alto) {
+			// aux=alto;
+			// alto=ancho;
+			// ancho=aux;
+			if (rotacionInicial == Rotacion.SinRotacion) {
+				rotacionInicial = Rotacion.Abajo;
+			} else {
+				rotacionInicial = Rotacion.GiroSobreYAbajo;
+			}
+		}
+		// Guardo en una variable global la rotacin para poder deshacerla al
+		// final de terminado el algoritmo
+		Globals.rotacionInicial = rotacionInicial;
+	}
+
+	private List<Paquete> regularizarPaquetes(List<PaqueteEntrada> paquetesEntrada) {
+
+		List<Paquete> paquetes = new ArrayList<>();
+		Set<Rotacion> rotacionesPermitidas;
+		String[] colores = new String[paquetesEntrada.get(0).getTotal()];
+
+		int id = -1;// para que tengan diferentes id
+		for (PaqueteEntrada paqueteEntrada : paquetesEntrada) {
+			for (int i = 1; i <= paqueteEntrada.getCantidad(); i++) {
+				Paquete paquete = new Paquete(paqueteEntrada.getLargoActual(), paqueteEntrada.getAltoActual(),
+						paqueteEntrada.getAnchoActual(), ++id);
+				colores[id] = paqueteEntrada.getColor();
+				rotacionesPermitidas = new HashSet<Rotacion>();
+				rotacionesPermitidas.add(Rotacion.SinRotacion);
+				if (paqueteEntrada.isRotacionLateral()) {
+					rotacionesPermitidas.add(Rotacion.Abajo);
+					rotacionesPermitidas.add(Rotacion.AbajoIzquierda);
+					algunaRotacion = true;
+				}
+				if (paqueteEntrada.isRotacionLongitudinal()) {
+					rotacionesPermitidas.add(Rotacion.GiroSobreY);
+					rotacionesPermitidas.add(Rotacion.GiroSobreYAbajo);
+					algunaRotacion = true;
+				}
+				if (paqueteEntrada.isRotacionVertical()) {
+					rotacionesPermitidas.add(Rotacion.Izquierda);
+					algunaRotacion = true;
+				}
+				paquete.setRotacionesPermitidas(rotacionesPermitidas);
+				paquetes.add(paquete);
+			}
+		}
+		sesionUsuario.addObject("colores", colores);
+		return paquetes;
+	}
+
+	private List<Paquete> clonarPaquetes(List<Paquete> paquetes) {
+
+		List<Paquete> paquetes2 = new ArrayList<>();
+		for (Paquete paquete : paquetes) {
+			Paquete paquete2 = new Paquete(paquete.getLargo(), paquete.getAlto(), paquete.getAncho(), paquete.getId());
+			Set<Rotacion> rotaciones = new HashSet<>();
+			rotaciones.add(Rotacion.SinRotacion);
+			paquete2.setRotacionesPermitidas(rotaciones);
+			paquetes2.add(paquete2);
+		}
+		return paquetes2;
 	}
 
 	@Override

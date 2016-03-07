@@ -13,6 +13,7 @@
 		<class>py.una.cnc.htroot.domain.RolUsuario</class>
 		<class>py.una.cnc.htroot.domain.Config</class>
 		<class>py.una.cnc.htroot.domain.InfoConexion</class>
+		<class>py.una.cnc.htroot.domain.ResetPass</class>
 		<properties>
 			<property name="jboss.entity.manager.factory.jndi.name"
 				value="java:jboss/sgf/persistence" />

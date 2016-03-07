@@ -51,4 +51,13 @@
 		<value>c.codigo||c.nombre||p.nombre</value>
 	</query>
 	
+	<query>
+		<name>get_ultimo_reset</name>
+		<value>
+			SELECT max(fecha) AS ultimo, CURRENT_TIMESTAMP AS hoy
+			FROM
+			resetpass
+			WHERE codigo = ?
+		</value>
+	</query>
 </queries>

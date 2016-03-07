@@ -1,6 +1,6 @@
 package py.una.sgf.registros;
 
-public class EmpaquetadoJSON {
+public class PaqueteJSON {
 
 	private int ancho;// z
 	private int alto;// y

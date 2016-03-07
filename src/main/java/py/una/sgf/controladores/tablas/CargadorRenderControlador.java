@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.packing.slide.Contenedor;
+import com.packing.slide.Coordenada;
+import com.packing.slide.PackingInput;
 import com.packing.slide.Paquete;
 import py.una.cnc.htroot.main.SesionUsuario;
-import py.una.sgf.registros.EmpaquetadoJSON;
+import py.una.sgf.registros.PaqueteJSON;
 
 @Controller
 @RequestMapping("/abm/cargador")
@@ -23,11 +25,11 @@ public class CargadorRenderControlador {
 	SesionUsuario sesionUsuario;
 
 	@RequestMapping(value = "rest", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
-	public @ResponseBody List<EmpaquetadoJSON> getPaquetesRest(Model model) {
+	public @ResponseBody List<PaqueteJSON> getPaquetesRest(Model model) {
 
 		Contenedor contenedor = (Contenedor) sesionUsuario.getObject("contenedor");
 		String[] colores = (String[]) sesionUsuario.getObject("colores");
-		List<EmpaquetadoJSON> em = new ArrayList<>();
+		List<PaqueteJSON> em = new ArrayList<>();
 
 		if (contenedor == null || colores == null) {
 			return em;
@@ -35,7 +37,7 @@ public class CargadorRenderControlador {
 
 		// el primero es el contenedor
 
-		EmpaquetadoJSON contenedorJSON = new EmpaquetadoJSON();
+		PaqueteJSON contenedorJSON = new PaqueteJSON();
 		contenedorJSON.setAlto(contenedor.getAlto());
 		contenedorJSON.setAncho(contenedor.getAncho());
 		contenedorJSON.setLargo(contenedor.getLargo());
@@ -46,7 +48,7 @@ public class CargadorRenderControlador {
 		em.add(contenedorJSON);
 
 		for (Paquete paquete : contenedor.getEmpaquetados()) {
-			EmpaquetadoJSON empaquetado = new EmpaquetadoJSON();
+			PaqueteJSON empaquetado = new PaqueteJSON();
 			empaquetado.setAlto(paquete.getAlto());
 			empaquetado.setAncho(paquete.getAncho());
 			empaquetado.setLargo(paquete.getLargo());
@@ -69,5 +71,29 @@ public class CargadorRenderControlador {
 			return "redirect:/inicio";
 		}
 		return "/abm/cargador/render";
+	}
+
+	@RequestMapping(value = "estadisticas", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+	public String estadisticas(Model model) {
+
+		PackingInput packingInput = (PackingInput) sesionUsuario.getObject("packingInput");
+
+		String[] colores = (String[]) sesionUsuario.getObject("colores");
+		if (packingInput == null || colores == null) {
+			return "redirect:/abm/cargador/";
+		}
+
+		List<PaqueteJSON> noEmpaquetados = new ArrayList<PaqueteJSON>();
+		Coordenada fuera = new Coordenada(-1, -1, -1);
+		for (Paquete paquete : packingInput.getPaquetes()) {
+			if (paquete.getVertice().equals(fuera)) {
+				PaqueteJSON paqueteJSON = new PaqueteJSON();
+				paqueteJSON.setAlto(paquete.getAlto());
+				paqueteJSON.setAncho(paquete.getAncho());
+				paqueteJSON.setLargo(paquete.getLargo());
+				paqueteJSON.setColor(colores[paquete.getId()]);;
+			}
+		}
+		return null;
 	}
 }

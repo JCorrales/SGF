@@ -9,7 +9,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.packing.GA.Resultado;
 import py.una.cnc.htroot.bc.BusinessController;
 import py.una.cnc.htroot.controllers.FormControladorAncestro;
 import py.una.cnc.htroot.main.SesionUsuario;
@@ -66,10 +65,8 @@ public class CargadorFormControlador extends FormControladorAncestro<Cargador> {
 			int alto = bean.getContenedor().getAlto();
 
 			com.packing.slide.Contenedor contenedor2 = new com.packing.slide.Contenedor(ancho, largo, alto);
-			Resultado resultado = cargadorBC.cargar(contenedor2, bean.getPaquetesEntrada());
+			cargadorBC.cargar(contenedor2, bean.getPaquetesEntrada());
 
-			sesionUsuario.addObject("contenedor", contenedor2);
-			sesionUsuario.addObject("resultado", resultado);
 			return "redirect:/abm/cargador/render";
 		} else if (operacionParam.equals("agregar")) {
 			bean.getPaquetesEntrada().add(new PaqueteEntrada());

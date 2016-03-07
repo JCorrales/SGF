@@ -18,6 +18,7 @@
 	var camera, scene, renderer;
 
 	var cube, plane;
+	var empaquetados = [];
 
 	var clock = new THREE.Clock();
 
@@ -129,5 +130,6 @@
     		helper.material.linewidth = 1;
     		scene.add( helper );
 			scene.add( cube );
+			empaquetados[i-1] = cube;//i empieza en 1s
 		}
 	}
