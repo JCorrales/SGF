@@ -60,4 +60,12 @@
 			WHERE codigo = ?
 		</value>
 	</query>
+	<query>
+		<name>select_historial_conexiones</name>
+		<value>
+			SELECT to_char(fechalogin,'dd/mm/yyyy HH24:MI') fecha, ip
+			FROM info_conexion
+			WHERE usuario = ? limit 10
+		</value>
+	</query>
 </queries>

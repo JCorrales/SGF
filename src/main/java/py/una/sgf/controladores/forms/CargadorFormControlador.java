@@ -60,13 +60,7 @@ public class CargadorFormControlador extends FormControladorAncestro<Cargador> {
 			@RequestParam(OPERACION_PARAM) String operacionParam) {
 
 		if (operacionParam.equals("calcular")) {
-			int largo = bean.getContenedor().getLargo();
-			int ancho = bean.getContenedor().getAncho();
-			int alto = bean.getContenedor().getAlto();
-
-			com.packing.slide.Contenedor contenedor2 = new com.packing.slide.Contenedor(ancho, largo, alto);
-			cargadorBC.cargar(contenedor2, bean.getPaquetesEntrada());
-
+			cargadorBC.cargar(bean.getContenedor(), bean.getPaquetesEntrada());
 			return "redirect:/abm/cargador/render";
 		} else if (operacionParam.equals("agregar")) {
 			bean.getPaquetesEntrada().add(new PaqueteEntrada());

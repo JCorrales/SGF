@@ -50,13 +50,22 @@
 						data-toggle="dropdown" href="/sgf/abm/cargador/">Cargador <i
 							class="fa fa-caret-down"></i></a>
 						<ul class="dropdown-menu dropdown-user ">
-							<li><a href="/sgf/abm/cargador/">
+							<li><a th:href="@{/abm/cargador/}">
 									Nueva Carga</a></li>
 							<li class="divider"></li>
-							<li><a href="/sgf/abm/cargador/render">Renderizar ultimo</a></li>
+							<li><a th:href="@{/abm/cargador/render}">Renderizar ultimo</a></li>
 						</ul></li>
 					<!-- fin menu desplegable 1 -->
-					<li><a href="#">ejemplo</a></li>
+					<!-- menu desplegable 2 -->
+					<li class="dropdown"><a class="dropdown-toggle"
+						data-toggle="dropdown" href="#">Datos Generales <i
+							class="fa fa-caret-down"></i></a>
+						<ul class="dropdown-menu dropdown-user ">
+							<li><a th:href="@{/abm/usuario}">
+									Usuarios</a></li>
+						</ul></li>
+					<!-- fin menu desplegable 2 -->
+					<li><a href="#">Relleno</a></li>
 					<!-- /.dropdown -->
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
@@ -82,8 +91,8 @@
 								</div>
 
 							</li>
-							<li><a href="#"><i class="fa fa-gear fa-fw"></i>
-									Settings</a></li>
+							<li><a href="#" th:href="@{/perfil}"><i class="fa fa-user fa-fw"></i>
+									Perfil</a></li>
 							<li class="divider"></li>
 							<li><a href="javascript:logout()"><i
 									class="fa fa-sign-out fa-fw"></i> Logout</a></li>

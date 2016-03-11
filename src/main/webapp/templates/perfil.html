@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" th:include="main :: page">
+<head>
+</head>
+
+<body>
+<div th:fragment="content">
+		<div id="page-wrapper">
+		<div class="row">
+					<div class="col-lg-4 col-md-4">
+					<h3 class="page-header" th:text="${usuarioActual.nombre + ' ' + usuarioActual.apellido + ' (' + usuarioActual.codigo+ ')'}">Juan Perez (jperez)</h3>
+					<div class="row">
+						<div class="col-lg-6 col-md-6">
+							<img th:src="@{/usuario/foto/}" style="height:150px"/>
+						</div>
+						<div class="col-lg-6 col-md-6">
+							<form method="post"  th:action="@{cambiar_foto} + '?' + ${_csrf.parameterName} + '=' + ${_csrf.token} + '&amp;recordId=' +${usuarioActual.id} " enctype="multipart/form-data">
+								<input type="file" name="file" /><br /> 
+								<input type="submit" th:value="#{form.usuario.cambiar.foto}" />
+							</form>
+						</div>
+					</div>
+					<h4 class="page-header" th:text="#{perfil.form.titulo}">Cambiar Contraseña</h4>
+						<div id="notif"></div>		
+						<div class="form-group required">
+							<label th:for="perfil.usuarioActual.oldpass" th:text="#{perfil.usuarioActual.oldpass.lbl}">Contraseña Actual</label>
+							<input type="password" class="form-control" id="oldpass" autofocus="autofocus"/>
+						</div>
+						<div class="form-group required">
+							<label th:for="perfil.usuarioActual.newpass" th:text="#{perfil.usuarioActual.newpass.lbl}">Nueva Contraseña</label>
+							<input type="password" class="form-control" id="newpass" autofocus="autofocus"/>
+						</div>
+						<div class="form-group required">
+							<label th:for="perfil.usuarioActual.confirmpass" th:text="#{perfil.usuarioActual.confirmpass.lbl}">Vuelva a escribir su contraseña</label>
+							<input class="form-control" id="confirmpass" type="password" autofocus="autofocus"/>
+						</div>
+						<button type="button" class="btn btn-default" id="change_btn" th:text="#{perfil.cambiarpass_btn}">Aceptar</button>
+				</div>
+				<div class="col-lg-8 col-md-8">
+					<h3 class="page-header" th:text="#{perfil.usuarioActual.datos_generales}">Datos Generales</h3>
+					<div class="list-group">
+						<a href="#" class="list-group-item"> <img
+							src="../../icons/16/run.png" th:src="@{/icons/16/run.png}" /> <span
+							th:text="#{lbl_email}">Email: </span> <span th:text="${usuarioActual.email}">root@gmail.com</span>
+						</a>
+						<a href="#" class="list-group-item"> <img
+							src="../../icons/16/run.png" th:src="@{/icons/16/run.png}" /> <span
+							th:text="#{lbl_telefono}">Email: </span> <span th:text="${usuarioActual.telefono}">0961999999</span>
+						</a>
+					</div>
+					<h4 class="page-header" th:text="#{perfil.historial_conexion}">Detalle de Conexiones</h4>
+					<div class="table-responsive">
+						<table id="historial" class="table table-bordered table-hover" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th th:text="#{historial_fecha_header}"></th>
+									<th th:text="#{historial_ip_header}"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="con : ${conexiones}">
+									<td th:text="${con.fecha}">04/01/2016</td>
+									<td th:text="${con.ip}">10.1.10.149</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			<hr />
+			<script th:inline="javascript">
+			/*<![CDATA[*/
+			
+				$(document).ready(function() {
+					$('#historial_pdf').remove();
+				});
+				$('#change_btn').on("click", function(){
+				$.ajax({
+					url: [[@{/change_pass?newpass=}]]+$('#newpass').val()+'&confirmpass='+$('#confirmpass').val()+'&oldpass='+$('#oldpass').val(),
+					context: document.body,
+					success : function(respuesta) {
+						if(respuesta.success){
+							$('#notif').html('<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button>'+respuesta.message+'</div>');
+						}else{
+							$('#notif').html('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button>'+respuesta.message+'</div>');
+						}
+					}
+			    });
+				});
+			/*]]>*/
+			</script>
+		</div>
+		</div>
+	</div>	
+</body>
+</html>

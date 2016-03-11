@@ -1,6 +1,7 @@
 package py.una.sgf.bc.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,6 +24,8 @@ import py.una.cnc.htroot.exception.DAOException;
 import py.una.cnc.htroot.main.SesionUsuario;
 import py.una.sgf.bc.CargadorBC;
 import py.una.sgf.domain.PaqueteEntrada;
+import py.una.sgf.registros.Estadisticas;
+import py.una.sgf.registros.PaqueteStats;
 import py.una.sgf.view.wrappers.Cargador;
 
 @Component
@@ -37,26 +40,28 @@ public class CargadorBCImpl extends BusinessControllerImpl<Cargador> implements 
 	@Autowired
 	SesionUsuario sesionUsuario;
 	private boolean algunaRotacion = false;
+	private Estadisticas estadisticas;
 
 	@Override
-	public Resultado cargar(Contenedor contenedor, List<PaqueteEntrada> paquetesEntrada) {
+	public Resultado cargar(py.una.sgf.domain.Contenedor contenedorEntrada, List<PaqueteEntrada> paquetesEntrada) {
 
 		try {
 			PackingController packing = new PackingController();
 			List<PackingInput> instancias = new ArrayList<>();
 			Constantes.VERSION = 2;
 
-			sesionUsuario.addObject("contenedor", contenedor);
+			estadisticas = new Estadisticas();
+			setEstadisticas(contenedorEntrada, paquetesEntrada);
 
-			regularizarContenedor(contenedor);
+			Contenedor contenedor = regularizarContenedor(contenedorEntrada);
 			List<Paquete> paquetes = regularizarPaquetes(paquetesEntrada);
 
 			Contenedor contenedor2 = new Contenedor(contenedor.getAncho(), contenedor.getLargo(), contenedor.getAlto());
 			List<Paquete> paquetes2 = clonarPaquetes(paquetes);
 
 			// primera aproximacion
-			PackingInput packinInput = new PackingInput(paquetes, contenedor);
-			instancias.add(packinInput);
+			PackingInput packingInput = new PackingInput(paquetes, contenedor);
+			instancias.add(packingInput);
 
 			ManejadorPaquetes mp = ManejadorPaquetes.getInstance();
 			Resultado resultado = packing.ejecutar(1, instancias, mp, 1, 0);
@@ -68,18 +73,19 @@ public class CargadorBCImpl extends BusinessControllerImpl<Cargador> implements 
 				PackingController packing2 = new PackingController();
 				Resultado resultado2 = packing2.ejecutar(1, instancias, mp, 1, 1);
 
-				if (resultado2.getValor() > resultado.getValor()) {
+				if (resultado2.getValor() >= resultado.getValor()) {
 					getLogger().info("cambiando resultados");
 					resultado = resultado2;
-					packinInput = packingInput2;
+					packingInput = packingInput2;
 					contenedor = contenedor2;
 				}
 			}
 
 			trasladarCoordenadas(contenedor);
 			sesionUsuario.addObject("contenedor", contenedor);
-			sesionUsuario.addObject("packingInput", packinInput);
+			sesionUsuario.addObject("packingInput", packingInput);
 			sesionUsuario.addObject("resultado", resultado);
+			completarEstadisticas(packingInput, resultado);
 			return resultado;
 
 		} catch (Exception e) {
@@ -91,24 +97,25 @@ public class CargadorBCImpl extends BusinessControllerImpl<Cargador> implements 
 	private void trasladarCoordenadas(Contenedor contenedor) {
 
 		List<Paquete> empaquetados = contenedor.getEmpaquetados();
-		int index = 0;
-		for (Paquete p : empaquetados) {
+		for (int i = 0; i < empaquetados.size(); i++) {
+			Paquete p = empaquetados.get(i);
 			Coordenada c = p.getVertice();
 			c.setX(c.getX() + (p.getLargo() / 2));// se trunca
 			c.setY(c.getY() + (p.getAlto() / 2));
 			c.setZ(c.getZ() + (p.getAncho() / 2));
 			p.setVertice(c);
-			empaquetados.set(index, p);
-			index++;
 		}
 
 	}
 
-	private void regularizarContenedor(Contenedor contenedor) {
+	private Contenedor regularizarContenedor(py.una.sgf.domain.Contenedor contenedorEntrada) {
 
-		int largo = contenedor.getLargo();
-		int ancho = contenedor.getAncho();
-		int alto = contenedor.getAlto();
+		int largo = contenedorEntrada.getLargo();
+		int ancho = contenedorEntrada.getAncho();
+		int alto = contenedorEntrada.getAlto();
+
+		com.packing.slide.Contenedor contenedor = new com.packing.slide.Contenedor(ancho, largo, alto);
+
 		Rotacion rotacionInicial = Rotacion.SinRotacion;
 		// Chequeo que la mayor medida sea en el ancho
 		if (ancho < largo) {
@@ -130,6 +137,7 @@ public class CargadorBCImpl extends BusinessControllerImpl<Cargador> implements 
 		// Guardo en una variable global la rotacin para poder deshacerla al
 		// final de terminado el algoritmo
 		Globals.rotacionInicial = rotacionInicial;
+		return contenedor;
 	}
 
 	private List<Paquete> regularizarPaquetes(List<PaqueteEntrada> paquetesEntrada) {
@@ -179,6 +187,54 @@ public class CargadorBCImpl extends BusinessControllerImpl<Cargador> implements 
 			paquetes2.add(paquete2);
 		}
 		return paquetes2;
+	}
+
+	private void setEstadisticas(py.una.sgf.domain.Contenedor contenedor, List<PaqueteEntrada> paquetesEntrada) {
+
+		estadisticas.setContenedor(contenedor);
+		for (PaqueteEntrada paqueteEntrada : paquetesEntrada) {
+			PaqueteStats paqueteStats = new PaqueteStats();
+			paqueteStats.setAlto(paqueteEntrada.getAltoActual());
+			paqueteStats.setAncho(paqueteEntrada.getAnchoActual());
+			paqueteStats.setLargo(paqueteEntrada.getLargoActual());
+			paqueteStats.setColor(paqueteEntrada.getColor());
+			paqueteStats.setTotal(paqueteEntrada.getCantidad());
+			estadisticas.getPaqueteStatsList().add(paqueteStats);
+		}
+	}
+
+	private void completarEstadisticas(PackingInput packingInput, Resultado resultado) {
+
+		estadisticas.setUtilizacion(resultado.getValor());
+		// necesito los colores pues los tipo de paquete se indentifica por
+		// su color
+		String[] colores = (String[]) sesionUsuario.getObject("colores");
+
+		// uso un hashmap intentado que el proceso sea mas rapido
+		HashMap<String, Integer> empaquetados = new HashMap<>();
+		// inicializo el hashmap
+		for (int i = 0; i < colores.length; i++) {
+			Integer cantidad = 0;// solo para aclarar
+			empaquetados.put(colores[i], cantidad);
+		}
+		getLogger().info("cantidad de tipos de paquete: " + empaquetados.size());
+
+		// sumar los paquetes que estan dentro del contenedor
+		Coordenada fuera = new Coordenada(-1, -1, -1);
+		for (Paquete paquete : packingInput.getPaquetes()) {
+			Integer cantidad = empaquetados.get(colores[paquete.getId()]);
+			if (!paquete.getVertice().equals(fuera)) {
+				empaquetados.put(colores[paquete.getId()], ++cantidad);
+			}
+		}
+
+		for (int i = 0; i < estadisticas.getPaqueteStatsList().size(); i++) {
+			PaqueteStats paquete = estadisticas.getPaqueteStatsList().get(i);
+			int cantidad = empaquetados.get(paquete.getColor());
+			paquete.setEmpaquetados(cantidad);
+		}
+
+		sesionUsuario.addObject("estadisticas", estadisticas);
 	}
 
 	@Override

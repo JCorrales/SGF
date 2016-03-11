@@ -135,7 +135,8 @@ public class PaqueteEntrada extends Model {
 
 	public void setTotal(int total) {
 
-		this.total = total;
+		// en lugar de this.total, para que el compiler deje de plagearse
+		PaqueteEntrada.total = total;
 	}
 
 }

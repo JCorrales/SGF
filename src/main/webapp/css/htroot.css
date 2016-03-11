@@ -148,3 +148,7 @@ label.error {
 input[type=file]{ 
         color:transparent;
     }
+    
+.oculto {
+	display:none;
+}

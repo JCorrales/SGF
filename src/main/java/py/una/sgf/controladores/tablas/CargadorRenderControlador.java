@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.packing.slide.Contenedor;
-import com.packing.slide.Coordenada;
 import com.packing.slide.PackingInput;
 import com.packing.slide.Paquete;
 import py.una.cnc.htroot.main.SesionUsuario;
+import py.una.sgf.registros.Estadisticas;
 import py.una.sgf.registros.PaqueteJSON;
 
 @Controller
@@ -68,12 +68,12 @@ public class CargadorRenderControlador {
 		String[] colores = (String[]) sesionUsuario.getObject("colores");
 
 		if (contenedor == null || colores == null) {
-			return "redirect:/inicio";
+			return "redirect:/abm/cargador";
 		}
 		return "/abm/cargador/render";
 	}
 
-	@RequestMapping(value = "estadisticas", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+	@RequestMapping(value = "estadisticas", method = RequestMethod.GET)
 	public String estadisticas(Model model) {
 
 		PackingInput packingInput = (PackingInput) sesionUsuario.getObject("packingInput");
@@ -83,17 +83,8 @@ public class CargadorRenderControlador {
 			return "redirect:/abm/cargador/";
 		}
 
-		List<PaqueteJSON> noEmpaquetados = new ArrayList<PaqueteJSON>();
-		Coordenada fuera = new Coordenada(-1, -1, -1);
-		for (Paquete paquete : packingInput.getPaquetes()) {
-			if (paquete.getVertice().equals(fuera)) {
-				PaqueteJSON paqueteJSON = new PaqueteJSON();
-				paqueteJSON.setAlto(paquete.getAlto());
-				paqueteJSON.setAncho(paquete.getAncho());
-				paqueteJSON.setLargo(paquete.getLargo());
-				paqueteJSON.setColor(colores[paquete.getId()]);;
-			}
-		}
-		return null;
+		Estadisticas estadisticas = (Estadisticas) sesionUsuario.getObject("estadisticas");
+		model.addAttribute("estadisticas", estadisticas);
+		return "/abm/cargador/estadisticas :: content";
 	}
 }

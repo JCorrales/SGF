@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Stats</title>
+</head>
+
+<body>
+	<div th:fragment="content" style="position: absolute;">
+		<button type="button" class="btn btn-default fa fa-bar-chart" onclick="toggler()">
+		</button>
+		<div id="stats" class="oculto">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th colspan="4">Contenedor</th>
+					</tr>
+					<tr>
+						<th>Largo</th>
+						<th>Ancho</th>
+						<th>Alto</th>
+						<th>Utilizacion</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td th:text="${estadisticas.contenedor.largo}">551</td>
+						<td th:text="${estadisticas.contenedor.Ancho}">605</td>
+						<td th:text="${estadisticas.contenedor.Alto}">321</td>
+						<td
+							th:text="${#numbers.formatDecimal(estadisticas.utilizacion, 2,2,'COMMA')}+'%'">95.6%</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th colspan="5">Paquetes</th>
+					</tr>
+					<tr>
+						<th>Largo</th>
+						<th>Ancho</th>
+						<th>Alto</th>
+						<th>Color</th>
+						<th>Empaquetados</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="paquete : ${estadisticas.paqueteStatsList}">
+						<td th:text="${paquete.largo}">555</td>
+						<td th:text="${paquete.ancho}">788</td>
+						<td th:text="${paquete.alto}">545</td>
+						<td th:style="'background-color: '+${paquete.color}"></td>
+						<td th:text="${paquete.empaquetados+'/'+paquete.total}">50/50</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<script type="text/javascript">
+			function toggler(){
+				$('#stats').toggle('slow');
+			}
+		</script>
+	</div>
+</body>
+</html>

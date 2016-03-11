@@ -16,9 +16,20 @@
 				   success : function(data) {
 				    	init(data);
 				    	animate();
+				    	getStats();
 				   }
 				  });
 			});
+
+		function getStats(){
+			$.ajax({
+				   url : "/sgf/abm/cargador/estadisticas",
+				   success : function(data) {
+				    	$('#pantalla').prepend(data);
+				    	$('#stats').trigger('click');
+				   }
+				  });
+		}
 		</script>
 		</div>
 	</div>
