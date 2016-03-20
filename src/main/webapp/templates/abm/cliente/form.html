@@ -30,105 +30,100 @@
 	<div class="col-lg-12 col-md-12">
 		<div th:fragment="content">
 
-			<h4 class="page-header" th:value="#{usuario.form.titulo}">Usuario</h4>
+			<h4 class="page-header" th:value="#{cliente.form.titulo}">Cliente</h4>
 			<div id="notificaciones"
 				th:include="fragments/notificaciones :: content">notificiones</div>
 
 			<form action="#"
-				th:action="@{'/abm/usuario/op'+ '?' + ${_csrf.parameterName} + '=' + ${_csrf.token} + '&amp;recordId=' +${usuario.id}}"
-				th:object="${usuario}" method="post" role="form"
+				th:action="@{'/abm/cliente/op'+ '?' + ${_csrf.parameterName} + '=' + ${_csrf.token} + '&amp;recordId=' +${cliente.id}}"
+				th:object="${cliente}" method="post" role="form"
 				enctype="multipart/form-data"
-				onsubmit="return checkSize('foto',1048576);">
+				onsubmit="return checkSize('foto',2048576);">
 
 				<div th:replace="fragments/form_errores :: content">errores</div>
 
 				<input type="hidden" th:field="*{id}" />
-				<input th:if="${usuario.id == null}" type="hidden" th:id="password" th:name="password" 
+				<input th:if="${cliente.id == null}" type="hidden" th:id="usuario.password" th:name="usuario.password" 
 				th:value="${T(java.lang.Math).random()}" />
 
 				<div class="row">
-					<div class="col-lg-6 col-md-6" th:if="${usuario.id != null}">
-						<img id="userpic" th:src="@{/abm/usuario/foto/} + ${usuario.id}"
+					<div class="col-lg-6 col-md-6" th:if="${cliente.usuario.id != null}">
+						<img id="userpic" th:src="@{/abm/usuario/foto/} + ${cliente.usuario.id}"
 							style="max-height: 150px; max-width: 100%" />
 					</div>
-					<div class="col-lg-6 col-md-6" th:if="${usuario.id == null}">
+					<div class="col-lg-6 col-md-6" th:if="${cliente.usuario.id == null}">
 						<img id="userpic" th:src="@{/images/nopic.png}"
 							style="max-height: 150px; max-width: 100%" />
 					</div>
 					<div class="form-group">
-						<input id="foto" type="file" th:field="*{tmpFoto}"
+						<input id="foto" type="file" th:field="*{usuario.tmpFoto}"
 							class="filestyle" data-input="false"
 							th:attr="data-buttonText=#{usuario.cambiar_foto.lbl}, size-error=#{usuario.foto.size}" />
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label for="codigo" th:text="#{usuario.codigo.lbl}"
+					<label for="codigo" th:text="#{cliente.cedula.lbl}"
 						class="field-label">Codigo:</label> <input type="text"
-						th:field="*{codigo}" th:errorclass="invalid" class="form-control"
-						th:disabled="${vc.isFieldDisabled('codigo')}"
+						th:field="*{cedula}" th:errorclass="invalid" class="form-control"
+						th:disabled="${vc.isFieldDisabled('cedula')}"
 						autofocus="autofocus" />
 				</div>
 
 				<div class="form-group">
 					<label for="nombre" th:text="#{usuario.nombre.lbl}"
 						class="field-label">Nombre:</label> <input type="text"
-						th:field="*{nombre}" th:errorclass="invalid" class="form-control"
-						th:disabled="${vc.isFieldDisabled('nombre')}" />
+						th:field="*{usuario.nombre}" th:errorclass="invalid" class="form-control"
+						th:disabled="${vc.isFieldDisabled('usuario.nombre')}" />
 				</div>
 
 				<div class="form-group">
 					<label for="apellido" th:text="#{usuario.apellido.lbl}"
 						class="field-label">Apellido:</label> <input type="text"
-						th:field="*{apellido}" th:errorclass="invalid"
+						th:field="*{usuario.apellido}" th:errorclass="invalid"
 						class="form-control"
-						th:disabled="${vc.isFieldDisabled('apellido')}" />
+						th:disabled="${vc.isFieldDisabled('usuario.apellido')}" />
+				</div>
+				
+				<div class="form-group">
+					<label for="ruc" th:text="#{cliente.ruc.lbl}"
+						class="field-label">RUC:</label> <input type="text"
+						th:field="*{ruc}" th:errorclass="invalid" class="form-control"
+						th:disabled="${vc.isFieldDisabled('ruc')}" />
 				</div>
 
 				<div class="form-group">
 					<label for="email" th:text="#{usuario.email.lbl}"
 						class="field-label">Email:</label> <input type="text"
-						th:field="*{email}" th:errorclass="invalid" class="form-control"
-						th:disabled="${vc.isFieldDisabled('email')}" />
+						th:field="*{usuario.email}" th:errorclass="invalid" class="form-control"
+						th:disabled="${vc.isFieldDisabled('usuario.email')}" />
 				</div>
 
 				<div class="form-group">
 					<label for="telefono" th:text="#{usuario.telefono.lbl}"
 						class="field-label">Telefono:</label> <input type="text"
-						th:field="*{telefono}" th:errorclass="invalid"
+						th:field="*{usuario.telefono}" th:errorclass="invalid"
 						class="form-control"
-						th:disabled="${vc.isFieldDisabled('telefono')}" />
+						th:disabled="${vc.isFieldDisabled('usuario.telefono')}" />
 				</div>
 
-				<div class="form-group">
+				<div th:unless="${cliente.id == null}" class="form-group">
 					<label for="fecha"> <span
 						th:text="#{usuario.fechaultimoacceso.lbl}">Ultima Fecha</span>
-					</label> <input type="text" th:field="*{fechaUltimoAcceso}"
-						id="fechaUltimoAcceso" th:errorclass="fieldError" disabled="disabled"
-						class="form-control" />
-					<div
-						th:include="fragments/includes :: campo_fecha( campoId='fechaUltimoAcceso')"></div>
+					</label> <input type="date" th:field="*{usuario.fechaUltimoAcceso}" th:errorclass="fieldError"
+						class="form-control" disabled="disabled"/>
 				</div>
-
-				<div id="roles"></div>
-
+				
+				<div class="form-group">
+					<label for="fisica" th:text="#{cliente.fisica.lbl}"
+						class="field-label">Fisica:</label> <input type="checkbox"
+						th:field="*{fisica}" th:errorclass="invalid" 
+						th:disabled="${vc.isFieldDisabled('fisica')}" />
+				</div>
 
 				<div th:replace="abm/formulario_botones :: content">botones</div>
 
 			</form>
-
-
-			<script th:inline="javascript"
-				th:unless="${usuario.id == null or !sesionUsuario.hasRole('asignar_roles')}">
-		
-		   $.ajax({
-			    url: [[@{/abm/usuario/roles?usuarioId=} + ${usuario.id}]],
-			    context: document.body
-			    }).done(function(response) {
-			         $("#roles").html(response);
-		        });
-
-			</script>
 			<script type="text/javascript">
 			//#foto es el input
 			$("#foto").change(function(){

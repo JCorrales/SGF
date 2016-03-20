@@ -23,4 +23,8 @@
 		<nombre>/abm/cargador/**</nombre>
 		<permiso>app_login</permiso>
 	</url>
+	<url>
+		<nombre>/abm/cliente/**</nombre>
+		<permiso>app_login</permiso>
+	</url>
 </urls>

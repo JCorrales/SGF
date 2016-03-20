@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org" th:include="main :: page">
 <head>
-<title>Ciudad</title>
+<title>Barrio</title>
 
 </head>
 <body>
@@ -10,11 +10,11 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-4 col-md-6">
-					<div th:include="abm/ciudad/form :: content(vc=${controlador})">form</div>
+					<div th:include="abm/barrio/form :: content(vc=${controlador})">form</div>
 				</div>
 				<div class="col-lg-8 col-md-6">
 					<div
-						th:include="fragments/lista_ancestro::content(name='ciudad',source=@{/abm/ciudad/rest}, editUrl=@{/abm/ciudad/}, vc=${controlador}, title=#{ciudad.tabla.titulo})">lista</div>
+						th:include="fragments/lista_ancestro::content(name='barrio',source=@{/abm/barrio/rest}, editUrl=@{/abm/barrio/}, vc=${controlador}, title=#{barrio.tabla.titulo})">lista</div>
 				</div>
 			</div>
 

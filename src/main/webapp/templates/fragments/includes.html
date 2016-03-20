@@ -134,10 +134,58 @@
 	<div th:fragment="campo_fecha">
 		<script th:inline="text">
              $(function() {
-         $( "#[[${campoId}]]" ).datepicker({ dateFormat: '[[#{datepicker.format}]]' });
-    
-             });
+		         $( "#[[${campoId}]]" ).datepicker({ 
+			         dateFormat: '[[#{datepicker.format}]]',
+		             changeMonth: true,
+		             changeYear: true,
+		             monthNamesShort: [ "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic" ],
+		             monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ],
+		             dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ]		
+		           });
+          });
       </script>
 	</div>
+
+	<div th:fragment="campo_fecha_hora">
+		<script th:inline="text">
+             $(function() {
+		         $( "#[[${campoId}]]" ).datetimepicker({ 
+		        	 showTime: true,
+		        	 addSliderAccess: true,
+		        	 stepMinute: 5,
+		             sliderAccessArgs: { touchonly: false },
+		             changeMonth: true,
+		             changeYear: true,
+		             monthNamesShort: [ "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic" ],
+		             monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ],
+		             dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],
+		             timeOnlyTitle: 'Elegir una hora',
+		     		 timeText: 'Hora',
+		     		 hourText: 'Horas',
+		     		 minuteText: 'Minutos',
+		     		 secondText: 'Segundos',
+		     		 millisecText: 'Milisegundos',
+		     		 microsecText: 'Microsegundos',
+		     		 timezoneText: 'Uso horario',
+		     		 currentText: 'Hoy',
+		     		 closeText: 'Cerrar',
+		     		 timeFormat: 'HH:mm:ss',
+		     		 timeSuffix: '',
+		     		 amNames: ['a.m.', 'AM', 'A'],
+		     		 pmNames: ['p.m.', 'PM', 'P']
+				  });
+          });
+      </script>
+	</div>
+	<div th:fragment="fecha">
+		<script th:inline="text">
+             $(function() {
+		         $( "#[[${campoId}]]" ).datetimepicker({ 
+		        	 format: 'DD/MM/YYYY',
+		        	 locale:'es'
+				  });
+          });
+      </script>
+     </div>
 </body>
 </html>

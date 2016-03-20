@@ -25,14 +25,17 @@
 	</query>
 
 	<query>
-		<name>select_paises</name>
+		<name>select_barrios</name>
 		<value>
-			SELECT id, codigo, nombre, nacionalidad FROM pais
+			SELECT b.id AS id, b.codigo AS codigo, b.nombre AS nombre, 
+			b.latitud AS latitud, b.longitud AS longitud, 
+			c.nombre AS ciudad
+ 			FROM barrio b JOIN ciudad c ON b.ciudad_id = c.id
 		</value>
 	</query>
 
 	<query>
-		<name>filter_paises</name>
+		<name>filter_barrios</name>
 		<value>codigo||nombre
 		</value>
 	</query>
@@ -41,14 +44,14 @@
 		<name>select_ciudades</name>
 		<value>
 			SELECT c.id AS id, c.codigo AS codigo, c.nombre AS nombre, 
-			c.longitud AS longitud, c.latitud AS latitud, p.nombre AS pais
-			FROM ciudad c JOIN pais p ON c.pais_id = p.id
+			c.longitud AS longitud, c.latitud AS latitud
+			FROM ciudad c
 		</value>
 	</query>
 
 	<query>
 		<name>filter_ciudades</name>
-		<value>c.codigo||c.nombre||p.nombre</value>
+		<value>c.codigo||c.nombre</value>
 	</query>
 	
 	<query>
@@ -66,6 +69,30 @@
 			SELECT to_char(fechalogin,'dd/mm/yyyy HH24:MI') fecha, ip
 			FROM info_conexion
 			WHERE usuario = ? limit 10
+		</value>
+	</query>
+	
+	<query>
+		<name>select_clientes</name>
+		<value>
+			SELECT c.id AS id, c.cedula AS cedula, c.ruc AS ruc,
+			c.fisica AS fisica, u.nombre AS nombre, u.apellido AS apellido
+			FROM cliente c JOIN usuario u ON c.usuario_id = u.id
+		</value>
+	</query>
+
+	<query>
+		<name>filter_clientes</name>
+		<value>c.cedula||u.nombre||u.apellido</value>
+	</query>
+	
+	<query>
+		<name>select_roles_usuario2</name>
+		<value> SELECT rol.id AS rolid, codigo AS codrol, descripcion AS
+			descriprol, ru.id IS NOT NULL AS selected
+			FROM rol LEFT JOIN
+			rolusuario ru
+			ON rol.id = ru.rol_id AND ru.usuario_id = ?
 		</value>
 	</query>
 </queries>

@@ -42,23 +42,21 @@ public class CiudadVistaControlador extends ControladorDatosGenerales<Ciudad> {
 	@Override
 	public String[] getTableColumns() {
 
-		return new String[] { "id", "codigo", "nombre", "pais", "latitud",
-				"longitud" };
+		return new String[] { "id", "codigo", "nombre" };
 	}
 
 	@Override
 	public String[] getReportColumns() {
 
-		return new String[] { "codigo", "nombre", "pais", "latitud", "longitud" };
+		return new String[] { "codigo", "nombre", "latitud", "longitud" };
 	}
 
 	@Override
-	protected DataTableModel<?> getDataTable(Integer iDisplayStart,
-			Integer iDisplayEnd, String orderBy, String sSearch) {
+	protected DataTableModel<?> getDataTable(Integer iDisplayStart, Integer iDisplayEnd, String orderBy,
+			String sSearch) {
 
-		return dataTableSqlDs.getDataTable(iDisplayStart, iDisplayEnd, orderBy,
-				sSearch, "select_ciudades", "filter_ciudades",
-				DataTableSqlDs.WITHOUT_WHERE, CiudadReg.class);
+		return dataTableSqlDs.getDataTable(iDisplayStart, iDisplayEnd, orderBy, sSearch, "select_ciudades",
+				"filter_ciudades", DataTableSqlDs.WITHOUT_WHERE, CiudadReg.class);
 	}
 
 }

@@ -1,7 +1,9 @@
 target/*
 
 .settings/*
-
+.classpath
+.project
+.tern-proyect
 /target/
 
 .attach*

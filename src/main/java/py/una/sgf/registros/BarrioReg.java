@@ -1,12 +1,12 @@
 package py.una.sgf.registros;
 
-public class CiudadReg {
+public class BarrioReg {
 
 	private Long id;
-
 	private Long rownum;
 	private String codigo;
 	private String nombre;
+	private String ciudad;
 	private Float latitud;
 	private Float longitud;
 
@@ -48,6 +48,16 @@ public class CiudadReg {
 	public void setNombre(String nombre) {
 
 		this.nombre = nombre;
+	}
+
+	public String getCiudad() {
+
+		return ciudad;
+	}
+
+	public void setCiudad(String ciudad) {
+
+		this.ciudad = ciudad;
 	}
 
 	public Float getLatitud() {
