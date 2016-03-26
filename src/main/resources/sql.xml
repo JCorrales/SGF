@@ -87,12 +87,42 @@
 	</query>
 	
 	<query>
-		<name>select_roles_usuario2</name>
-		<value> SELECT rol.id AS rolid, codigo AS codrol, descripcion AS
-			descriprol, ru.id IS NOT NULL AS selected
-			FROM rol LEFT JOIN
-			rolusuario ru
-			ON rol.id = ru.rol_id AND ru.usuario_id = ?
+		<name>select_seguros</name>
+		<value> SELECT id, poliza, aseguradora, descripcion, vencimiento
+			FROM seguro
 		</value>
+	</query>
+	
+	<query>
+		<name>filter_seguros</name>
+		<value>aseguradora||descripcion||vencimiento</value>
+	</query>
+	
+	<query>
+		<name>select_usuarios_picker</name>
+		<value> SELECT id, codigo, nombre, apellido, email,
+			(CASE (SELECT usuario_id FROM seguronotificarusuario WHERE seguro_id = ? AND usuario_id = usuario.id)
+			WHEN id THEN true ELSE false END) AS selected
+			FROM usuario where id NOT IN 
+			(SELECT usuario_id FROM cliente)
+		</value>
+	</query>
+	
+	<query>
+		<name>filter_usuarios_picker</name>
+		<value>codigo||nombre||apellido</value>
+	</query>
+	
+	<query>
+		<name>select_camiones</name>
+		<value> SELECT c.id AS id, c.chapa AS chapa, c.marca AS marca,
+			c.modelo AS modelo, c.anio AS anio, s.aseguradora AS aseguradora
+			FROM camion c JOIN seguro s ON c.seguro_id = s.id
+		</value>
+	</query>
+	
+	<query>
+		<name>filter_camiones</name>
+		<value>chapa||marca||modelo</value>
 	</query>
 </queries>

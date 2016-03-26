@@ -47,6 +47,7 @@
 			<set>
 				<bean class="py.una.sgf.converters.CiudadConverter" />
 				<bean class="py.una.sgf.converters.PaisConverter" />
+				<bean class="py.una.sgf.converters.SeguroConverter" />
 				<bean class="py.una.cnc.htroot.converters.UsuarioConverter" />
 				<bean class="py.una.cnc.htroot.converters.GenericBeanConverter" />
 			</set>

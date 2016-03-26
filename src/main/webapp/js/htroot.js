@@ -132,24 +132,39 @@ function createPickerTable(pickerId, serverSide, source, columnsStr, fieldId,
 }
 
 function createDataTable(name, serverSide, source, columnsStr, editUrl,
-  editColumnNumber, lenguaje) {
- createDataTableAncestor(name, serverSide, source, columnsStr, 1, lenguaje);
- $('#' + name + ' tbody').on('click', 'tr', function() {
+		editColumnNumber, lenguaje, withoutId, reportUrl) {
+	createDataTableAncestor(name, serverSide, source, columnsStr, 1, lenguaje);
+	var tabla = $('#' + name).dataTable();
+	if (withoutId != "true" && withoutId != true) {
+		tabla.fnSetColumnVis(0, false);
+	}
+	
+	//por default editUrl se usa tambien para el reporte a menos que se especifique en reportUrl
+	if(editUrl !== undefined && editUrl !== "null" && editUrl !== null){
+		$('#' + name + ' tbody').on('click', 'tr', function() {
+			var fid = tabla.fnGetData(this, 0);
+			if (isNaN(fid)) {
+				return;
+			}
+			window.location.href = editUrl + fid;
+		});
+		$('#' + name + '_pdf').click(function() {
 
-  var value = $('td', this).eq(0).text();
-  if (isNaN(value)) {
-   return;
-  }
-  window.location.href = editUrl + value;
- });
+			var filter = $('#' + name + '_filter input').val();
+			window.location.href = editUrl + 'getpdf?sSearch=' + filter
 
- $('#' + name + '_pdf').click(function() {
-
-  var filter = $('#' + name + '_filter input').val();
-  window.location.href = editUrl + 'getpdf?sSearch=' + filter
-
- });
-
+		});
+	}
+	if(reportUrl !== undefined && reportUrl !== "null" && reportUrl !== null){
+		if(reportUrl != "false" && reportUrl != false){
+			$('#' + name + '_pdf').click(function() {
+				var filter = $('#' + name + '_filter input').val();
+				window.location.href = reportUrl + 'getpdf?sSearch=' + filter
+			});
+		}else{//no se quiere el boton de reporte
+			$('#' + name + '_pdf').remove();
+		}
+	}
 }
 
 function actualizarRoles() {
@@ -256,6 +271,26 @@ function previsualizar(input, imgId) {
 function borrarHtml(id){
 	$("#"+id).remove();
 }
+
+
+function actualizarUsuarios() {
+
+	 var formRoles = $('#usuariosPickerForm');
+
+	 formRoles.submit(function(ev) {
+	  $.ajax({
+	   type : formRoles.attr('method'),
+	   url : formRoles.attr('action'),
+	   data : formRoles.serialize(), // serializes the form's elements.
+	   success : function(data) {
+	    // alert('Roles Actualizados');
+	   }
+	  });
+
+	  ev.preventDefault();
+	 });
+	 formRoles.submit();
+	}
 
 
 //si no hay JSON.stringify

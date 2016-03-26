@@ -27,4 +27,16 @@
 		<nombre>/abm/cliente/**</nombre>
 		<permiso>app_login</permiso>
 	</url>
+	<url>
+		<nombre>/abm/vehiculo/**</nombre>
+		<permiso>app_login</permiso>
+	</url>
+	<url>
+		<nombre>/abm/seguro/**</nombre>
+		<permiso>app_login</permiso>
+	</url>
+	<url>
+		<nombre>/abm/camion/**</nombre>
+		<permiso>app_login</permiso>
+	</url>
 </urls>

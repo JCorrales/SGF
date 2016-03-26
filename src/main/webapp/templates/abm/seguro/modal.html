@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Picker</title>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="shortcut icon" href="../../../images/favicon.ico"
+	th:href="@{/images/favicon.ico}" type="image/x-icon" />
+
+<link href="../../../css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+
+<link href="../../../css/sb-admin-2.css"
+	th:href="@{/css/sb-admin-2.css}" rel="stylesheet" />
+
+<link href="../../../css/jquery-ui.css" th:href="@{/css/jquery-ui.css}"
+	rel="stylesheet" />
+
+<link href="../../../font-awesome-4.2.0/css/font-awesome.min.css"
+	th:href="@{/font-awesome-4.2.0/css/font-awesome.min.css}"
+	rel="stylesheet" />
+
+<link href="../../../css/htroot.css" th:href="@{/css/htroot.css}"
+	rel="stylesheet" />
+
+<!-- jQuery Version 1.11.0 -->
+<script src="../../../js/jquery-1.11.0.js"
+	th:src="@{/js/jquery-1.11.0.js}"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="../../../js/bootstrap.min.js"
+	th:src="@{/js/bootstrap.min.js}"></script>
+
+
+
+</head>
+
+<body>
+	<div th:fragment="content">
+		<button class="btn btn-default" data-toggle="modal"
+			data-target="#usuariosPopup" type="button">
+			<img src="../../../icons/16/plus.png" th:src="@{/icons/16/plus.png}"
+				class="nuevo-btn" /> <span th:text="#{modal.seguro.usuario}"></span>
+		</button>
+		<!-- Modal -->
+		<div class="modal fade" id="usuariosPopup" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" id="usuario_picker_btn" class="close"
+							data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel"
+							th:text="#{seguro.usuario.picker.titulo}">Título del Picker</h4>
+					</div>
+					<div class="modal-body">
+						<div th:include="abm/seguro/modal-content :: content">lista</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal"
+							id="usuarios_picker_btn"
+							th:text="#{popup.seguro.actualizar_usuarios.submit_btn}"
+							onclick="javascript:actualizarUsuarios()">Cerrar</button>
+
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+	</div>
+
+</body>
+
+</html>
+

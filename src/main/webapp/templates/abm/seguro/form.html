@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>FORM</title>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="shortcut icon" href="../../../images/favicon.ico"
+	type="image/x-icon" />
+
+<link href="../../../css/bootstrap.min.css" rel="stylesheet" />
+<link href="../../../css/sb-admin-2.css" rel="stylesheet" />
+<link href="../../../css/jquery-ui.css" rel="stylesheet" />
+<link href="../../../font-awesome-4.2.0/css/font-awesome.min.css"
+	rel="stylesheet" />
+<link href="../../../css/htroot.css" />
+<script src="../../../js/jquery-1.11.0.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="../../../js/bootstrap.min.js"></script>
+<!-- Custom Theme JavaScript -->
+<script src="../../../js/sb-admin-2.js"></script>
+<script src="../../../js/jquery-ui.js"></script>
+</head>
+
+<body>
+	<div class="col-lg-12 col-md-12">
+		<div th:fragment="content">
+
+			<h4 class="page-header" th:value="#{seguro.form.titulo}">Seguro</h4>
+			<div id="notificaciones"
+				th:include="fragments/notificaciones :: content">notificiones</div>
+
+			<form action="#"
+				th:action="@{/abm/seguro/op}"
+				th:object="${seguro}" method="post" role="form" id="seguroForm">
+
+				<div th:replace="fragments/form_errores :: content">errores</div>
+
+				<input type="hidden" th:field="*{id}" />
+				
+				<div class="form-group">
+					<label for="poliza" th:text="#{seguro.poliza.lbl}"
+						class="field-label">Poliza:</label> <input type="text"
+						th:field="*{poliza}" th:errorclass="invalid" class="form-control"
+						th:disabled="${vc.isFieldDisabled('poliza')}"
+						autofocus="autofocus" />
+				</div>
+
+				<div class="form-group">
+					<label for="aseguradora" th:text="#{seguro.aseguradora.lbl}"
+						class="field-label">Aseguradora:</label> <input type="text"
+						th:field="*{aseguradora}" th:errorclass="invalid" class="form-control"
+						th:disabled="${vc.isFieldDisabled('aseguradora')}"
+						autofocus="autofocus" />
+				</div>
+
+				<div class="form-group">
+					<label for="descripcion" th:text="#{seguro.descripcion.lbl}"
+						class="field-label">Descripcion:</label> 
+						<textarea rows="4" style="width: 100%" form="seguroForm"
+						th:field="*{descripcion}" th:errorclass="invalid" class="form-control"
+						th:disabled="${vc.isFieldDisabled('descripcion')}" ></textarea>
+				</div>
+
+				<div class="form-group">
+					<label for="vencimiento"> <span
+						th:text="#{seguro.vencimiento.lbl}">Ultima Fecha</span>
+					</label> <input type="text" th:field="*{vencimiento}"
+						 th:errorclass="fieldError"
+						class="form-control" />
+					<div
+						th:include="fragments/includes :: campo_fecha( campoId='vencimiento')"></div>
+				</div> 
+
+				<div class="form-group">
+					<label for="diaMesProximoVencimiento" th:text="#{seguro.diaMesProximoVencimiento.lbl}"
+						class="field-label">diaMesProximoVencimiento:</label> <input type="text"
+						th:field="*{diaMesProximoVencimiento}" th:errorclass="invalid"
+						class="form-control"
+						th:disabled="${vc.isFieldDisabled('diaMesProximoVencimiento')}" />
+				</div>
+				
+				<div id="usuarios"></div>
+
+				<div th:replace="abm/formulario_botones :: content">botones</div>
+
+			</form>
+
+
+			<script th:inline="javascript"
+				th:unless="${seguro.id == null}">
+		
+		   $.ajax({
+			    url: [[@{/abm/seguro/usuarios?seguroId=} + ${seguro.id}]],
+			    context: document.body
+			    }).done(function(response) {
+			         $("#usuarios").html(response);
+		        });
+
+			</script>
+		</div>
+	</div>
+</body>
+</html>
