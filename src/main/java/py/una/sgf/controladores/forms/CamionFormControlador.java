@@ -3,12 +3,15 @@ package py.una.sgf.controladores.forms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import py.una.cnc.htroot.bc.BusinessController;
 import py.una.cnc.htroot.controllers.FormControladorAncestro;
 import py.una.sgf.bc.CamionBC;
 import py.una.sgf.controladores.tablas.CamionTablaControlador;
+import py.una.sgf.dao.SeguroDao;
 import py.una.sgf.domain.Camion;
+import py.una.sgf.domain.Seguro;
 
 /**
  *
@@ -22,6 +25,8 @@ public class CamionFormControlador extends FormControladorAncestro<Camion> {
 	private CamionBC camionBC;
 	@Autowired
 	private CamionTablaControlador camionTablaControlador;
+	@Autowired
+	private SeguroDao seguroDao;
 
 	@Override
 	protected Camion getNuevaInstanciaBean() {
@@ -45,6 +50,14 @@ public class CamionFormControlador extends FormControladorAncestro<Camion> {
 	protected CamionTablaControlador getTablaControlador() {
 
 		return camionTablaControlador;
+	}
+
+	@Override
+	protected void addExtraAttributes(Camion bean, ModelMap modelMap) {
+
+		Seguro seguro = seguroDao.findEntityByCondition("WHERE camion_id = ? ", bean.getId());
+		modelMap.addAttribute("seguro", seguro);
+		super.addExtraAttributes(bean, modelMap);
 	}
 
 }

@@ -66,9 +66,9 @@
 				</div>
 				
 				<div class="form-group required">
-					<label for="anio" th:text="#{camion.seguro.lbl}"
+					<label for="seguro" th:text="#{camion.seguro.lbl}"
 						class="field-label">Seguro:</label> <input type="text"
-						th:field="*{seguro}" class="form-control" disabled="disabled"/>
+						th:value="${seguro.poliza}" class="form-control" disabled="disabled"/>
 				</div>
 				
 				<div th:replace="abm/formulario_botones :: content">botones</div>

@@ -1,6 +1,7 @@
 package py.una.sgf.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -52,7 +53,7 @@ public class Camion extends Model {
 	@NotNull(message = "camion.anio.not_null")
 	private Integer anio;
 
-	@OneToOne(targetEntity = Seguro.class)
+	@OneToOne(targetEntity = Seguro.class, mappedBy = "camion", fetch = FetchType.EAGER)
 	@Transient
 	private Seguro seguro;
 
