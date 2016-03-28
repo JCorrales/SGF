@@ -3,6 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
 	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc
                            http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
                            http://www.springframework.org/schema/beans
@@ -12,7 +13,9 @@
                            http://www.springframework.org/schema/tx
 		                   http://www.springframework.org/schema/tx/spring-tx.xsd
 		                   http://www.springframework.org/schema/jee 
-		                   http://www.springframework.org/schema/jee/spring-jee.xsd">
+		                   http://www.springframework.org/schema/jee/spring-jee.xsd
+		                   http://www.springframework.org/schema/task
+		                   http://www.springframework.org/schema/task/spring-task-4.0.xsd">
 
 
 	<!-- **************************************************************** -->
@@ -46,8 +49,8 @@
 		<property name="converters">
 			<set>
 				<bean class="py.una.sgf.converters.CiudadConverter" />
-				<bean class="py.una.sgf.converters.PaisConverter" />
 				<bean class="py.una.sgf.converters.SeguroConverter" />
+				<bean class="py.una.sgf.converters.CamionConverter" />
 				<bean class="py.una.cnc.htroot.converters.UsuarioConverter" />
 				<bean class="py.una.cnc.htroot.converters.GenericBeanConverter" />
 			</set>
@@ -85,6 +88,7 @@
 	<!-- JDNI name for EntityManagerFactory is defined in src/main/resources/META-INF/persistence.xml -->
 	<jee:jndi-lookup jndi-name="java:jboss/sgf/persistence"
 		id="entityManagerFactory" expected-type="javax.persistence.EntityManagerFactory" />
+		
 
 	<bean id="entityManager"
 		class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
@@ -128,7 +132,9 @@
 		<property name="maxUploadSize" value="1048576" />
 		<property name="maxInMemorySize" value="1048576" />
 	</bean>
-
+	
+	<task:annotation-driven/>
+    
 </beans>
 
 

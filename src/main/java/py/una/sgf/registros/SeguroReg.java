@@ -12,7 +12,6 @@ public class SeguroReg {
 	private String descripcion;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private Date vencimiento;
-	private Integer diaMesProximoVencimiento;
 
 	public Long getId() {
 
@@ -67,16 +66,6 @@ public class SeguroReg {
 		this.vencimiento = vencimiento;
 	}
 
-	public Integer getDiaMesProximoVencimiento() {
-
-		return diaMesProximoVencimiento;
-	}
-
-	public void setDiaMesProximoVencimiento(Integer diaMesProximoVencimiento) {
-
-		this.diaMesProximoVencimiento = diaMesProximoVencimiento;
-	}
-
 	public String getPoliza() {
 
 		return poliza;
@@ -86,5 +75,4 @@ public class SeguroReg {
 
 		this.poliza = poliza;
 	}
-
 }

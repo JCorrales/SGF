@@ -19,12 +19,6 @@
 		</license>
 	</licenses>
 
-	<organization>
-		<name>CENTRO NACIONAL DE COMPUTACIÓN</name>
-		<url>http://www.cnc.una.py</url>
-	</organization>
-
-
 	<developers>
 		<developer>
 			<id>jcorrales</id>
@@ -187,5 +181,12 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		<!-- Date4j -->
+		<dependency>
+			<groupId>com.darwinsys</groupId>
+			<artifactId>hirondelle-date4j</artifactId>
+			<version>1.5.1</version>
+		</dependency>
+
 	</dependencies>
 </project>
