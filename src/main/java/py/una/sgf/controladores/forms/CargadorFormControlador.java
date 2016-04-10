@@ -25,7 +25,7 @@ public class CargadorFormControlador extends FormControladorAncestro<Cargador> {
 
 	@Autowired
 	CargadorBC cargadorBC;
-
+	public static final String OPERACION_PARAM = "operacion";
 	@Autowired
 	SesionUsuario sesionUsuario;
 

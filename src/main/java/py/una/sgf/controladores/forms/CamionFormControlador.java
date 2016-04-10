@@ -55,7 +55,11 @@ public class CamionFormControlador extends FormControladorAncestro<Camion> {
 	@Override
 	protected void addExtraAttributes(Camion bean, ModelMap modelMap) {
 
-		Seguro seguro = seguroDao.findEntityByCondition("WHERE camion_id = ? ", bean.getId());
+		Seguro seguro = null;
+		if (bean.getId() != null) {
+			seguro = seguroDao.findEntityByCondition(" WHERE camion_id = ? ", bean.getId());
+		}
+
 		modelMap.addAttribute("seguro", seguro);
 		super.addExtraAttributes(bean, modelMap);
 	}

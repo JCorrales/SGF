@@ -1,14 +1,11 @@
 package py.una.sgf.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -52,10 +49,6 @@ public class Camion extends Model {
 
 	@NotNull(message = "camion.anio.not_null")
 	private Integer anio;
-
-	@OneToOne(targetEntity = Seguro.class, mappedBy = "camion", fetch = FetchType.EAGER)
-	@Transient
-	private Seguro seguro;
 
 	@Override
 	public Long getId() {
@@ -108,16 +101,6 @@ public class Camion extends Model {
 	public void setAnio(Integer anio) {
 
 		this.anio = anio;
-	}
-
-	public Seguro getSeguro() {
-
-		return seguro;
-	}
-
-	public void setSeguro(Seguro seguro) {
-
-		this.seguro = seguro;
 	}
 
 }

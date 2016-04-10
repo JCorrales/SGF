@@ -4,9 +4,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import py.una.cnc.htroot.bc.RolUsuarioBC;
 import py.una.cnc.htroot.bc.UsuarioBC;
 import py.una.cnc.htroot.bc.impl.BusinessControllerImpl;
-import py.una.cnc.htroot.domain.RolUsuario;
+import py.una.cnc.htroot.domain.Rol;
 import py.una.cnc.htroot.exception.BusinessLogicException;
 import py.una.sgf.bc.ClienteBC;
 import py.una.sgf.dao.ClienteDao;
@@ -24,6 +25,8 @@ public class ClienteBCImpl extends BusinessControllerImpl<Cliente> implements Cl
 	private ClienteDao clienteDao;
 	@Autowired
 	private UsuarioBC usuarioBC;
+	@Autowired
+	private RolUsuarioBC rolUsuarioBC;
 
 	@Override
 	public ClienteDao getDAOInstance() {
@@ -56,14 +59,13 @@ public class ClienteBCImpl extends BusinessControllerImpl<Cliente> implements Cl
 	@Override
 	public void destroy(Cliente obj) {
 
-		List<RolUsuario> roles = usuarioBC.getRoles(obj.getUsuario());
+		List<Rol> roles = usuarioBC.getRoles(obj.getUsuario());
 
-		for (int i = 0; i < roles.size(); i++) {
-			roles.remove(i);
+		for (Rol rol : roles) {
+			rolUsuarioBC.quitar(rol, obj.getUsuario());
 		}
 
-		usuarioBC.destroy(obj.getUsuario());
 		super.destroy(obj);
+		usuarioBC.destroy(obj.getUsuario());
 	}
-
 }

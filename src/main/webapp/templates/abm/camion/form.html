@@ -65,7 +65,7 @@
 						th:field="*{anio}" class="form-control" maxlength="4"/>
 				</div>
 				
-				<div class="form-group required">
+				<div th:unless="${seguro == null}" class="form-group required">
 					<label for="seguro" th:text="#{camion.seguro.lbl}"
 						class="field-label">Seguro:</label> <input type="text"
 						th:value="${seguro.poliza}" class="form-control" disabled="disabled"/>

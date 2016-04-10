@@ -125,4 +125,18 @@
 		<name>filter_camiones</name>
 		<value>chapa||marca||modelo</value>
 	</query>
+	
+	<query>
+		<name>select_domain_roles_usuario</name>
+		<value>SELECT r.id AS id, r.codigo AS codigo, r.descripcion AS descripcion
+			FROM rol r JOIN rolusuario u ON r.id = u.rol_id
+			WHERE u.usuario_id = ?
+		</value>
+	</query>
+	
+	<query>
+		<name>filter_domain_roles_usuario</name>
+		<value>codigo</value>
+	</query>
+	
 </queries>

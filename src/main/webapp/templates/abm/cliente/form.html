@@ -43,6 +43,7 @@
 				<div th:replace="fragments/form_errores :: content">errores</div>
 
 				<input type="hidden" th:field="*{id}" />
+				<input type="hidden" th:field="*{usuario.id}" /><!--usuario nunca es null-->
 				<input th:if="${cliente.id == null}" type="hidden" th:id="usuario.password" th:name="usuario.password" 
 				th:value="${T(java.lang.Math).random()}" />
 

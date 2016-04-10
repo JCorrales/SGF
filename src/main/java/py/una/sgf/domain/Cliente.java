@@ -1,7 +1,6 @@
 package py.una.sgf.domain;
 
 import java.io.Serializable;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -42,7 +41,7 @@ public class Cliente extends Model implements Serializable {
 	private Boolean fisica = true;
 
 	@NotNull(message = "cliente.usuario.not_null")
-	@OneToOne(cascade = { CascadeType.REMOVE })
+	@OneToOne()
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_cliente_usuario") , unique = true)
 	@Valid
 	private Usuario usuario = new Usuario();
