@@ -18,12 +18,12 @@ import hirondelle.date4j.DateTime.DayOverflow;
 import py.una.cnc.htroot.domain.Usuario;
 import py.una.cnc.htroot.main.ApplicationContextProvider;
 import py.una.cnc.htroot.main.Message;
-import py.una.cnc.htroot.util.Util;
 import py.una.cnc.lib.core.util.AppLogger;
 import py.una.sgf.dao.SingletonSeguroDao;
 import py.una.sgf.dao.SingletonSeguroNotificarUsuarioDao;
 import py.una.sgf.domain.Seguro;
 import py.una.sgf.domain.SeguroNotificarUsuario;
+import py.una.sgf.util.SgfUtil;
 
 @Component
 @Scope()
@@ -35,7 +35,8 @@ public class SeguroVencimiento {
 	@Autowired
 	@Lazy(true)
 	private SingletonSeguroNotificarUsuarioDao notificarDao;
-	private Util util;
+	@Autowired
+	private SgfUtil sgfUtil;
 	private volatile List<Seguro> seguros;
 	private AppLogger logger;
 	private static final long PERIODO = 1000 * 120L;// 120 segundos
@@ -104,12 +105,13 @@ public class SeguroVencimiento {
 
 		String host = getMessage().get("mail.host");
 		String remitente = getMessage().get("mail.remitente");
+		String password = getMessage().get("mail.password");
 		String asunto = getMessage().get("seguro.mail.asunto");
 		String mensaje = getMessage().get("seguro.mail.mensaje");
 		mensaje = mensaje.replace("#CHAPA", seguro.getCamion().getChapa());
 		mensaje = mensaje.replace("#VENCIMIENTO", seguro.getVencimiento().toString().subSequence(0, 10));
 		mensaje = mensaje.replace("#POLIZA", seguro.getPoliza());
-		getUtil().sendMail(host, destinatario, remitente, asunto, mensaje);
+		getUtil().sendMailPass(host, destinatario, remitente, asunto, mensaje, password);
 		logger.info("enviando mail a : {}", destinatario);
 		editVencimiento(seguro);
 
@@ -129,20 +131,19 @@ public class SeguroVencimiento {
 		seguroDao.edit(seguro);
 	}
 
-	private Util getUtil() {
+	private SgfUtil getUtil() {
 
-		if (util == null) {
-			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) ApplicationContextProvider.getContext()
-					.getAutowireCapableBeanFactory();
-
-			BeanDefinition def = registry.getBeanDefinition("util");
-			def.setScope("singleton");
-			def.setAutowireCandidate(false);
-			registry.registerBeanDefinition("util2", def);
-			util = (Util) ApplicationContextProvider.getBeanStatic("util2");
-			return util;
-		}
-		return util;
+		/*
+		 * if (util == null) { BeanDefinitionRegistry registry =
+		 * (BeanDefinitionRegistry) ApplicationContextProvider.getContext()
+		 * .getAutowireCapableBeanFactory();
+		 *
+		 * BeanDefinition def = registry.getBeanDefinition("util");
+		 * def.setScope("singleton"); def.setAutowireCandidate(false);
+		 * registry.registerBeanDefinition("util2", def); util = (Util)
+		 * ApplicationContextProvider.getBeanStatic("util2"); return util; }
+		 */
+		return sgfUtil;
 	}
 
 	private Message getMessage() {

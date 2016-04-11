@@ -76,7 +76,7 @@
 				});
 				$('#change_btn').on("click", function(){
 				$.ajax({
-					url: [[@{/change_pass?newpass=}]]+$('#newpass').val()+'&confirmpass='+$('#confirmpass').val()+'&oldpass='+$('#oldpass').val(),
+					url: [[@{/change_pass2?newpass=}]]+$('#newpass').val()+'&confirmpass='+$('#confirmpass').val()+'&oldpass='+$('#oldpass').val(),
 					context: document.body,
 					success : function(respuesta) {
 						if(respuesta.success){

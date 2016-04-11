@@ -96,7 +96,7 @@
 				/*<![CDATA[*/
 				$('#reset_btn').on("click", function(){
 				$.ajax({
-					url: [[@{/resetpass?codigo=}]]+ $('#codigo').val(),
+					url: [[@{/resetpass2?codigo=}]]+ $('#codigo').val(),
 					context: document.body,
 					success : function(respuesta) {
 						if(respuesta.success){
