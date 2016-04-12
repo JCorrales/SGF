@@ -139,4 +139,17 @@
 		<value>codigo</value>
 	</query>
 	
+	<query>
+		<name>select_choferes</name>
+		<value>
+			SELECT c.id AS id, c.cedula AS cedula, c.categoria AS categoria,
+			u.nombre AS nombre, u.apellido AS apellido
+			FROM chofer c JOIN usuario u ON c.usuario_id = u.id
+		</value>
+	</query>
+
+	<query>
+		<name>filter_choferes</name>
+		<value>c.cedula||u.nombre||u.apellido</value>
+	</query>
 </queries>

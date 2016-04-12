@@ -27,7 +27,7 @@ public class Barrio extends Model {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SECUENCIA)
-	@SequenceGenerator(name = SECUENCIA, sequenceName = SECUENCIA)
+	@SequenceGenerator(name = SECUENCIA, sequenceName = SECUENCIA, allocationSize = 1)
 	private Long id;
 
 	@NotNull(message = "barrio.codigo.not_null")

@@ -33,7 +33,7 @@ public class SeguroNotificarUsuario extends Model {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SECUENCIA)
-	@SequenceGenerator(name = SECUENCIA, sequenceName = SECUENCIA)
+	@SequenceGenerator(name = SECUENCIA, sequenceName = SECUENCIA, allocationSize = 1)
 	private Long id;
 
 	@JoinColumn(name = "seguro_id", referencedColumnName = "id", nullable = false)

@@ -39,4 +39,8 @@
 		<nombre>/abm/camion/**</nombre>
 		<permiso>app_login</permiso>
 	</url>
+	<url>
+		<nombre>/abm/chofer/**</nombre>
+		<permiso>app_login</permiso>
+	</url>
 </urls>
