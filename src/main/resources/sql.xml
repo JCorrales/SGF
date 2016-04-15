@@ -152,4 +152,17 @@
 		<name>filter_choferes</name>
 		<value>c.cedula||u.nombre||u.apellido</value>
 	</query>
+	
+	<query>
+		<name>select_insumos</name>
+		<value>
+			SELECT id, nombre, descripcion, cantidad, costo
+			FROM insumo
+		</value>
+	</query>
+
+	<query>
+		<name>filter_insumos</name>
+		<value>nombre||cantidad||costo</value>
+	</query>
 </queries>

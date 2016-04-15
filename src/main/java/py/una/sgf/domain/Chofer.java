@@ -18,7 +18,8 @@ import py.una.cnc.htroot.domain.Model;
 import py.una.cnc.htroot.domain.Usuario;
 
 @Entity
-@Table(name = "chofer", uniqueConstraints = @UniqueConstraint(columnNames = { "cedula" }, name = "chofer_cedula_uk") )
+@Table(name = "chofer", uniqueConstraints = { @UniqueConstraint(columnNames = { "cedula" }, name = "chofer_cedula_uk"),
+		@UniqueConstraint(columnNames = { "usuario_id" }, name = "chofer_usuario_uk") })
 @Audited
 public class Chofer extends Model implements Serializable {
 
@@ -40,7 +41,7 @@ public class Chofer extends Model implements Serializable {
 
 	@NotNull(message = "chofer.usuario.not_null")
 	@OneToOne()
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_chofer_usuario") , unique = true)
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_chofer_usuario") )
 	@Valid
 	private Usuario usuario = new Usuario();
 

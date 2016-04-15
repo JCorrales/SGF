@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Insumo</title>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="shortcut icon" href="../../../images/favicon.ico"
+	type="image/x-icon" />
+
+<link href="../../../css/bootstrap.min.css" rel="stylesheet" />
+<link href="../../../css/sb-admin-2.css" rel="stylesheet" />
+<link href="../../../css/jquery-ui.css" rel="stylesheet" />
+<link href="../../../font-awesome-4.2.0/css/font-awesome.min.css"
+	rel="stylesheet" />
+<link href="../../../css/htroot.css" />
+<script src="../../../js/jquery-1.11.0.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="../../../js/bootstrap.min.js"></script>
+<!-- Custom Theme JavaScript -->
+<script src="../../../js/sb-admin-2.js"></script>
+<script src="../../../js/jquery-ui.js"></script>
+
+</head>
+
+<body>
+	<div class="col-lg-12 col-lm-12">
+		<div th:fragment="content">
+
+			<h4 class="page-header" th:text="#{insumo.form.titulo}">Insumo</h4>
+			<div th:replace="fragments/notificaciones :: content">notificiones</div>
+
+			<form id="insumoForm" action="#" th:action="@{/abm/insumo/op}"
+				th:object="${insumo}" method="post" role="form">
+
+				<div th:replace="fragments/form_errores :: content">errores</div>
+
+				<input type="hidden" th:field="*{id}" />
+
+				<div class="form-group required">
+					<label for="nombre" th:text="#{insumo.nombre.lbl}"
+						class="field-label">Nombre:</label> <input type="text"
+						th:field="*{nombre}" class="form-control" autofocus="autofocus" maxlength="30" />
+				</div>
+				
+				<div class="form-group">
+					<label for="descripcion" th:text="#{insumo.descripcion.lbl}"
+						class="field-label">Descripcion:</label>
+						<textarea rows="4" style="width: 100%" form="insumoForm"
+						th:field="*{descripcion}" th:errorclass="invalid" class="form-control"
+						th:disabled="${vc.isFieldDisabled('descripcion')}" ></textarea>
+				</div>
+				
+				<div class="form-group required">
+					<label for="cantidad" th:text="#{insumo.cantidad.lbl}"
+						class="field-label">Cantidad:</label> <input type="number"
+						th:field="*{cantidad}" class="form-control"/>
+				</div>
+				
+				<div class="form-group required">
+					<label for="costo" th:text="#{insumo.costo.lbl}"
+						class="field-label">Costo:</label> <input type="number"
+						th:field="*{costo}" class="form-control"/>
+				</div>
+				
+				<div th:replace="abm/formulario_botones :: content">botones</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

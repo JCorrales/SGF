@@ -43,4 +43,8 @@
 		<nombre>/abm/chofer/**</nombre>
 		<permiso>app_login</permiso>
 	</url>
+	<url>
+		<nombre>/abm/insumo/**</nombre>
+		<permiso>app_login</permiso>
+	</url>
 </urls>

@@ -6,9 +6,11 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -70,6 +72,7 @@ public class Seguro extends Model {
 
 	@OneToOne(fetch = FetchType.EAGER)
 	@NotNull(message = "seguro.camion.not_null")
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_seguro_camion") )
 	private Camion camion;
 
 	@Override
