@@ -107,6 +107,22 @@
 						class="form-control"
 						th:disabled="${vc.isFieldDisabled('usuario.telefono')}" />
 				</div>
+				
+				<div class="form-group">
+					<label for="personaReferencia" th:text="#{chofer.persona_referencia.lbl}"
+						class="field-label">Persona de referencia:</label> <input type="text"
+						th:field="*{personaReferencia}" th:errorclass="invalid"
+						class="form-control"
+						th:disabled="${vc.isFieldDisabled('personaReferencia')}" />
+				</div>
+				
+				<div class="form-group required">
+					<label for="camion" class="field-label">Camion:</label> <select
+						class="form-control" th:field="*{camion}">
+						<option th:each="camion : ${camiones}"
+							th:value="${camion.id}" th:text="${camion.chapa}">Kia</option>
+					</select>
+				</div>
 
 				<div th:unless="${chofer.id == null}" class="form-group">
 					<label for="fecha"> <span
@@ -114,7 +130,7 @@
 					</label> <input type="date" th:field="*{usuario.fechaUltimoAcceso}" th:errorclass="fieldError"
 						class="form-control" disabled="disabled"/>
 				</div>
-
+				
 				<div th:replace="abm/formulario_botones :: content">botones</div>
 
 			</form>

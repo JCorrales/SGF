@@ -19,7 +19,8 @@ import py.una.cnc.htroot.domain.Usuario;
 
 @Entity
 @Table(name = "chofer", uniqueConstraints = { @UniqueConstraint(columnNames = { "cedula" }, name = "chofer_cedula_uk"),
-		@UniqueConstraint(columnNames = { "usuario_id" }, name = "chofer_usuario_uk") })
+		@UniqueConstraint(columnNames = { "usuario_id" }, name = "chofer_usuario_uk"),
+		@UniqueConstraint(columnNames = { "camion_id" }, name = "chofer_camion_uk") })
 @Audited
 public class Chofer extends Model implements Serializable {
 
@@ -39,11 +40,20 @@ public class Chofer extends Model implements Serializable {
 	@NotBlank(message = "chofer.categoria.not_blank")
 	private String categoria;
 
+	@NotNull(message = "chofer.persona_referencia.not_null")
+	@NotBlank(message = "chofer.persona_referencia.not_blank")
+	private String personaReferencia;
+
 	@NotNull(message = "chofer.usuario.not_null")
 	@OneToOne()
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_chofer_usuario") )
 	@Valid
 	private Usuario usuario = new Usuario();
+
+	@NotNull(message = "chofer.camion.not_null")
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_camion_usuario") )
+	@OneToOne
+	private Camion camion;
 
 	@Override
 	public Long getId() {
@@ -64,8 +74,28 @@ public class Chofer extends Model implements Serializable {
 
 	public void setCedula(String cedula) {
 
-		this.getUsuario().setCodigo(cedula);
+		this.usuario.setCodigo(cedula);
 		this.cedula = cedula;
+	}
+
+	public String getCategoria() {
+
+		return categoria;
+	}
+
+	public void setCategoria(String categoria) {
+
+		this.categoria = categoria;
+	}
+
+	public String getPersonaReferencia() {
+
+		return personaReferencia;
+	}
+
+	public void setPersonaReferencia(String personaReferencia) {
+
+		this.personaReferencia = personaReferencia;
 	}
 
 	public Usuario getUsuario() {
@@ -78,14 +108,14 @@ public class Chofer extends Model implements Serializable {
 		this.usuario = usuario;
 	}
 
-	public String getCategoria() {
+	public Camion getCamion() {
 
-		return categoria;
+		return camion;
 	}
 
-	public void setCategoria(String categoria) {
+	public void setCamion(Camion camion) {
 
-		this.categoria = categoria;
+		this.camion = camion;
 	}
 
 }

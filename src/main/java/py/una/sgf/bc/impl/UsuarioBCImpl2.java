@@ -155,9 +155,19 @@ public class UsuarioBCImpl2 extends BusinessControllerImpl<Usuario> implements U
 		usuarioDao.edit(usuario);
 	}
 
+	// envio el mail en un hilo y dejo que se cree el usuario para evitar
+	// errores en hibernate
 	private void enviarMail(Usuario usuario) {
 
-		credenciales.cambiarPass(usuario.getCodigo(), new ModelMap());
+		Thread thread = new Thread() {
+
+			@Override
+			public void run() {
+
+				credenciales.cambiarPass(usuario.getCodigo(), new ModelMap());
+			}
+		};
+		thread.start();
 	}
 
 	@Override
