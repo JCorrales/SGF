@@ -1,6 +1,7 @@
 package py.una.sgf.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -54,6 +55,10 @@ public class Chofer extends Model implements Serializable {
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_camion_usuario") )
 	@OneToOne
 	private Camion camion;
+
+	transient private BigDecimal longitud;
+
+	transient private BigDecimal latitud;
 
 	@Override
 	public Long getId() {
@@ -116,6 +121,26 @@ public class Chofer extends Model implements Serializable {
 	public void setCamion(Camion camion) {
 
 		this.camion = camion;
+	}
+
+	public BigDecimal getLongitud() {
+
+		return longitud;
+	}
+
+	public void setLongitud(BigDecimal longitud) {
+
+		this.longitud = longitud;
+	}
+
+	public BigDecimal getLatitud() {
+
+		return latitud;
+	}
+
+	public void setLatitud(BigDecimal latitud) {
+
+		this.latitud = latitud;
 	}
 
 }

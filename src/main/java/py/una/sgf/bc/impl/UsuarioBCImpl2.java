@@ -125,24 +125,6 @@ public class UsuarioBCImpl2 extends BusinessControllerImpl<Usuario> implements U
 			}
 		}
 	}
-	/*
-	 * private void verificarPassword(Usuario usuario) {
-	 *
-	 * Usuario tmp = usuarioDao.find(usuario.getId()); /** Si se edita la
-	 * contraseña, entonces viene sin encriptar. Si viene null o vacía, entonces
-	 * no se modificó contraseña y debemos recuperar la antigua, ya que para no
-	 * mostrar la contraseña en la vista, se puso usuario.setPassword(null). Si
-	 * es nuevo registro no se hace nada
-	 */
-	/*
-	 * if (usuario.getPassword() == null ||
-	 * usuario.getPassword().trim().length() == 0) {
-	 *
-	 * if (tmp != null) { usuario.setPassword(tmp.getPassword()); } } else { if
-	 * (usuario.getId() != null) {
-	 * usuario.setPassword(util.getEncodedPass(msg.get("password.encoder",
-	 * "MD5"), usuario.getPassword())); } } }
-	 */
 
 	/**
 	 * Recibe el usuario con todos sus datos. El password debe estar sin
@@ -159,15 +141,17 @@ public class UsuarioBCImpl2 extends BusinessControllerImpl<Usuario> implements U
 	// errores en hibernate
 	private void enviarMail(Usuario usuario) {
 
-		Thread thread = new Thread() {
+		if (usuario.getActivo()) {
+			Thread thread = new Thread() {
 
-			@Override
-			public void run() {
+				@Override
+				public void run() {
 
-				credenciales.cambiarPass(usuario.getCodigo(), new ModelMap());
-			}
-		};
-		thread.start();
+					credenciales.cambiarPass(usuario.getCodigo(), new ModelMap());
+				}
+			};
+			thread.start();
+		}
 	}
 
 	@Override

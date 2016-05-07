@@ -40,6 +40,8 @@ public class ChoferBCImpl extends BusinessControllerImpl<Chofer> implements Chof
 		if (bean.getUsuario() == null) {
 			throw new BusinessLogicException("Usuario no debe ser nulo");
 		} else {
+			// el chofer no es usuario del sistema
+			bean.getUsuario().setActivo(false);
 			usuarioBC.create(bean.getUsuario());
 		}
 		super.create(bean);

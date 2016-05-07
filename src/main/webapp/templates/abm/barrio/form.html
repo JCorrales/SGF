@@ -25,11 +25,6 @@
 <script src="../../../js/sb-admin-2.js"></script>
 <script src="../../../js/jquery-ui.js"></script>
 
-<script
-	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNz0eplbMTQXrWsn8Pv9TAZHf7WxSKgHQ"
-	th:src="@{https://maps.googleapis.com/maps/api/js}">
-</script>
-
 </head>
 
 <body>
@@ -62,7 +57,7 @@
                     <div
                         th:include="fragments/includes :: suggestbox_script(field='ciudad', source=@{/abm/ciudad/suggest}, idName='id', displayName='nombre', idValue=${barrio.ciudad != null? barrio.ciudad.id:null}, displayValue=${barrio.ciudad != null? barrio.ciudad.nombre:null}, required=true,)">Suggest</div>
                 </div>
-                <br></br>
+               <br></br>
                <br></br>
                <br></br>
                <br></br>
