@@ -57,6 +57,10 @@ public class LocalizadorControlador {
 		logger.info("recibiendo posicion para cedula: {}, latitud: {}, longitud: {} ", cedula, latitud, longitud);
 		ServiceResponse<String> response = new ServiceResponse<String>();
 		Chofer chofer = choferDao.findEntityByCondition("WHERE cedula = ?", cedula);
+		if (chofer == null) {
+			response.setSuccess(false);
+			return response;
+		}
 		chofer.setLatitud(latitud);
 		chofer.setLongitud(longitud);
 		registro.put(cedula, chofer);
