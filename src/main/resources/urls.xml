@@ -48,11 +48,15 @@
 		<permiso>app_login</permiso>
 	</url>
 	<url>
-		<nombre>/localizador/get_position_list</nombre>
+		<nombre>/localizador/get_position_list/**</nombre>
 		<permiso>app_login</permiso>
 	</url>
 	<url>
-		<nombre>/localizador/get_info_window</nombre>
+		<nombre>/localizador/get_info_window/**</nombre>
+		<permiso>app_login</permiso>
+	</url>
+	<url>
+		<nombre>/localizador/registro/**</nombre>
 		<permiso>app_login</permiso>
 	</url>
 </urls>

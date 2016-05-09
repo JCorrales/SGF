@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" th:include="main :: page">
+<head>
+<title>Localizador Config</title>
+
+</head>
+<body>
+	<div th:fragment="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 col-md-8">
+					<h4 class="page-header">Localizador</h4>
+					<div class="alert alert-info" th:text="#{localizador.registro.info}"></div>
+					<table class="table table-bordered table-hover"
+						id="localizador-table">
+						<thead>
+							<tr>
+								<th th:text="#{chofer_cedula_header}"></th>
+								<th th:text="#{chofer_nombre_header}"></th>
+								<th th:text="#{chofer_apellido_header}"></th>
+								<th th:text="#{camion_chapa_header}"></th>
+								<th th:text="#{camion_marca_header}"></th>
+								<th th:text="#{camion_modelo_header}"></th>
+								<th>Accion</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="chofer : ${choferList}">
+								<td th:text="${chofer.cedula}"></td>
+								<td th:text="${chofer.usuario.nombre}"></td>
+								<td th:text="${chofer.usuario.apellido}"></td>
+								<td th:text="${chofer.camion.chapa}"></td>
+								<td th:text="${chofer.camion.marca}"></td>
+								<td th:text="${chofer.camion.modelo}"></td>
+								<td>
+									<form th:action="@{/localizador/borrar_registro}"
+											th:object="${barrio}" method="post" role="form">
+											
+									<button type="submit" th:id="localizador_borrar_btn" hidden="true"></button>
+									<button class="btn btn-default" data-toggle="modal"
+										th:attr="data-target='#popupBorrado'" type="button">
+										<img src="../../icons/16/delete.png"
+											th:src="@{/icons/16/delete.png}" class="borrar-btn" /><span
+											th:text="#{form.boton.borrar}">Borrar</span>
+									</button>
+									<input type="hidden" name="cedula"
+										th:value="${chofer.cedula}" />
+									<input type="hidden" th:name="${_csrf.parameterName}"
+										th:value="${_csrf.token}" /></form>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<script type="text/javascript">
+				$(document).ready(function() {
+				    $('#localizador-table').DataTable();
+				} )
+			</script>
+		</div>
+		<div
+			th:include="/fragments/popup :: content(id='popupBorrado', title=#{popup.borrado.titulo}, msg=#{popup.borrado.mensaje}, cancelText=#{popup.borrado.cancelar}, acceptText=#{popup.borrado.aceptar}, onclick='javascript:borrarRegistro()')">PopUp</div>
+
+		<script th:inline="text">
+    
+          function borrarRegistro() {
+        	  $("#localizador_borrar_btn").trigger('click');
+          }
+        </script>
+	</div>
+</body>
+</html>

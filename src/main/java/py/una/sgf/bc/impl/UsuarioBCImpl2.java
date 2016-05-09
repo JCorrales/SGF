@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
-import py.una.cnc.htroot.bc.UsuarioBC;
 import py.una.cnc.htroot.bc.impl.BusinessControllerImpl;
 import py.una.cnc.htroot.dao.UsuarioDao;
 import py.una.cnc.htroot.domain.Rol;
@@ -16,16 +15,17 @@ import py.una.cnc.htroot.exception.ObjectErrorException;
 import py.una.cnc.htroot.main.AppObjects;
 import py.una.cnc.htroot.main.CoreConfig;
 import py.una.cnc.htroot.main.Message;
-import py.una.cnc.htroot.util.Util;
 import py.una.cnc.lib.db.dataprovider.SQLToObject;
+import py.una.sgf.bc.UsuarioBC2;
 import py.una.sgf.controladores.CredencialesUsuarioControlador2;
+import py.una.sgf.util.SgfUtil;
 
 @Component
 @Scope("session")
-public class UsuarioBCImpl2 extends BusinessControllerImpl<Usuario> implements UsuarioBC {
+public class UsuarioBCImpl2 extends BusinessControllerImpl<Usuario> implements UsuarioBC2 {
 
 	@Autowired
-	private Util util;
+	private SgfUtil util;
 	@Autowired
 	private Message msg;
 	@Autowired

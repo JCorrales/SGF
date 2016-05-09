@@ -5,11 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import py.una.cnc.htroot.bc.RolUsuarioBC;
-import py.una.cnc.htroot.bc.UsuarioBC;
 import py.una.cnc.htroot.bc.impl.BusinessControllerImpl;
 import py.una.cnc.htroot.domain.Rol;
 import py.una.cnc.htroot.exception.BusinessLogicException;
 import py.una.sgf.bc.ClienteBC;
+import py.una.sgf.bc.UsuarioBC2;
 import py.una.sgf.dao.ClienteDao;
 import py.una.sgf.domain.Cliente;
 
@@ -24,7 +24,7 @@ public class ClienteBCImpl extends BusinessControllerImpl<Cliente> implements Cl
 	@Autowired
 	private ClienteDao clienteDao;
 	@Autowired
-	private UsuarioBC usuarioBC;
+	private UsuarioBC2 usuarioBC;
 	@Autowired
 	private RolUsuarioBC rolUsuarioBC;
 

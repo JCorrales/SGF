@@ -1,0 +1,1 @@
+mvn install:install-file -Dfile=/home/juan/workspace/proyecto2010/proyecto2010.jar -DgroupId=com.packing -DartifactId=proyecto2010 -Dversion=1 -Dpackaging=jar

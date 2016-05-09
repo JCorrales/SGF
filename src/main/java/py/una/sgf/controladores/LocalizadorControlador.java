@@ -79,4 +79,18 @@ public class LocalizadorControlador {
 		return "abm/chofer/info-window :: content";
 	}
 
+	@RequestMapping(value = "borrar_registro", method = RequestMethod.POST)
+	public String borrarRegistro(ModelMap model, @RequestParam(required = true) String cedula) {
+
+		registro.remove(cedula);
+		return "redirect:registro";
+	}
+
+	@RequestMapping(value = "registro", method = RequestMethod.GET)
+	public String registro(ModelMap model) {
+
+		model.addAttribute("choferList", registro.values());
+		return "abm/localizador/index";
+	}
+
 }

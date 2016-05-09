@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <appconfig>
 <datasourcesconfig>
-	<datasourcesfilename>/usr/local/wildfly9/standalone/configuration/standalone.xml</datasourcesfilename>
+	<datasourcesfilename>/var/lib/openshift/57296bed89f5cff97e0000be/wildfly/standalone/configuration/standalone.xml</datasourcesfilename>
 	<jerarquia>profile.subsystem.datasources.datasource</jerarquia>
 	<connection>
 		<min-pool-size>10</min-pool-size>
