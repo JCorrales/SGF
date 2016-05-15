@@ -129,26 +129,30 @@ div.perfil-usuario-opciones i {
 	cursor: pointer;
 }
 
-.factcab-usuario-info{
-	color:#777;
+.factcab-usuario-info {
+	color: #777;
 	font-weight: normal;
 	float: right;
 }
 
 div.form-group small {
-	margin:0px;
-	padding:0px;
+	margin: 0px;
+	padding: 0px;
 }
 
 label.error {
 	font-weight: normal;
-	color:red;
+	color: red;
 }
 
-input[type=file]{ 
-        color:transparent;
-    }
-    
+input[type=file] {
+	color: transparent;
+}
+
 .oculto {
-	display:none;
+	display: none;
+}
+
+#googleMap {
+	height: 100%;
 }

@@ -59,4 +59,8 @@
 		<nombre>/localizador/registro/**</nombre>
 		<permiso>app_login</permiso>
 	</url>
+	<url>
+		<nombre>/router/**</nombre>
+		<permiso>app_login</permiso>
+	</url>
 </urls>

@@ -94,7 +94,7 @@ public class LocalizadorControlador {
 	public String registro(ModelMap model) {
 
 		model.addAttribute("choferList", registro.values());
-		return "abm/localizador/index";
+		return "abm/mapas/localizador-registro";
 	}
 
 }
