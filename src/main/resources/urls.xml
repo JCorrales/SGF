@@ -63,4 +63,8 @@
 		<nombre>/router/**</nombre>
 		<permiso>app_login</permiso>
 	</url>
+	<url>
+		<nombre>/abm/pedido/**</nombre>
+		<permiso>app_login</permiso>
+	</url>
 </urls>

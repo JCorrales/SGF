@@ -117,7 +117,7 @@
                   var id = "[[${suggestId==null?field + '_ms':suggestId+'_ms'}]]";
           		
     			  var field = "[[${suggestId==null?field:suggestId}]]"
-            	  create_suggestbox(field, id, "[[${source}]]", "[[${idName}]]", "[[${displayName}]]", "[[${idValue}]]", "[[${displayValue}]]", "[[${required}]]");         
+    			  suggestBoxMap['[[${key}]]'] = create_suggestbox(field, id, "[[${source}]]", "[[${idName}]]", "[[${displayName}]]", "[[${idValue}]]", "[[${displayValue}]]", "[[${required}]]", "[[${parentId}]]");        
           });
         </script>
 	</div>
@@ -187,5 +187,51 @@
           });
       </script>
      </div>
+     
+     <div th:fragment="format_number_input">
+		<input th:id="${inputId}+'str'" type="text" class="form-control"/>
+		<input th:id="${inputId}" th:value="${inputVal}" th:name="${inputName==null?inputId:inputName}" type="hidden"/>
+		<script th:inline="javascript">
+		/*<![CDATA[*/
+		    var inputId = [[${inputId}]];
+			$('#'+inputId+'str').autoNumeric('init');
+		    $("#"+inputId+"str").autoNumeric('set', $("#"+inputId).val()); 
+		    	$("#"+inputId+"str").blur(function() {
+		    		var value = this.value.replace(/\./g, '').replace(",",".");
+					$("#"+inputId).val(value);
+				});
+			/*]]>*/    
+		</script>
+	</div>
+	
+	<!-- para usarse en un popup o similar, cuando la llamada a editUrl debe ser asincrona -->
+	<div th:fragment="datatable_script_modal">
+		<script th:inline="text">
+
+              $(document).ready(function() {
+                  var lenguaje ={
+              		    "emptyTable":     "[[#{datatable.emptyTable}]]",
+            		    "info":           "[[#{datatable.info}]]",
+            		    "infoEmpty":      "[[#{datatable.infoEmpty}]]",
+            		    "infoFiltered":   "(filtered from _MAX_ total entries)",
+            		    "infoPostFix":    "",
+            		    "thousands":      ",",
+            		    "lengthMenu":     "[[#{datatable.lengthMenu}]]",
+            		    "loadingRecords": "[[#{datatable.loadingRecords}]]",
+            		    "processing":     "[[#{datatable.processing}]]",
+            		    "search":         "[[#{datatable.search}]]",
+            		    "zeroRecords":    "[[#{datatable.zeroRecords}]]",
+            		    "paginate": {
+            		        "first":      "[[#{datatable.first}]]",
+            		        "last":       "[[#{datatable.last}]]",
+            		        "next":       "[[#{datatable.next}]]",
+            		        "previous":   "[[#{datatable.previous}]]"
+            		    }};
+
+                      
+                  createDataTableModal("[[${name}]]", "[[${serverSide}]]", "[[${source}]]","[[${columns}]]", "[[${editUrl}]]", 0, lenguaje);
+                 });
+        </script>
+	</div>
 </body>
 </html>

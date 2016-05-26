@@ -75,8 +75,7 @@
 	<query>
 		<name>select_clientes</name>
 		<value>
-			SELECT c.id AS id, c.cedula AS cedula, c.ruc AS ruc,
-			c.fisica AS fisica, u.nombre AS nombre, u.apellido AS apellido
+			SELECT c.id AS id, c.cedula AS cedula, c.ruc AS ruc, u.nombre AS nombre, u.apellido AS apellido
 			FROM cliente c JOIN usuario u ON c.usuario_id = u.id
 		</value>
 	</query>
@@ -115,7 +114,7 @@
 	
 	<query>
 		<name>select_camiones</name>
-		<value> SELECT c.id AS id, c.chapa AS chapa, c.marca AS marca,
+		<value>SELECT c.id AS id, c.chapa AS chapa, c.marca AS marca,
 			c.modelo AS modelo, c.anio AS anio, s.aseguradora AS aseguradora
 			FROM camion c LEFT JOIN seguro s ON c.id = s.camion_id
 		</value>
@@ -164,5 +163,25 @@
 	<query>
 		<name>filter_insumos</name>
 		<value>nombre||cantidad||costo</value>
+	</query>
+	
+	<query>
+		<name>select_pedidos</name>
+		<value>
+			SELECT p.id AS id, c.cedula AS cliente, p.direccion AS direccion
+			, b.nombre AS barrio, ci.nombre AS ciudad, 
+			ca.marca||' '||ca.modelo AS camion, 
+			p.fechapedido AS fechapedido, p.fechaentrega AS fechaentrega
+			FROM pedido p 
+			JOIN cliente c ON p.cliente_id = c.id
+			FULL OUTER JOIN barrio b ON p.barrio_id = b.id
+			JOIN ciudad ci ON p.ciudad_id = ci.id
+			JOIN camion ca ON p.camion_id = ca.id
+		</value>
+	</query>
+
+	<query>
+		<name>filter_pedidos</name>
+		<value>cliente||fechapedido||costo||ciudad</value>
 	</query>
 </queries>

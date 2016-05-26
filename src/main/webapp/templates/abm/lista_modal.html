@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<div th:fragment="content">
+		<h4 class="page-header" th:text="${title}"
+			th:unless="${hideTitle == True}">Titulo tabla.</h4>
+
+		<div class="table-responsive">
+			<table th:id="${name}" class="table table-bordered display"
+				cellspacing="0" width="100%">
+				<thead>
+					<tr class="bg-deudas">
+
+						<th th:each="columna : ${vc.tableColumns}"
+							th:text="#{${name +'_' + columna + '_header'}}"></th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		<div
+			th:include="fragments/includes :: datatable_script_modal(name=${name}, serverSide=${serverSide}, source=${source}, columns=${vc.tableColumnsStr})">lista</div>
+	</div>
+</body>
+
+</html>
+

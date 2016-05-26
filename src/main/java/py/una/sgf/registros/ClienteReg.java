@@ -9,7 +9,6 @@ public class ClienteReg {
 	private String nombre;
 	private String apellido;
 	private String ruc;
-	private Boolean fisica;
 
 	public Long getId() {
 
@@ -69,16 +68,6 @@ public class ClienteReg {
 	public void setRuc(String ruc) {
 
 		this.ruc = ruc;
-	}
-
-	public Boolean getFisica() {
-
-		return fisica;
-	}
-
-	public void setFisica(Boolean fisica) {
-
-		this.fisica = fisica;
 	}
 
 }

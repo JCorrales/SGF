@@ -26,7 +26,7 @@ import py.una.cnc.htroot.domain.Usuario;
 public class Chofer extends Model implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private static final String SECUENCIA = "id_chofer_seq";
+	private static final String SECUENCIA = "chofer_id_seq";
 
 	@Id
 	@GeneratedValue(generator = SECUENCIA)
@@ -47,12 +47,12 @@ public class Chofer extends Model implements Serializable {
 
 	@NotNull(message = "chofer.usuario.not_null")
 	@OneToOne()
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_chofer_usuario") )
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_chofer_usuario"))
 	@Valid
 	private Usuario usuario = new Usuario();
 
 	@NotNull(message = "chofer.camion.not_null")
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_camion_usuario") )
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_chofer_camion"))
 	@OneToOne
 	private Camion camion;
 

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" th:include="main :: page">
+<head>
+<title>Pedido</title>
+</head>
+<body>
+
+	<div th:fragment="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4">
+					<div th:include="abm/pedido/form :: content(vc=${controlador})">form</div>
+				</div>
+				<div class="col-lg-8">
+					<div th:include="fragments/lista_ancestro::content(name='pedido', serverSide='true', source=@{/abm/pedido/rest}, editUrl=@{/abm/pedido/}, vc=${controlador}, title=#{pedido.tabla.titulo})">lista</div>
+				</div>
+				<div th:include="fragments/largeModal :: content"></div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

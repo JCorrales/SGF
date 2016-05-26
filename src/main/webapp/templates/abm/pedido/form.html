@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Pedido</title>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="shortcut icon" href="../../../images/favicon.ico"
+	type="image/x-icon" />
+
+<link href="../../../css/bootstrap.min.css" rel="stylesheet" />
+<link href="../../../css/sb-admin-2.css" rel="stylesheet" />
+<link href="../../../css/jquery-ui.css" rel="stylesheet" />
+<link href="../../../font-awesome-4.2.0/css/font-awesome.min.css"
+	rel="stylesheet" />
+<link href="../../../css/htroot.css" />
+<script src="../../../js/jquery-1.11.0.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="../../../js/bootstrap.min.js"></script>
+<!-- Custom Theme JavaScript -->
+<script src="../../../js/sb-admin-2.js"></script>
+<script src="../../../js/jquery-ui.js"></script>
+
+</head>
+
+<body>
+	<div class="col-lg-12 col-lm-12">
+		<div th:fragment="content">
+
+			<h4 class="page-header" th:text="#{pedido.form.titulo}">Pedido</h4>
+			<div th:replace="fragments/notificaciones :: content">notificiones</div>
+
+			<form action="#" th:action="@{/abm/pedido/op}"
+				th:object="${pedido}" method="post" role="form">
+
+				<div th:replace="fragments/form_errores :: content">errores</div>
+
+				<input type="hidden" th:field="*{id}" />
+
+				<input type="hidden" id="cliente" name="cliente" th:value="${pedido.cliente.id}"/>
+				
+				<input type="hidden" id="barrio" name="barrio" th:value="${pedido.barrio.id}"/>
+				
+				<input type="hidden" id="ciudad" name="ciudad" th:value="${pedido.ciudad.id}"/>
+				
+				<input type="hidden" id="camion" name="camion" th:value="${pedido.camion.id}"/>
+				
+				<input type="hidden" id="distancia" name="distancia" th:value="${pedido.distancia}"/>
+				
+				<div class="form-group required">
+					<label for="clienteToShow" th:text="#{pedido.cliente.lbl}"
+						class="field-label">Cliente:</label> 
+						<input type="text" th:if="${pedido.cliente.id == null}"
+						id="clienteToShow" disabled="disabled" class="form-control"/>
+						<input type="text" th:if="${pedido.cliente.id != null}"
+						id="clienteToShow" disabled="disabled" class="form-control"
+						th:value="${pedido.cliente.usuario.nombre+' '+pedido.cliente.usuario.apellido}"
+						/>
+				</div>
+				<button class="btn btn-default" data-toggle="modal"
+					data-target='#largeModal' onclick="clienteModal()" type="button">
+					Elegir Cliente
+				</button>
+
+				<div class="form-group required">
+					<label for="direccion" th:text="#{pedido.direccion.lbl}"
+						class="field-label">Direccion:</label> <input type="text"
+						th:field="*{direccion}" class="form-control" maxlength="100"/>
+				</div>
+				
+				<div class="form-group required">
+					<label for="barrioToShow" th:text="#{pedido.barrio.lbl}"
+						class="field-label">Barrio:</label> 
+						<input type="text" th:if="${pedido.barrio.id == null}"
+						id="barrioToShow" disabled="disabled" class="form-control"/>
+						<input type="text" th:if="${pedido.barrio.id != null}"
+						id="barrioToShow" disabled="disabled" class="form-control"
+						th:value="${pedido.barrio.nombre}"
+						/>
+				</div>
+				<button class="btn btn-default" data-toggle="modal"
+					data-target='#largeModal' onclick="barrioModal()" type="button">
+					Elegir Barrio
+				</button>
+				
+				
+				<div class="form-group required">
+					<label for="ciudadToShow" th:text="#{pedido.ciudad.lbl}"
+						class="field-label">Ciudad:</label> 
+						<input type="text" th:if="${pedido.ciudad.id == null}"
+						id="ciudadToShow" disabled="disabled" class="form-control"/>
+						<input type="text" th:if="${pedido.ciudad.id != null}"
+						id="ciudadToShow" disabled="disabled" class="form-control"
+						th:value="${pedido.ciudad.nombre}"
+						/>
+				</div>
+				<button class="btn btn-default" data-toggle="modal"
+					data-target='#largeModal' onclick="ciudadModal()" type="button">
+					Elegir Ciudad
+				</button>
+				
+				<div class="form-group required">
+					<label for="camionToShow" th:text="#{pedido.camion.lbl}"
+						class="field-label">Camion:</label> 
+						<input type="text" th:if="${pedido.camion.id == null}"
+						id="camionToShow" disabled="disabled" class="form-control"/>
+						<input type="text" th:if="${pedido.camion.id != null}"
+						id="camionToShow" disabled="disabled" class="form-control"
+						th:value="${pedido.camion.marca+' '+pedido.camion.modelo+' '+pedido.camion.anio+' '+pedido.camion.chapa}"
+						/>
+				</div>
+				<button class="btn btn-default" data-toggle="modal"
+					data-target='#largeModal' onclick="camionModal()" type="button">
+					Elegir camion
+				</button>
+				
+				<div class="form-group">
+					<label for="fechaPedido"> <span
+						th:text="#{pedido.fechaPedido.lbl}">Fecha pedido</span>
+					</label> <input type="text" th:field="*{fechaPedido}"
+						 th:errorclass="fieldError"
+						class="form-control" />
+					<div
+						th:include="fragments/includes :: campo_fecha( campoId='fechaPedido')"></div>
+				</div>
+				
+				<div class="form-group" th:if="${pedido.id != null}">
+					<label for="fechaEntrega"> <span
+						th:text="#{pedido.fechaEntrega.lbl}">Fecha entrega</span>
+					</label> <input type="text" th:field="*{fechaEntrega}"
+						 th:errorclass="fieldError"
+						class="form-control" />
+					<div
+						th:include="fragments/includes :: campo_fecha( campoId='fechaEntrega')"></div>
+				</div>
+				
+				<div class="form-group required">
+					<label for="iva" th:text="#{pedido.iva.lbl}" class="field-label">Iva:</label> 
+					<input type="number" th:field="*{iva}"
+						 th:errorclass="fieldError"
+						class="form-control" />
+				</div>
+				
+				<div class="form-group required" th:unless="${pedido.id == null}">
+					<label for="costo" th:text="#{pedido.costo.lbl}" class="field-label">Costo:</label> 
+					<input type="number" th:field="*{costo}"
+						 th:errorclass="fieldError"
+						class="form-control" />
+				</div>
+				
+				<div class="form-group required">
+					<label for="distancia" th:text="#{pedido.distancia.lbl}" class="field-label">Distancia:</label> 
+					<input type="text" id="distanciaToShow" th:value="${pedido.distancia}"
+						class="form-control" disabled="disabled"/>
+					<button class="btn btn-default" data-toggle="modal"
+						data-target='#largeModal' onclick="escogerRutaModal()" type="button">
+						Escoger Ruta
+					</button>
+				</div>
+				 
+				<div class="form-group required">
+					<label for="precio" th:text="#{pedido.precio.lbl}" class="field-label">Precio:</label> 
+					<input type="number" th:field="*{precio}"
+						class="form-control"/>
+				</div>
+				
+				<div th:replace="abm/formulario_botones :: content">botones</div>
+			</form>
+			<script type="text/javascript">
+			function clienteModal() {
+				$.ajax({
+					url : "/sgf/abm/cliente/modal",
+					success : function(datos) {
+						$("#largeModalContent").html(datos)
+					}
+				});
+			}
+			function barrioModal() {
+				$.ajax({
+					url : "/sgf/abm/barrio/modal",
+					success : function(datos) {
+						$("#largeModalContent").html(datos)
+					}
+				});
+			}
+			function ciudadModal() {
+				$.ajax({
+					url : "/sgf/abm/ciudad/modal",
+					success : function(datos) {
+						$("#largeModalContent").html(datos)
+					}
+				});
+			}
+			function camionModal() {
+				$.ajax({
+					url : "/sgf/abm/camion/modal",
+					success : function(datos) {
+						$("#largeModalContent").html(datos)
+					}
+				});
+			}
+			</script>
+		</div>
+	</div>
+</body>
+</html>

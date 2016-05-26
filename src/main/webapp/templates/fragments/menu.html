@@ -95,7 +95,7 @@
 						</ul></li>
 					<!-- fin menu desplegable 3 -->
 					
-					<!-- menu desplegable 4 Localizador -->
+					<!-- menu desplegable 4 Mapas -->
 					<li class="dropdown"><a class="dropdown-toggle"
 						data-toggle="dropdown" href="#">Mapas <i
 							class="fa fa-caret-down"></i></a>
@@ -104,9 +104,19 @@
 									Localizador-registro</a></li>
 							<li class="divider"></li>
 							<li><a th:href="@{/router/index}">
-									Escoger ruta</a></li>
+									Hoja de ruta</a></li>
 						</ul></li>
-					<!-- fin menu desplegable 3 -->
+					<!-- fin menu desplegable 4 -->
+					
+					<!-- menu desplegable 5 Negocio -->
+					<li class="dropdown"><a class="dropdown-toggle"
+						data-toggle="dropdown" href="#">Negocio <i
+							class="fa fa-caret-down"></i></a>
+						<ul class="dropdown-menu dropdown-user ">
+							<li><a th:href="@{/abm/pedido}">
+									Pedidos</a></li>
+						</ul></li>
+					<!-- fin menu desplegable 4 -->
 					
 					<!-- /.dropdown -->
 				</ul>
@@ -117,7 +127,6 @@
 							<i class="fa fa-caret-down"></i>
 					</a>
 						<ul class="dropdown-menu dropdown-user ">
-
 
 							<li th:if="${usuarioActual != null}"><a href="#"><i
 									class="fa fa-user fa-fw"></i><span

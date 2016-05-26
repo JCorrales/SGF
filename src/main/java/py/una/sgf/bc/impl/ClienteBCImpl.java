@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import py.una.cnc.htroot.bc.RolUsuarioBC;
 import py.una.cnc.htroot.bc.impl.BusinessControllerImpl;
 import py.una.cnc.htroot.domain.Rol;
@@ -35,6 +36,7 @@ public class ClienteBCImpl extends BusinessControllerImpl<Cliente> implements Cl
 	}
 
 	@Override
+	@Transactional
 	public void create(Cliente bean) {
 
 		if (bean.getUsuario() == null) {
@@ -46,6 +48,7 @@ public class ClienteBCImpl extends BusinessControllerImpl<Cliente> implements Cl
 	}
 
 	@Override
+	@Transactional
 	public void edit(Cliente bean) {
 
 		if (bean.getUsuario() == null) {
@@ -57,6 +60,7 @@ public class ClienteBCImpl extends BusinessControllerImpl<Cliente> implements Cl
 	}
 
 	@Override
+	@Transactional
 	public void destroy(Cliente obj) {
 
 		List<Rol> roles = usuarioBC.getRoles(obj.getUsuario());

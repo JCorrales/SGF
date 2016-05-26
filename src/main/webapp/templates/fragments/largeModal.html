@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Modal</title>
+</head>
+<body>
+	<div th:fragment="content">
+		<!-- Modal -->
+		<div class="modal fade" id="largeModal" tabindex="-1"
+			role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div id="largeModalDialog" class="modal-dialog modal-lg" style="width:88% !important; overflow: auto">
+				<div class="modal-content">
+					<div class="modal-header" style="margin: 5px 15px 0px 15px">
+						<button type="button" class="close"
+							data-dismiss="modal" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body" style="margin: 0px 15px 5px 15px">
+						<div id="largeModalContent"></div>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+		<script type="text/javascript">
+			$( document ).ready(function() {
+				$('#largeModalDialog').css('max-height', $( window ).height()*0.95);
+			});
+		</script>
+	</div>
+</body>
+
+</html>
+

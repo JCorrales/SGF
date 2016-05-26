@@ -9,10 +9,10 @@
 	<div th:fragment="content">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-4 col-md-6">
+				<div class="col-lg-5 col-md-6">
 					<div th:include="abm/ciudad/form :: content(vc=${controlador})">form</div>
 				</div>
-				<div class="col-lg-8 col-md-6">
+				<div class="col-lg-7 col-md-6">
 					<div
 						th:include="fragments/lista_ancestro::content(name='ciudad',source=@{/abm/ciudad/rest}, editUrl=@{/abm/ciudad/}, vc=${controlador}, title=#{ciudad.tabla.titulo})">lista</div>
 				</div>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Camion</title>
+</head>
+<body>
+	<div th:fragment="content">
+		<div class="row">
+			<div class="col-lg-4 col-md-6">
+				<div
+					th:include="abm/camion/modal_form :: content(vc=${controlador})">form</div>
+			</div>
+			<div class="col-lg-8 col-md-6">
+				<div
+					th:include="abm/lista_modal::content(name='camion_modal',serverSide='false', source=@{/abm/camion/rest}, editUrl=@{/abm/camion/modal/}, vc=${controlador}, title=#{camion.tabla.titulo})">lista</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+
+</html>

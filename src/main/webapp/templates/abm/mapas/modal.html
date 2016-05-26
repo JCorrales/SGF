@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Escoger ruta</title>
+</head>
+<body>
+	<div th:fragment="content">
+		<script th:inline="javascript">
+			 /*<![CDATA[*/
+			 	var map;
+			 	var directionsService;
+				function initMap() {
+				  directionsService = new google.maps.DirectionsService;
+				  map = new google.maps.Map(document.getElementById('googleMap'), {
+				    center: {lat: -25.2872316023617, lng: -57.65097141265869}
+				  });
+				  var directionsDisplay = new google.maps.DirectionsRenderer({
+					    draggable: true,
+					    map: map,
+					    panel: document.getElementById('info-panel')
+					});
+
+				  directionsDisplay.addListener('directions_changed', function() {
+					    computeTotalDistance(directionsDisplay.getDirections());
+					  });
+				
+				  calculateAndDisplayRoute(directionsService, directionsDisplay);
+				  $(document).ready(function(){
+					  	window.setTimeout(function(){map.setZoom(12)}, 1000)
+					  });
+				}
+				
+				function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+				  directionsService.route({
+				    origin: {lat: -25.2872316023617, lng: -57.65097141265869},  
+				    destination: {lat: -25.2872316023617, lng: -57.65097141265869}, 
+				    travelMode: google.maps.TravelMode.DRIVING
+				  }, function(response, status) {
+				    if (status == google.maps.DirectionsStatus.OK) {
+				      directionsDisplay.setDirections(response);
+				    } else {
+				      window.alert('Directions request failed due to ' + status);
+				    }
+				  });
+				}
+
+				function computeTotalDistance(result) {
+				  var total = 0;
+				  var myroute = result.routes[0];
+				  for (var i = 0; i < myroute.legs.length; i++) {
+				    total += myroute.legs[i].distance.value;
+				  }
+				  total = total / 1000;
+				  document.getElementById('total').innerHTML = total + ' km';
+				  document.getElementById('inputTotal').value = total;
+				  document.getElementById('distancia').value = total;
+				  document.getElementById('distanciaToShow').value = total;
+				}
+				$("#largeModal").on("shown.bs.modal", function () {
+				    google.maps.event.trigger(map, "resize");
+				}); 
+				//no hace falta hacerlo en onload, la pagina ya se cargo
+				initMap();
+				/*]]>*/
+			</script>
+			<div id="googleMap" style="width: 100%; height: 460px"></div>
+			<input type="hidden" id="inputTotal" />
+			<p>
+				Distancia total: <span id="total"></span>
+			</p>
+		</div>
+</body>
+
+</html>

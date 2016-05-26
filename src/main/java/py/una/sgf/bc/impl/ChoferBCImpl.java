@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import py.una.cnc.htroot.bc.RolUsuarioBC;
 import py.una.cnc.htroot.bc.impl.BusinessControllerImpl;
 import py.una.cnc.htroot.domain.RolUsuario;
@@ -35,6 +36,7 @@ public class ChoferBCImpl extends BusinessControllerImpl<Chofer> implements Chof
 	}
 
 	@Override
+	@Transactional
 	public void create(Chofer bean) {
 
 		if (bean.getUsuario() == null) {
@@ -48,6 +50,7 @@ public class ChoferBCImpl extends BusinessControllerImpl<Chofer> implements Chof
 	}
 
 	@Override
+	@Transactional
 	public void edit(Chofer bean) {
 
 		if (bean.getUsuario() == null) {
@@ -59,6 +62,7 @@ public class ChoferBCImpl extends BusinessControllerImpl<Chofer> implements Chof
 	}
 
 	@Override
+	@Transactional
 	public void destroy(Chofer obj) {
 
 		List<RolUsuario> rolesUsuario = rolUsuarioBC.getDAOInstance().findEntitiesByCondition("WHERE usuario_id = ?",

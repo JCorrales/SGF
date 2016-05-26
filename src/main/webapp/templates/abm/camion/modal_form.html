@@ -24,17 +24,17 @@
 <!-- Custom Theme JavaScript -->
 <script src="../../../js/sb-admin-2.js"></script>
 <script src="../../../js/jquery-ui.js"></script>
-
 </head>
 
 <body>
 	<div class="col-lg-12 col-lm-12">
 		<div th:fragment="content">
 
-			<h4 class="page-header" th:text="#{camion.form.titulo}">Camion</h4>
+			<h4 class="page-header"  th:text="#{camion.form.titulo}">Datos
+				de Facturación</h4>
 			<div th:replace="fragments/notificaciones :: content">notificiones</div>
 
-			<form action="#" th:action="@{/abm/camion/op}"
+			<form id="ajaxForm" action="#" th:action="@{/abm/camion/modal/op}"
 				th:object="${camion}" method="post" role="form">
 
 				<div th:replace="fragments/form_errores :: content">errores</div>
@@ -72,28 +72,40 @@
 				</div>
 				
 				<div class="form-group required">
-					<label for="consumoPorKm" th:text="#{camion.consumo_por_km.lbl}" 
-					class="field-label">Consumo:</label> 
+					<label for="consumoPorKm" th:text="#{camion.consumo_por_km.lbl}" class="field-label">Consumo:</label> 
 					<input type="number"
 						th:field="*{consumoPorKm}" class="form-control"/>
 				</div>
 				
 				<div class="form-group required">
-					<label for="mantenimientoAnual" th:text="#{camion.mantenimiento_anual.lbl}" 
-					class="field-label">Mantenimiento:</label> 
+					<label for="mantenimientoAnual" th:text="#{camion.mantenimiento_anual.lbl}" class="field-label">Mantenimiento:</label> 
 					<input type="number"
 						th:field="*{mantenimientoAnual}" class="form-control"/>
 				</div>
 				
 				<div class="form-group required">
-					<label for="depreciacionAnual" th:text="#{camion.depreciacion_anual.lbl}" 
-					class="field-label">depreciacionAnual:</label> 
+					<label for="depreciacionAnual" th:text="#{camion.depreciacion_anual.lbl}" class="field-label">depreciacionAnual:</label> 
 					<input type="number"
 						th:field="*{depreciacionAnual}" class="form-control"/>
 				</div>
 				
-				<div th:replace="abm/formulario_botones :: content">botones</div>
+				<div th:replace="abm/modal_formulario_botones :: content(onElegir='onElegirCallback')">botones</div>
 			</form>
+			<script type="text/javascript">
+				var form = $('#ajaxForm');
+					form.submit(function(ev) {
+					ev.preventDefault();
+				});
+
+				var onElegirCallback = function(){
+					var chapa = $('#ajaxForm').find('#chapa').val();
+					var marca = $('#ajaxForm').find('#marca').val();
+					var modelo = $('#ajaxForm').find('#modelo').val();
+					var anio = $('#ajaxForm').find('#anio').val();
+					var show = marca+' '+modelo+' '+anio+ ' '+chapa;
+					document.getElementById('camionToShow').value = show;
+				}
+			</script>
 		</div>
 	</div>
 </body>

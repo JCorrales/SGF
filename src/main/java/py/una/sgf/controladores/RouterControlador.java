@@ -14,4 +14,10 @@ public class RouterControlador {
 		return "abm/mapas/router-index";
 	}
 
+	@RequestMapping(value = "modal")
+	public String modal() {
+
+		return "abm/mapas/modal :: content";
+	}
+
 }

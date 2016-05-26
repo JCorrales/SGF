@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Cliente</title>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="shortcut icon" href="../../../images/favicon.ico"
+	type="image/x-icon" />
+
+<link href="../../../css/bootstrap.min.css" rel="stylesheet" />
+<link href="../../../css/sb-admin-2.css" rel="stylesheet" />
+<link href="../../../css/jquery-ui.css" rel="stylesheet" />
+<link href="../../../font-awesome-4.2.0/css/font-awesome.min.css"
+	rel="stylesheet" />
+<link href="../../../css/htroot.css" />
+<script src="../../../js/jquery-1.11.0.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="../../../js/bootstrap.min.js"></script>
+<!-- Custom Theme JavaScript -->
+<script src="../../../js/sb-admin-2.js"></script>
+<script src="../../../js/jquery-ui.js"></script>
+</head>
+
+<body>
+	<div class="col-lg-12 col-lm-12">
+		<div th:fragment="content">
+
+			<h4 class="page-header"  th:text="#{cliente.form.titulo}">Cliente</h4>
+			<div th:replace="fragments/notificaciones :: content">notificiones</div>
+
+			<form id="ajaxForm" action="#" th:action="@{/abm/cliente/modal/op}"
+				th:object="${cliente}" method="post" role="form">
+
+				<div th:replace="fragments/form_errores :: content">errores</div>
+
+				<input type="hidden" th:field="*{id}" />
+				<input type="hidden" th:field="*{usuario.id}" /><!--usuario nunca es null-->
+				<input th:if="${cliente.id == null}" type="hidden" th:id="usuario.password" th:name="usuario.password" 
+				th:value="${T(java.lang.Math).random()}" />
+
+				<div class="row">
+					<div class="col-lg-6 col-md-6" th:if="${cliente.usuario.id != null}">
+						<img id="userpic" th:src="@{/abm/usuario/foto/} + ${cliente.usuario.id}"
+							style="max-height: 150px; max-width: 100%" />
+					</div>
+					<div class="col-lg-6 col-md-6" th:if="${cliente.usuario.id == null}">
+						<img id="userpic" th:src="@{/images/nopic.png}"
+							style="max-height: 150px; max-width: 100%" />
+					</div>
+					<div class="form-group">
+						<input id="foto" type="file" th:field="*{usuario.tmpFoto}"
+							class="filestyle" data-input="false"
+							th:attr="data-buttonText=#{usuario.cambiar_foto.lbl}, size-error=#{usuario.foto.size}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="codigo" th:text="#{cliente.cedula.lbl}"
+						class="field-label">Codigo:</label> <input type="text"
+						th:field="*{cedula}" th:errorclass="invalid" class="form-control"
+						th:disabled="${vc.isFieldDisabled('cedula')}"
+						autofocus="autofocus" />
+				</div>
+
+				<div class="form-group">
+					<label for="nombre" th:text="#{usuario.nombre.lbl}"
+						class="field-label">Nombre:</label> <input type="text"
+						th:field="*{usuario.nombre}" th:errorclass="invalid" class="form-control"
+						th:disabled="${vc.isFieldDisabled('usuario.nombre')}" />
+				</div>
+
+				<div class="form-group">
+					<label for="apellido" th:text="#{usuario.apellido.lbl}"
+						class="field-label">Apellido:</label> <input type="text"
+						th:field="*{usuario.apellido}" th:errorclass="invalid"
+						class="form-control"
+						th:disabled="${vc.isFieldDisabled('usuario.apellido')}" />
+				</div>
+				
+				<div class="form-group">
+					<label for="ruc" th:text="#{cliente.ruc.lbl}"
+						class="field-label">RUC:</label> <input type="text"
+						th:field="*{ruc}" th:errorclass="invalid" class="form-control"
+						th:disabled="${vc.isFieldDisabled('ruc')}" />
+				</div>
+
+				<div class="form-group">
+					<label for="email" th:text="#{usuario.email.lbl}"
+						class="field-label">Email:</label> <input type="text"
+						th:field="*{usuario.email}" th:errorclass="invalid" class="form-control"
+						th:disabled="${vc.isFieldDisabled('usuario.email')}" />
+				</div>
+
+				<div class="form-group">
+					<label for="telefono" th:text="#{usuario.telefono.lbl}"
+						class="field-label">Telefono:</label> <input type="text"
+						th:field="*{usuario.telefono}" th:errorclass="invalid"
+						class="form-control"
+						th:disabled="${vc.isFieldDisabled('usuario.telefono')}" />
+				</div>
+
+				<div th:unless="${cliente.id == null}" class="form-group">
+					<label for="fecha"> <span
+						th:text="#{usuario.fechaultimoacceso.lbl}">Ultima Fecha</span>
+					</label> <input type="date" th:field="*{usuario.fechaUltimoAcceso}" th:errorclass="fieldError"
+						class="form-control" disabled="disabled"/>
+				</div>
+				
+				<div class="form-group">
+					<label for="fisica" th:text="#{cliente.fisica.lbl}"
+						class="field-label">Fisica:</label> <input type="checkbox"
+						th:field="*{fisica}" th:errorclass="invalid" 
+						th:disabled="${vc.isFieldDisabled('fisica')}" />
+				</div>
+				
+				<div th:replace="abm/modal_formulario_botones :: content(onElegir='onElegirCallback')">botones</div>
+			</form>
+			<script type="text/javascript">
+				var form = $('#ajaxForm');
+					form.submit(function(ev) {
+					ev.preventDefault();
+				});
+					
+				var onElegirCallback = function(){
+					var nombre = $('#ajaxForm').find('#usuario\\.nombre').val();
+					var apellido = $('#ajaxForm').find('#usuario\\.apellido').val();
+					document.getElementById('clienteToShow').value = nombre + ' '+ apellido;
+				}
+			</script>
+		</div>
+	</div>
+</body>
+</html>

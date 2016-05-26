@@ -27,8 +27,8 @@ public class Cliente extends Model implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(generator = "id_cliente_seq")
-	@SequenceGenerator(name = "id_cliente_seq", sequenceName = "id_cliente_seq", allocationSize = 1)
+	@GeneratedValue(generator = "cliente_id_seq")
+	@SequenceGenerator(name = "cliente_id_seq", sequenceName = "cliente_id_seq", allocationSize = 1)
 	private Long id;
 
 	@NotNull(message = "cliente.cedula.not_null")
@@ -44,7 +44,7 @@ public class Cliente extends Model implements Serializable {
 
 	@NotNull(message = "cliente.usuario.not_null")
 	@OneToOne()
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_cliente_usuario") )
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_cliente_usuario"))
 	@Valid
 	private Usuario usuario = new Usuario();
 

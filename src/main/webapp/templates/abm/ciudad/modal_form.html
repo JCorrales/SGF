@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Barrio</title>
+<title>Ciudad</title>
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="Content-Type" content="text/html;charset=UTF8" />
@@ -24,39 +24,34 @@
 <!-- Custom Theme JavaScript -->
 <script src="../../../js/sb-admin-2.js"></script>
 <script src="../../../js/jquery-ui.js"></script>
-
 </head>
 
 <body>
 	<div class="col-lg-12 col-lm-12">
 		<div th:fragment="content">
 
-			<h4 class="page-header" th:text="#{barrio.form.titulo}">Barrio</h4>
+			<h4 class="page-header"  th:text="#{ciudad.form.titulo}">Datos
+				de Facturación</h4>
 			<div th:replace="fragments/notificaciones :: content">notificiones</div>
 
-			<form action="#" th:action="@{/abm/barrio/op}"
-				th:object="${barrio}" method="post" role="form">
+			<form id="ajaxForm" action="#" th:action="@{/abm/ciudad/modal/op}"
+				th:object="${ciudad}" method="post" role="form">
 
 				<div th:replace="fragments/form_errores :: content">errores</div>
 
 				<input type="hidden" th:field="*{id}" />
 
 				<div class="form-group required">
-					<label for="codigo" th:text="#{barrio.codigo.lbl}"
+					<label for="codigo" th:text="#{ciudad.codigo.lbl}"
 						class="field-label">Codigo:</label> <input type="text"
 						th:field="*{codigo}" class="form-control" autofocus="autofocus" maxlength="3" />
 				</div>
 
 				<div class="form-group required">
-					<label for="nombre" th:text="#{barrio.nombre.lbl}"
+					<label for="nombre" th:text="#{ciudad.nombre.lbl}"
 						class="field-label">Nombre:</label> <input type="text"
 						th:field="*{nombre}" class="form-control" maxlength="50"/>
 				</div>
-                <div class="form-group required">
-                    <label for="ciudad" th:text="#{barrio.ciudad.lbl}" class="field-label">País:</label>
-                    <div
-                        th:include="fragments/includes :: suggestbox_script(field='ciudad', source=@{/abm/ciudad/suggest}, idName='id', displayName='nombre', idValue=${barrio.ciudad != null? barrio.ciudad.id:null}, displayValue=${barrio.ciudad != null? barrio.ciudad.nombre:null}, required=true,)">Suggest</div>
-                </div>
                <br></br>
                <br></br>
                <br></br>
@@ -107,25 +102,40 @@
   					$('#latitud').val(location.lat());
 				}
 
-				google.maps.event.addDomListener(window, 'load', initialize);
+				$("#largeModal").on("shown.bs.modal", function () {
+				    google.maps.event.trigger(map, "resize");
+				});
+				initialize();
 				</script>
 
 				<div id="googleMap" style="width: 100%; height: 380px;"></div>
 
 				<div class="form-group">
-					<label for="latitud" th:text="#{barrio.latitud.lbl}"
+					<label for="latitud" th:text="#{ciudad.latitud.lbl}"
 						class="field-label">Latitud:</label> <input type="text"
 						th:field="*{latitud}" class="form-control" />
 				</div>
 
 				<div class="form-group">
-					<label for="longitud" th:text="#{barrio.longitud.lbl}"
+					<label for="longitud" th:text="#{ciudad.longitud.lbl}"
 						class="field-label">Longitud:</label> <input type="text"
 						th:field="*{longitud}" class="form-control" />
 				</div>
-                        
-				<div th:replace="abm/formulario_botones :: content">botones</div>
+				
+				<div th:replace="abm/modal_formulario_botones :: content(onElegir='onElegirCallback')">botones</div>
 			</form>
+			<script type="text/javascript">
+				var form = $('#ajaxForm');
+					form.submit(function(ev) {
+					ev.preventDefault();
+				});
+
+				var onElegirCallback = function(){
+					var nombre = $('#ajaxForm').find('#nombre').val();
+					document.getElementById('ciudadToShow').value = nombre;
+					document.getElementById('barrioToShow').value = '';
+				}
+			</script>
 		</div>
 	</div>
 </body>

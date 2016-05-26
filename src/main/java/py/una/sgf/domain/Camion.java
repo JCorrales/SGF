@@ -1,5 +1,6 @@
 package py.una.sgf.domain;
 
+import java.math.BigDecimal;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,12 +14,9 @@ import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotBlank;
 import py.una.cnc.htroot.domain.Model;
 
-/**
- */
-
 @Entity
 @Audited
-@Table(uniqueConstraints = @UniqueConstraint(name = "camion_chapa_uq", columnNames = { "chapa" }) )
+@Table(uniqueConstraints = @UniqueConstraint(name = "camion_chapa_uq", columnNames = { "chapa" }))
 public class Camion extends Model {
 
 	public static final int CHAPA_MAX_SIZE = 20;
@@ -50,17 +48,27 @@ public class Camion extends Model {
 	@NotNull(message = "camion.anio.not_null")
 	private Integer anio;
 
+	@NotNull(message = "camion.consumo_km.not_null")
+	private BigDecimal consumoPorKm;
+
+	@NotNull(message = "camion.dpreciacion_anual.not_null")
+	private Float depreciacionAnual;
+
+	@NotNull(message = "camion.mantenimiento_anual.not_null")
+	private BigDecimal mantenimientoAnual;
+
+	private transient Chofer chofer;
+
 	@Override
 	public Long getId() {
 
-		return this.id;
+		return id;
 	}
 
 	@Override
 	public void setId(Long id) {
 
 		this.id = id;
-
 	}
 
 	public String getChapa() {
@@ -103,4 +111,49 @@ public class Camion extends Model {
 		this.anio = anio;
 	}
 
+	public BigDecimal getConsumoPorKm() {
+
+		return consumoPorKm;
+	}
+
+	public void setConsumoPorKm(BigDecimal consumoPorKm) {
+
+		this.consumoPorKm = consumoPorKm;
+	}
+
+	public Float getDepreciacionAnual() {
+
+		return depreciacionAnual;
+	}
+
+	public void setDepreciacionAnual(Float depreciacionAnual) {
+
+		this.depreciacionAnual = depreciacionAnual;
+	}
+
+	public BigDecimal getMantenimientoAnual() {
+
+		return mantenimientoAnual;
+	}
+
+	public void setMantenimientoAnual(BigDecimal mantenimientoAnual) {
+
+		this.mantenimientoAnual = mantenimientoAnual;
+	}
+
+	public Chofer getChofer() {
+
+		return chofer;
+	}
+
+	public void setChofer(Chofer chofer) {
+
+		this.chofer = chofer;
+	}
+
+	@Override
+	public String toString() {
+
+		return "Chapa: " + chapa + " Marca: " + marca + " Modelo: " + modelo;
+	}
 }

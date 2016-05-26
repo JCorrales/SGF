@@ -1,4 +1,5 @@
 var dataTableMap = {};
+var suggestBoxMap = [];
 
 /**
  * Recibe un String como "id;nombre;apellido" y debe transformar en un
@@ -133,6 +134,7 @@ function createPickerTable(pickerId, serverSide, source, columnsStr, fieldId,
 
 function createDataTable(name, serverSide, source, columnsStr, editUrl,
 		editColumnNumber, lenguaje, withoutId, reportUrl) {
+	
 	createDataTableAncestor(name, serverSide, source, columnsStr, 1, lenguaje);
 	var tabla = $('#' + name).dataTable();
 	if (withoutId != "true" && withoutId != true) {
@@ -187,9 +189,16 @@ function actualizarRoles() {
 }
 
 function create_suggestbox(field, suggestId, source, idName, displayName,
-  idValue, displayValue, required) {
-
- var suggest = $('#' + suggestId).magicSuggest({
+  idValue, displayValue, required, parentId) {
+	
+ var input;
+ if(parentId !==undefined && parentId !== null){
+	 input = $('#'+parentId).find('#'+field);
+ }else{
+	 input = $('#' + field);
+ }
+ 
+ var suggest = $('#'+suggestId).magicSuggest({
   data : function() {
    var dataEscaped;
    $.ajax({
@@ -222,16 +231,16 @@ function create_suggestbox(field, suggestId, source, idName, displayName,
   var data = {};
   data[idName] = idValue;
   data[displayName] = displayValue;
-  $("#" + field).val(idValue);
+  input.val(idValue);
   suggest.addToSelection([ data ]);
   suggest.setValue(data);
  }
 
- $($('#' + suggestId).magicSuggest()).on('selectionchange', function(e, m) {
+ $($('#'+suggestId).magicSuggest()).on('selectionchange', function(e, m) {
 
   var value = this.getValue();
 
-  $("#" + field).val(value);
+  input.val(value);
  });
 
  return suggest;
@@ -362,6 +371,103 @@ function printRouterMap() {
 
     printContainer.remove();
     patchedStyle.remove();
+}
+
+
+function escogerRutaModal() {
+	$.ajax({
+		url : "/sgf/router/modal",
+		success : function(datos) {
+			$("#largeModalContent").html(datos)
+		}
+	});
+}
+
+var ajaxFormIdSelected = null;
+
+function ajaxSubmit(operacion) {
+	var ajaxForm = $('#ajaxForm');
+	$.ajax({
+		url : ajaxForm.attr('action'),
+		type : 'POST',
+		data : ajaxForm.serialize() + "&operacion="
+				+ operacion.valueOf(),
+		success : function(datos) {
+			$("#largeModalContent").html(datos)
+		}
+	});
+}
+
+// al pulsar Elegir
+function modalElegir(fieldId, onElegir){
+	ajaxFormIdSelected = $('#ajaxForm').find('#id').val();
+	document.getElementById(fieldId).value = ajaxFormIdSelected;
+	$('#largeModal').modal('hide');
+	
+	if(onElegir !== undefined && onElegir !== null){
+		onElegir.call();
+	}
+	
+}
+
+/**
+ * para usarse en un popup o similar, cuando la llamada a editUrl debe ser asincrona
+ * se usa para editar los datos de facturacion dentro del modal
+ * */
+function createDataTableModal(name, serverSide, source, columnsStr, editUrl,
+		editColumnNumber, lenguaje, withoutId) {
+	createDataTableAncestor(name, serverSide, source, columnsStr, 1, lenguaje);
+	var tabla = $('#' + name).dataTable();
+	if (withoutId != "true" && withoutId != true) {
+		tabla.fnSetColumnVis(0, false);
+	}
+
+	$('#' + name + ' tbody').on('click', 'tr', function() {
+		var fid = tabla.fnGetData(this, 0);
+		if (isNaN(fid)) {
+			return;
+		}
+		$.ajax({
+			url : editUrl + fid,
+			type : 'GET',
+			success : function(datos) {
+				$("#largeModalContent").html(datos)
+			}
+		});
+	});
+}
+
+function confirmarBorrar(aceptar, cancelar) {
+	$(function() {
+		$("#dialog-confirm").dialog({
+			resizable : false,
+			height : 'auto',
+			width : 'auto',
+			modal : true,
+	        hide: 'fold',
+	        show: 'blind',
+	        position: { my: 'top', at: 'top+50' },
+			buttons : {
+				"botonAceptar" : {
+					click : function() {
+						$(this).dialog("close");
+						borrarRegistro();
+					},
+					text : aceptar
+
+				},
+				"botonCancelar" : {
+					click : function() {
+						$(this).dialog("close");
+					},
+					text : cancelar
+				}
+			}
+		});
+	});
+	$(".ui-dialog").css({
+		zIndex : '1060',// aumentar si aparece al fondo
+	});
 }
 
 
