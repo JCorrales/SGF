@@ -192,7 +192,7 @@ function create_suggestbox(field, suggestId, source, idName, displayName,
   idValue, displayValue, required, parentId) {
 	
  var input;
- if(parentId !==undefined && parentId !== null){
+ if(parentId !==undefined && parentId !== null && parentId !== 'null' && parentId !== 'undefined'){
 	 input = $('#'+parentId).find('#'+field);
  }else{
 	 input = $('#' + field);

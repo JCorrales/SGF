@@ -45,8 +45,13 @@ public class PedidoTablaControlador extends TablaControladorAncestro<Pedido> {
 	protected DataTableModel<?> getDataTable(Integer iDisplayStart, Integer iDisplayEnd, String orderBy,
 			String sSearch) {
 
-		return dataTableSqlDs.getDataTable(iDisplayStart, iDisplayEnd, orderBy, sSearch, "select_pedidos",
-				"filter_pedidos", DataTableSqlDs.WITHOUT_WHERE, PedidoReg.class);
+		try {
+			return dataTableSqlDs.getDataTable(iDisplayStart, iDisplayEnd, orderBy, sSearch, "select_pedidos",
+					"filter_pedidos", DataTableSqlDs.WITHOUT_WHERE, PedidoReg.class);
+		} catch (Exception e) {
+			logger.error("Error: {}", e.getMessage());
+		}
+		return null;
 	}
 
 }

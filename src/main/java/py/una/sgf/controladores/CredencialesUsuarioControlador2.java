@@ -19,6 +19,8 @@ import py.una.cnc.htroot.domain.Usuario;
 import py.una.cnc.htroot.main.Message;
 import py.una.cnc.htroot.main.ServiceResponse;
 import py.una.cnc.lib.core.util.AppLogger;
+import py.una.sgf.bc.SgfConfigBC;
+import py.una.sgf.domain.SgfConfig;
 import py.una.sgf.util.SgfUtil;
 
 /***
@@ -39,6 +41,9 @@ public class CredencialesUsuarioControlador2 {
 	private SgfUtil sgfUtil;
 	@Autowired
 	private Message msg;
+	@Autowired
+	private SgfConfigBC sgfConfigBC;
+	private SgfConfig sgfConfig = null;
 
 	protected AppLogger logger = new AppLogger(this.getClass().getName());
 
@@ -52,9 +57,11 @@ public class CredencialesUsuarioControlador2 {
 			}
 			ResetPass lastResetPass = resetPassDao.getUltimoReset(codigo);
 			if (lastResetPass != null) {
-				if ((new Date().getTime() - lastResetPass.getFecha().getTime()) / (1000 * 60 * 60) <= Integer
-						.parseInt(msg.get("resetpass.tiempo.espera"))) {
-					return getResponse(msg.get("resetpass.limite.de.tiempo"), ServiceResponse.UNSUCCESS);
+				if ((new Date().getTime() - lastResetPass.getFecha().getTime()) / (1000 * 60) <= getSgfConfig()
+						.getResetPassTimeWait()) {
+					String respuesta = msg.get("resetpass.limite.de.tiempo");
+					respuesta = String.format(respuesta, getSgfConfig().getResetPassTimeWait() / 60);
+					return getResponse(respuesta, ServiceResponse.UNSUCCESS);
 				}
 			}
 			sendLink(response.getContent());
@@ -83,17 +90,17 @@ public class CredencialesUsuarioControlador2 {
 	private void sendLink(Usuario usuario) throws NoSuchAlgorithmException, AddressException, MessagingException {
 
 		String token = sgfUtil.getMD5(Long.toString(System.currentTimeMillis()) + usuario.getCodigo());
-		String link = msg.get("app.host") + "/getnewpass?token=" + token;
+		String link = getSgfConfig().getAppHost() + "/getnewpass?token=" + token;
 		ResetPass rp = new ResetPass();
 		rp.setCodigo(usuario.getCodigo());
 		rp.setToken(token);
 		rp.setExpirado(false);
 		rp.setFecha(new Date());
 		resetPassDao.create(rp);
-		String host = msg.get("resetpass.host");
-		String password = msg.get("mail.password");
+		String host = getSgfConfig().getMailHost();
+		String password = getSgfConfig().getMailPass();
 		String destinatario = usuario.getEmail();
-		String remitente = msg.get("resetpass.remitente");
+		String remitente = getSgfConfig().getMailRemitente();
 		String asunto = msg.get("resetpass.asunto");
 		String mensaje = String.format(msg.get("resetpass.respuesta_solicitud"),
 				usuario.getNombre() + " " + usuario.getApellido(), link);
@@ -174,6 +181,15 @@ public class CredencialesUsuarioControlador2 {
 	public String reset() {
 
 		return "resetpass";
+	}
+
+	private SgfConfig getSgfConfig() {
+
+		if (sgfConfig == null) {
+			sgfConfig = sgfConfigBC.getConfig();
+		}
+		return sgfConfig;
+
 	}
 
 }

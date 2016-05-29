@@ -147,7 +147,11 @@ public class UsuarioBCImpl2 extends BusinessControllerImpl<Usuario> implements U
 				@Override
 				public void run() {
 
-					credenciales.cambiarPass(usuario.getCodigo(), new ModelMap());
+					try {
+						credenciales.cambiarPass(usuario.getCodigo(), new ModelMap());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			};
 			thread.start();

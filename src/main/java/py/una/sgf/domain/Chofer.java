@@ -51,14 +51,17 @@ public class Chofer extends Model implements Serializable {
 	@Valid
 	private Usuario usuario = new Usuario();
 
-	@NotNull(message = "chofer.camion.not_null")
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_chofer_camion"))
-	@OneToOne
-	private Camion camion;
+	@NotNull(message = "chofer.sueldo_neto.not_null")
+	private BigDecimal sueldoNeto;
 
 	transient private BigDecimal longitud;
 
 	transient private BigDecimal latitud;
+
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_chofer_camion"))
+	@OneToOne
+	@NotNull(message = "chofer.camion.not_null")
+	private Camion camion;
 
 	@Override
 	public Long getId() {
@@ -113,16 +116,6 @@ public class Chofer extends Model implements Serializable {
 		this.usuario = usuario;
 	}
 
-	public Camion getCamion() {
-
-		return camion;
-	}
-
-	public void setCamion(Camion camion) {
-
-		this.camion = camion;
-	}
-
 	public BigDecimal getLongitud() {
 
 		return longitud;
@@ -141,6 +134,26 @@ public class Chofer extends Model implements Serializable {
 	public void setLatitud(BigDecimal latitud) {
 
 		this.latitud = latitud;
+	}
+
+	public BigDecimal getSueldoNeto() {
+
+		return sueldoNeto;
+	}
+
+	public void setSueldoNeto(BigDecimal sueldoNeto) {
+
+		this.sueldoNeto = sueldoNeto;
+	}
+
+	public Camion getCamion() {
+
+		return camion;
+	}
+
+	public void setCamion(Camion camion) {
+
+		this.camion = camion;
 	}
 
 }

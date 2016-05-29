@@ -14,7 +14,7 @@
 	</listener>
 	<servlet>
 		<servlet-name>spring</servlet-name>
-		<servlet-class>py.una.cnc.htroot.servlet.CustomDispatcherServlet</servlet-class>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>

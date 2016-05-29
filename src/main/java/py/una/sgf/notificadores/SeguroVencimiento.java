@@ -19,10 +19,12 @@ import py.una.cnc.htroot.domain.Usuario;
 import py.una.cnc.htroot.main.ApplicationContextProvider;
 import py.una.cnc.htroot.main.Message;
 import py.una.cnc.lib.core.util.AppLogger;
+import py.una.sgf.bc.SgfConfigBC;
 import py.una.sgf.dao.SingletonSeguroDao;
 import py.una.sgf.dao.SingletonSeguroNotificarUsuarioDao;
 import py.una.sgf.domain.Seguro;
 import py.una.sgf.domain.SeguroNotificarUsuario;
+import py.una.sgf.domain.SgfConfig;
 import py.una.sgf.util.SgfUtil;
 
 @Component
@@ -42,6 +44,10 @@ public class SeguroVencimiento {
 	private static final long PERIODO = 1000 * 120L;// 120 segundos
 	private Long dia = 1000 * 60 * 60 * 24 * 1L;// 1 dia
 	private Message message;
+	@Autowired
+	@Lazy(true)
+	private SgfConfigBC sgfConfigBC;
+	private SgfConfig sgfConfig = null;
 
 	public SeguroVencimiento() {
 
@@ -103,14 +109,14 @@ public class SeguroVencimiento {
 
 	private void enviarMail(Seguro seguro, String destinatario) throws AddressException, MessagingException {
 
-		String host = getMessage().get("mail.host");
-		String remitente = getMessage().get("mail.remitente");
-		String password = getMessage().get("mail.password");
-		String asunto = getMessage().get("seguro.mail.asunto");
-		String mensaje = getMessage().get("seguro.mail.mensaje");
-		mensaje = mensaje.replace("#CHAPA", seguro.getCamion().getChapa());
-		mensaje = mensaje.replace("#VENCIMIENTO", seguro.getVencimiento().toString().subSequence(0, 10));
-		mensaje = mensaje.replace("#POLIZA", seguro.getPoliza());
+		String host = getSgfConfig().getMailHost();
+		String remitente = getSgfConfig().getMailRemitente();
+		String password = getSgfConfig().getMailPass();
+		String asunto = getSgfConfig().getSeguroAsunto();
+		String mensaje = getSgfConfig().getSeguroMensaje();
+		mensaje = mensaje.replace("#CHAPA#", seguro.getCamion().getChapa());
+		mensaje = mensaje.replace("#VENCIMIENTO#", seguro.getVencimiento().toString().subSequence(0, 10));
+		mensaje = mensaje.replace("#POLIZA#", seguro.getPoliza());
 		getUtil().sendMailPass(host, destinatario, remitente, asunto, mensaje, password);
 		logger.info("enviando mail a : {}", destinatario);
 		editVencimiento(seguro);
@@ -160,6 +166,14 @@ public class SeguroVencimiento {
 			return message;
 		}
 		return message;
+	}
+
+	private SgfConfig getSgfConfig() {
+
+		if (sgfConfig == null) {
+			sgfConfig = sgfConfigBC.getConfig();
+		}
+		return sgfConfig;
 	}
 
 }

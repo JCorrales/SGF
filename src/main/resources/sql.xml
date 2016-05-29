@@ -170,7 +170,7 @@
 		<value>
 			SELECT p.id AS id, c.cedula AS cliente, p.direccion AS direccion
 			, b.nombre AS barrio, ci.nombre AS ciudad, 
-			ca.marca||' '||ca.modelo AS camion, 
+			ca.marca||' '||ca.modelo AS camion, p.costo AS costo,
 			p.fechapedido AS fechapedido, p.fechaentrega AS fechaentrega
 			FROM pedido p 
 			JOIN cliente c ON p.cliente_id = c.id

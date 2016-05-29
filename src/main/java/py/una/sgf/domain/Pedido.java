@@ -42,6 +42,7 @@ public class Pedido extends Model implements Serializable {
 
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_pedido_ciudad"))
 	@ManyToOne
+	@NotNull(message = "pedido.ciudad.not_null")
 	private Ciudad ciudad;
 
 	@NotNull(message = "pedido.camion.not_null")
@@ -56,11 +57,11 @@ public class Pedido extends Model implements Serializable {
 
 	private Float iva;
 
-	private BigDecimal costo;
+	private Integer costo;
 
 	private BigDecimal distancia;
 
-	private BigDecimal precio;
+	private Integer precio;
 
 	@Override
 	public Long getId() {
@@ -102,9 +103,7 @@ public class Pedido extends Model implements Serializable {
 	public void setBarrio(Barrio barrio) {
 
 		this.barrio = barrio;
-		if (barrio != null && barrio.getCiudad() != null) {
-			this.ciudad = barrio.getCiudad();
-		}
+		this.ciudad = barrio.getCiudad();
 	}
 
 	public Ciudad getCiudad() {
@@ -114,7 +113,9 @@ public class Pedido extends Model implements Serializable {
 
 	public void setCiudad(Ciudad ciudad) {
 
-		this.ciudad = ciudad;
+		if (ciudad != null) {
+			this.ciudad = ciudad;
+		}
 	}
 
 	public Camion getCamion() {
@@ -157,26 +158,6 @@ public class Pedido extends Model implements Serializable {
 		this.iva = iva;
 	}
 
-	public BigDecimal getCosto() {
-
-		return costo;
-	}
-
-	public void setCosto(BigDecimal costo) {
-
-		this.costo = costo;
-	}
-
-	public BigDecimal getPrecio() {
-
-		return precio;
-	}
-
-	public void setPrecio(BigDecimal precio) {
-
-		this.precio = precio;
-	}
-
 	public BigDecimal getDistancia() {
 
 		return distancia;
@@ -185,6 +166,26 @@ public class Pedido extends Model implements Serializable {
 	public void setDistancia(BigDecimal distancia) {
 
 		this.distancia = distancia;
+	}
+
+	public Integer getCosto() {
+
+		return costo;
+	}
+
+	public void setCosto(Integer costo) {
+
+		this.costo = costo;
+	}
+
+	public Integer getPrecio() {
+
+		return precio;
+	}
+
+	public void setPrecio(Integer precio) {
+
+		this.precio = precio;
 	}
 
 }

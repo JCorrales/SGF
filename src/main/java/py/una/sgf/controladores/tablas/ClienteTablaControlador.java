@@ -45,8 +45,13 @@ public class ClienteTablaControlador extends TablaControladorAncestro<Cliente> {
 	protected DataTableModel<?> getDataTable(Integer iDisplayStart, Integer iDisplayEnd, String orderBy,
 			String sSearch) {
 
-		return dataTableSqlDs.getDataTable(iDisplayStart, iDisplayEnd, orderBy, sSearch, "select_clientes",
-				"filter_clientes", DataTableSqlDs.WITHOUT_WHERE, ClienteReg.class);
+		try {
+			return dataTableSqlDs.getDataTable(iDisplayStart, iDisplayEnd, orderBy, sSearch, "select_clientes",
+					"filter_clientes", DataTableSqlDs.WITHOUT_WHERE, ClienteReg.class);
+		} catch (Exception e) {
+			logger.error("Error: {}", e.getMessage());
+		}
+		return null;
 	}
 
 }

@@ -16,10 +16,11 @@ import org.hibernate.envers.Audited;
 import py.una.cnc.htroot.domain.Model;
 import py.una.cnc.htroot.domain.Usuario;
 
-/*
- **
+/**
  *
- * @author juan
+ * @author Juan Corrales
+ * @Since 1.0
+ * @Version 1.0 27 de may. de 2016
  */
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "usuario_id", "seguro_id" }) })

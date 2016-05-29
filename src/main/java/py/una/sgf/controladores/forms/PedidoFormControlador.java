@@ -7,13 +7,13 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import py.una.cnc.htroot.bc.BusinessController;
 import py.una.cnc.htroot.controllers.FormControladorAncestro;
-import py.una.cnc.htroot.domain.Usuario;
+import py.una.sgf.bc.BarrioBC;
+import py.una.sgf.bc.CamionBC;
+import py.una.sgf.bc.CiudadBC;
+import py.una.sgf.bc.ClienteBC;
 import py.una.sgf.bc.PedidoBC;
+import py.una.sgf.bc.SgfConfigBC;
 import py.una.sgf.controladores.tablas.PedidoTablaControlador;
-import py.una.sgf.domain.Barrio;
-import py.una.sgf.domain.Camion;
-import py.una.sgf.domain.Ciudad;
-import py.una.sgf.domain.Cliente;
 import py.una.sgf.domain.Pedido;
 
 /**
@@ -28,11 +28,23 @@ public class PedidoFormControlador extends FormControladorAncestro<Pedido> {
 	private PedidoBC pedidoBC;
 	@Autowired
 	private PedidoTablaControlador pedidoTablaControlador;
+	@Autowired
+	private SgfConfigBC sgfConfigBC;
+	@Autowired
+	private BarrioBC barrioBC;
+	@Autowired
+	private CiudadBC ciudadBC;
+	@Autowired
+	private CamionBC camionBC;
+	@Autowired
+	private ClienteBC clienteBC;
 
 	@Override
 	protected Pedido getNuevaInstanciaBean() {
 
-		return new Pedido();
+		Pedido pedido = new Pedido();
+		pedido.setIva(sgfConfigBC.getConfig().getIva());
+		return pedido;
 	}
 
 	@Override
@@ -56,24 +68,19 @@ public class PedidoFormControlador extends FormControladorAncestro<Pedido> {
 	@Override
 	protected void addExtraAttributes(Pedido pedido, ModelMap modelMap) {
 
-		if (pedido.getId() == null) {
-			Cliente cliente = new Cliente();
-			cliente.setUsuario(new Usuario());
-			Barrio barrio = new Barrio();
-			barrio.setCiudad(new Ciudad());
-
-			pedido.setCliente(cliente);
-			pedido.setBarrio(barrio);
-			pedido.setCamion(new Camion());
-			modelMap.addAttribute("pedido", pedido);
-		} else {
-			if (pedido.getBarrio() == null) {
-				pedido.setBarrio(new Barrio());
-				modelMap.addAttribute("pedido", pedido);
-			}
-			System.out.println("pedido cliente " + pedido.getCliente().getCedula());
-			System.out.println("pedido usuario " + pedido.getCliente().getUsuario().getNombre());
+		if (pedido.getCliente() != null) {
+			pedido.setCliente(clienteBC.find(pedido.getCliente().getId()));;
 		}
+		if (pedido.getBarrio() != null) {
+			pedido.setBarrio(barrioBC.find(pedido.getBarrio().getId()));
+		}
+		if (pedido.getCamion() != null) {
+			pedido.setCamion(camionBC.find(pedido.getCamion().getId()));
+		}
+		if (pedido.getCiudad() != null) {
+			pedido.setCiudad(ciudadBC.find(pedido.getCiudad().getId()));
+		}
+		modelMap.addAttribute(getNombreObjeto(), pedido);
 		super.addExtraAttributes(pedido, modelMap);
 	}
 

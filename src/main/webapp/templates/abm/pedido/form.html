@@ -41,22 +41,31 @@
 
 				<input type="hidden" th:field="*{id}" />
 
-				<input type="hidden" id="cliente" name="cliente" th:value="${pedido.cliente.id}"/>
+				<input th:if="${pedido.cliente != null}" type="hidden" id="cliente" name="cliente" th:value="${pedido.cliente.id}"/>
+				<input th:if="${pedido.cliente == null}" type="hidden" id="cliente" name="cliente"/>
 				
-				<input type="hidden" id="barrio" name="barrio" th:value="${pedido.barrio.id}"/>
+				<input th:if="${pedido.barrio != null}" type="hidden" id="barrio" name="barrio" th:value="${pedido.barrio.id}"/>
+				<input th:if="${pedido.barrio == null}" type="hidden" id="barrio" name="barrio"/>
 				
-				<input type="hidden" id="ciudad" name="ciudad" th:value="${pedido.ciudad.id}"/>
+				<input th:if="${pedido.ciudad != null}" type="hidden" id="ciudad" name="ciudad" th:value="${pedido.ciudad.id}"/>
+				<input th:if="${pedido.ciudad == null}" type="hidden" id="ciudad" name="ciudad"/>
 				
-				<input type="hidden" id="camion" name="camion" th:value="${pedido.camion.id}"/>
+				<input th:if="${pedido.camion != null}" type="hidden" id="camion" name="camion" th:value="${pedido.camion.id}"/>
+				<input th:if="${pedido.camion == null}" type="hidden" id="camion" name="camion"/>
+				
+				<!-- <input type="hidden" th:field="*{camion.id}"/>
+				<input type="hidden" th:field="*{ciudad.id}"/>
+				<input type="hidden" th:field="*{barrio.id}"/>
+				<input type="hidden" th:field="*{cliente.id}"/>  -->
 				
 				<input type="hidden" id="distancia" name="distancia" th:value="${pedido.distancia}"/>
 				
 				<div class="form-group required">
 					<label for="clienteToShow" th:text="#{pedido.cliente.lbl}"
 						class="field-label">Cliente:</label> 
-						<input type="text" th:if="${pedido.cliente.id == null}"
+						<input type="text" th:if="${pedido.cliente == null}"
 						id="clienteToShow" disabled="disabled" class="form-control"/>
-						<input type="text" th:if="${pedido.cliente.id != null}"
+						<input type="text" th:if="${pedido.cliente != null}"
 						id="clienteToShow" disabled="disabled" class="form-control"
 						th:value="${pedido.cliente.usuario.nombre+' '+pedido.cliente.usuario.apellido}"
 						/>
@@ -75,9 +84,9 @@
 				<div class="form-group required">
 					<label for="barrioToShow" th:text="#{pedido.barrio.lbl}"
 						class="field-label">Barrio:</label> 
-						<input type="text" th:if="${pedido.barrio.id == null}"
+						<input type="text" th:if="${pedido.barrio == null}"
 						id="barrioToShow" disabled="disabled" class="form-control"/>
-						<input type="text" th:if="${pedido.barrio.id != null}"
+						<input type="text" th:if="${pedido.barrio != null}"
 						id="barrioToShow" disabled="disabled" class="form-control"
 						th:value="${pedido.barrio.nombre}"
 						/>
@@ -91,9 +100,9 @@
 				<div class="form-group required">
 					<label for="ciudadToShow" th:text="#{pedido.ciudad.lbl}"
 						class="field-label">Ciudad:</label> 
-						<input type="text" th:if="${pedido.ciudad.id == null}"
+						<input type="text" th:if="${pedido.ciudad == null}"
 						id="ciudadToShow" disabled="disabled" class="form-control"/>
-						<input type="text" th:if="${pedido.ciudad.id != null}"
+						<input type="text" th:if="${pedido.ciudad != null}"
 						id="ciudadToShow" disabled="disabled" class="form-control"
 						th:value="${pedido.ciudad.nombre}"
 						/>
@@ -106,9 +115,9 @@
 				<div class="form-group required">
 					<label for="camionToShow" th:text="#{pedido.camion.lbl}"
 						class="field-label">Camion:</label> 
-						<input type="text" th:if="${pedido.camion.id == null}"
+						<input type="text" th:if="${pedido.camion == null}"
 						id="camionToShow" disabled="disabled" class="form-control"/>
-						<input type="text" th:if="${pedido.camion.id != null}"
+						<input type="text" th:if="${pedido.camion != null}"
 						id="camionToShow" disabled="disabled" class="form-control"
 						th:value="${pedido.camion.marca+' '+pedido.camion.modelo+' '+pedido.camion.anio+' '+pedido.camion.chapa}"
 						/>

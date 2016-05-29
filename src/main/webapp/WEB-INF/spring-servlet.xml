@@ -118,6 +118,15 @@
 		se cargue en el servidor si el tamaño excede lo esperado, si se suben varios 
 		archivos lo que se verifica es la suma del tamaño de todos los archivos -->
 	<!-- **************************************************************** -->
+	
+	<bean name="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+
+		<!-- setting maximum upload size -->
+		<property name="maxUploadSize" value="-1" />
+
+	</bean>
+	
 	<bean name="genericMultipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 

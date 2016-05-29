@@ -116,12 +116,12 @@
 						th:disabled="${vc.isFieldDisabled('personaReferencia')}" />
 				</div>
 				
-				<div class="form-group required">
-					<label for="camion" class="field-label">Camion:</label> <select
-						class="form-control" th:field="*{camion}">
-						<option th:each="camion : ${camiones}"
-							th:value="${camion.id}" th:text="${camion.chapa}">Kia</option>
-					</select>
+				<div class="form-group">
+					<label for="sueldoNeto" th:text="#{chofer.sueldo_neto.lbl}"
+						class="field-label">Sueldo neto:</label> <input type="number"
+						th:field="*{sueldoNeto}" th:errorclass="invalid"
+						class="form-control"
+						th:disabled="${vc.isFieldDisabled('sueldoNeto')}" />
 				</div>
 
 				<div th:unless="${chofer.id == null}" class="form-group">
@@ -129,6 +129,14 @@
 						th:text="#{usuario.fechaultimoacceso.lbl}">Ultima Fecha</span>
 					</label> <input type="date" th:field="*{usuario.fechaUltimoAcceso}" th:errorclass="fieldError"
 						class="form-control" disabled="disabled"/>
+				</div>
+				
+				<div class="form-group">
+					<label for="camion" class="field-label">Camion:</label> <select
+						class="form-control" th:field="*{camion}">
+						<option th:each="camion : ${camiones}"
+							th:value="${camion.id}" th:text="${camion.chapa}">BMW</option>
+					</select>
 				</div>
 				
 				<div th:replace="abm/formulario_botones :: content">botones</div>

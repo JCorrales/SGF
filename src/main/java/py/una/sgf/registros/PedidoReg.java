@@ -10,8 +10,8 @@ public class PedidoReg {
 	private String ciudad;
 	private Date fechapedido;
 	private Date fechaentrega;
-	private String costo;
-	private String precio;
+	private Integer costo;
+	private Integer precio;
 	private String direccion;
 	private String barrio;
 	private String camion;
@@ -76,22 +76,22 @@ public class PedidoReg {
 		this.fechaentrega = fechaentrega;
 	}
 
-	public String getCosto() {
+	public Integer getCosto() {
 
 		return costo;
 	}
 
-	public void setCosto(String costo) {
+	public void setCosto(Integer costo) {
 
 		this.costo = costo;
 	}
 
-	public String getPrecio() {
+	public Integer getPrecio() {
 
 		return precio;
 	}
 
-	public void setPrecio(String precio) {
+	public void setPrecio(Integer precio) {
 
 		this.precio = precio;
 	}

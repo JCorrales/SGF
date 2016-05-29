@@ -1,6 +1,5 @@
 package py.una.sgf.bc.impl;
 
-import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -16,9 +15,6 @@ import py.una.sgf.domain.Pedido;
 @Scope("request")
 public class PedidoBCImpl extends BusinessControllerImpl<Pedido> implements PedidoBC {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
 	@Autowired
 	private PedidoDao pedidoDao;
@@ -36,6 +32,7 @@ public class PedidoBCImpl extends BusinessControllerImpl<Pedido> implements Pedi
 	}
 
 	@Override
+	// @Transactional
 	public void create(Pedido pedido) {
 
 		beforeSave(pedido);
@@ -43,6 +40,7 @@ public class PedidoBCImpl extends BusinessControllerImpl<Pedido> implements Pedi
 	}
 
 	@Override
+	// @Transactional
 	public void edit(Pedido pedido) {
 
 		beforeSave(pedido);
@@ -52,11 +50,16 @@ public class PedidoBCImpl extends BusinessControllerImpl<Pedido> implements Pedi
 	private void beforeSave(Pedido pedido) {
 
 		checkBarrioCiudad(pedido);
-		BigDecimal distancia = pedido.getDistancia();
+		// BigDecimal costo = new BigDecimal(0);
+		// BigDecimal precio = new BigDecimal(0);
+
+		// BigDecimal distancia = pedido.getDistancia();
 		Float iva = pedido.getIva();
-		BigDecimal mantenimiento = pedido.getCamion().getMantenimientoAnual();
+		// BigDecimal mantenimiento =
+		// pedido.getCamion().getMantenimientoAnual();
 		Float depreciacion = pedido.getCamion().getDepreciacionAnual();
-		BigDecimal consumo = pedido.getCamion().getConsumoPorKm();
+		// BigDecimal consumo = pedido.getCamion().getConsumoPorKm();
+		// BigDecimal sueldo = pedido.getCamion().getChofer().getSueldoNeto();
 
 	}
 
