@@ -1,17 +1,23 @@
 package py.una.sgf.domain;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.web.multipart.MultipartFile;
 import py.una.cnc.htroot.domain.Model;
 
 @Entity
@@ -58,6 +64,13 @@ public class Camion extends Model {
 	private BigDecimal mantenimientoAnual;
 
 	private transient Chofer chofer;
+
+	@Lob
+	@Basic(fetch = FetchType.LAZY, optional = true)
+	private byte[] foto;
+
+	@Transient
+	private MultipartFile tmpFoto;
 
 	@Override
 	public Long getId() {
@@ -155,5 +168,33 @@ public class Camion extends Model {
 	public String toString() {
 
 		return "Chapa: " + chapa + " Marca: " + marca + " Modelo: " + modelo;
+	}
+
+	@Override
+	public byte[] getFoto() {
+
+		return foto;
+	}
+
+	@Override
+	public void setFoto(byte[] foto) {
+
+		this.foto = foto;
+	}
+
+	public MultipartFile getTmpFoto() {
+
+		return tmpFoto;
+	}
+
+	public void setTmpFoto(MultipartFile tmpFoto) {
+
+		try {
+			this.setFoto(tmpFoto.getBytes());
+		} catch (IOException e) {
+			// nunca deberia ocurrir
+			throw new IllegalStateException("Error de acceso al archivo temporal");
+		}
+		this.tmpFoto = tmpFoto;
 	}
 }

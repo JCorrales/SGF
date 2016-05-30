@@ -57,7 +57,7 @@
 							style="max-height: 150px; max-width: 100%" />
 					</div>
 					<div class="form-group">
-						<input id="foto" type="file" th:field="*{usuario.tmpFoto}"
+						<input type="file" th:field="*{usuario.tmpFoto}"
 							class="filestyle" data-input="false"
 							th:attr="data-buttonText=#{usuario.cambiar_foto.lbl}, size-error=#{usuario.foto.size}" />
 					</div>
@@ -127,7 +127,7 @@
 			</form>
 			<script type="text/javascript">
 			//#foto es el input
-			$("#foto").change(function(){
+			$("#usuario\\.tmpFoto").change(function(){
 				previsualizar(this, '#userpic');//userpic es el id del tag img
 			});
 			</script>

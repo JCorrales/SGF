@@ -184,4 +184,14 @@
 		<name>filter_pedidos</name>
 		<value>cliente||fechapedido||costo||ciudad</value>
 	</query>
+	
+	<query>
+		<name>select_camiones_con_chofer</name>
+		<value>SELECT c.id AS id, c.chapa AS chapa, c.marca AS marca,
+			c.modelo AS modelo, c.anio AS anio, s.aseguradora AS aseguradora
+			FROM camion c 
+			LEFT JOIN seguro s ON c.id = s.camion_id
+			JOIN chofer ch ON ch.camion_id = c.id
+		</value>
+	</query>
 </queries>

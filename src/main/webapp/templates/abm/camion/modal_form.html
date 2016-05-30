@@ -38,7 +38,17 @@
 				th:object="${camion}" method="post" role="form">
 
 				<div th:replace="fragments/form_errores :: content">errores</div>
-
+				
+				<div class="row">
+					<div class="col-lg-6 col-md-6" th:if="${camion.id != null}">
+						<img id="camionpic" th:src="@{/abm/camion/foto/} + ${camion.id}"
+							style="max-height: 150px; max-width: 100%" />
+					</div>
+					<div class="col-lg-6 col-md-6" th:if="${camion.id == null}">
+						<img id="camionpic" th:src="@{/images/nopic.png}"
+							style="max-height: 150px; max-width: 100%" />
+					</div>
+				</div>
 				<input type="hidden" th:field="*{id}" />
 
 				<div class="form-group required">
@@ -89,7 +99,13 @@
 						th:field="*{depreciacionAnual}" class="form-control"/>
 				</div>
 				
-				<div th:replace="abm/modal_formulario_botones :: content(onElegir='onElegirCallback')">botones</div>
+				<button id="botonElegir" th:onclick="'modalElegir(\''+${vc.getNombreObjeto()}+'\', onElegirCallback)'" type="button" class="btn btn-default"
+					 th:unless="${vc.botonElegirHabilitado==false}">
+					<img src="../../icons/16/save.png"
+						th:src="@{/icons/16/save.png}" class="cancelar-btn" /><span
+						th:text="#{form.boton.elegir}">Cancelar</span>
+				</button>
+
 			</form>
 			<script type="text/javascript">
 				var form = $('#ajaxForm');
