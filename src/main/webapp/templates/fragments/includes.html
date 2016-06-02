@@ -189,16 +189,15 @@
      </div>
      
      <div th:fragment="format_number_input">
-		<input th:id="${inputId}+'str'" type="text" class="form-control"/>
+		<input th:id="${inputId}+'str'" type="text" class="form-control" th:disabled="${vc.isFieldDisabled('''+__${inputName==null?inputId:inputName}__+''')}"/>
 		<input th:id="${inputId}" th:value="${inputVal}" th:name="${inputName==null?inputId:inputName}" type="hidden"/>
 		<script th:inline="javascript">
 		/*<![CDATA[*/
-		    var inputId = [[${inputId}]];
-			$('#'+inputId+'str').autoNumeric('init');
-		    $("#"+inputId+"str").autoNumeric('set', $("#"+inputId).val()); 
-		    	$("#"+inputId+"str").blur(function() {
+			$('#'+[[${inputId}]]+'str').autoNumeric('init', {aPad: false});
+		    $("#"+[[${inputId}]]+"str").autoNumeric('set', $("#"+[[${inputId}]]).val()); 
+		    	$("#"+[[${inputId}]]+"str").blur(function() {
 		    		var value = this.value.replace(/\./g, '').replace(",",".");
-					$("#"+inputId).val(value);
+					$("#"+[[${inputId}]]).val(value);
 				});
 			/*]]>*/    
 		</script>

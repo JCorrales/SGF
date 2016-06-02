@@ -52,7 +52,7 @@ public class Chofer extends Model implements Serializable {
 	private Usuario usuario = new Usuario();
 
 	@NotNull(message = "chofer.sueldo_neto.not_null")
-	private BigDecimal sueldoNeto;
+	private Integer sueldoNeto;
 
 	transient private BigDecimal longitud;
 
@@ -60,7 +60,6 @@ public class Chofer extends Model implements Serializable {
 
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_chofer_camion"))
 	@OneToOne
-	@NotNull(message = "chofer.camion.not_null")
 	private Camion camion;
 
 	@Override
@@ -136,12 +135,12 @@ public class Chofer extends Model implements Serializable {
 		this.latitud = latitud;
 	}
 
-	public BigDecimal getSueldoNeto() {
+	public Integer getSueldoNeto() {
 
 		return sueldoNeto;
 	}
 
-	public void setSueldoNeto(BigDecimal sueldoNeto) {
+	public void setSueldoNeto(Integer sueldoNeto) {
 
 		this.sueldoNeto = sueldoNeto;
 	}

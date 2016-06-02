@@ -194,4 +194,17 @@
 			JOIN chofer ch ON ch.camion_id = c.id
 		</value>
 	</query>
+	
+	<query>
+		<name>select_combustibles</name>
+		<value>
+			SELECT id, codigo, nombre, precio
+			FROM combustible
+		</value>
+	</query>
+
+	<query>
+		<name>filter_combustibles</name>
+		<value>codigo||nombre||precio</value>
+	</query>
 </queries>

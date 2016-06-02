@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import py.una.cnc.htroot.main.ServiceResponse;
 import py.una.cnc.lib.core.util.AppLogger;
 import py.una.sgf.dao.ChoferSingletonDao;
+import py.una.sgf.domain.Camion;
 import py.una.sgf.domain.Chofer;
 
 @Controller
@@ -79,7 +80,15 @@ public class LocalizadorControlador {
 	@RequestMapping(value = "get_info_window", method = RequestMethod.GET)
 	public String getInfoWindow(ModelMap model, @RequestParam(required = true) String cedula) {
 
-		model.addAttribute("chofer", choferDao.findEntityByCondition("WHERE cedula = ?1", cedula));
+		Chofer chofer = choferDao.findEntityByCondition("WHERE cedula = ?1", cedula);
+		if (chofer.getCamion() == null) {
+			Camion camion = new Camion();
+			camion.setChapa("NO ASIGNADO");
+			camion.setMarca("****");
+			camion.setModelo("****");
+			chofer.setCamion(camion);
+		}
+		model.addAttribute("chofer", chofer);
 		return "abm/chofer/info-window :: content";
 	}
 

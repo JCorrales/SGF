@@ -67,4 +67,8 @@
 		<nombre>/abm/pedido/**</nombre>
 		<permiso>app_login</permiso>
 	</url>
+	<url>
+		<nombre>/abm/combustible/**</nombre>
+		<permiso>app_login</permiso>
+	</url>
 </urls>

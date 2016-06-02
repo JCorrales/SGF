@@ -1,19 +1,23 @@
 package py.una.sgf.controladores.forms;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import py.una.cnc.htroot.bc.BusinessController;
 import py.una.cnc.htroot.controllers.FormControladorAncestro;
 import py.una.sgf.bc.CamionBC;
 import py.una.sgf.bc.ChoferBC;
+import py.una.sgf.bc.CombustibleBC;
 import py.una.sgf.controladores.tablas.CamionTablaControlador;
 import py.una.sgf.dao.SeguroDao;
 import py.una.sgf.domain.Camion;
 import py.una.sgf.domain.Chofer;
+import py.una.sgf.domain.Combustible;
 import py.una.sgf.domain.Seguro;
 
 /**
@@ -34,6 +38,8 @@ public class CamionFormControlador extends FormControladorAncestro<Camion> {
 	private ChoferBC choferBC;
 	private boolean botonElegirHabilitado = false;
 	private String urlModal = "/abm/camion/content_modal :: content";
+	@Autowired
+	private CombustibleBC combustibleBC;
 
 	@Override
 	protected Camion getNuevaInstanciaBean() {
@@ -133,5 +139,11 @@ public class CamionFormControlador extends FormControladorAncestro<Camion> {
 
 		setBotonElegirHabilitado(false);
 		super.onGuardarFallido(bean, model, isNewRecord);
+	}
+
+	@ModelAttribute(value = "combustibleList")
+	public List<Combustible> getCombustibleList() {
+
+		return combustibleBC.findEntities();
 	}
 }

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" th:include="main :: page">
+<head>
+<title>Combustible</title>
+
+</head>
+<body>
+	<div th:fragment="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4 col-md-6">
+					<div th:include="abm/combustible/form :: content(vc=${controlador})">form</div>
+				</div>
+				<div class="col-lg-8 col-md-6">
+					<div
+						th:include="fragments/lista_ancestro::content(name='combustible',source=@{/abm/combustible/rest}, editUrl=@{/abm/combustible/}, vc=${controlador}, title=#{combustible.tabla.titulo})">lista</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+
+</html>

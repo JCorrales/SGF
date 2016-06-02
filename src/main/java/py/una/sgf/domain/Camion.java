@@ -5,10 +5,13 @@ import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -63,7 +66,10 @@ public class Camion extends Model {
 	@NotNull(message = "camion.mantenimiento_anual.not_null")
 	private BigDecimal mantenimientoAnual;
 
-	private transient Chofer chofer;
+	@NotNull(message = "camion.combustible.not_null")
+	@ManyToOne
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_camion_combustible"))
+	private Combustible combustible;
 
 	@Lob
 	@Basic(fetch = FetchType.LAZY, optional = true)
@@ -154,16 +160,6 @@ public class Camion extends Model {
 		this.mantenimientoAnual = mantenimientoAnual;
 	}
 
-	public Chofer getChofer() {
-
-		return chofer;
-	}
-
-	public void setChofer(Chofer chofer) {
-
-		this.chofer = chofer;
-	}
-
 	@Override
 	public String toString() {
 
@@ -196,5 +192,15 @@ public class Camion extends Model {
 			throw new IllegalStateException("Error de acceso al archivo temporal");
 		}
 		this.tmpFoto = tmpFoto;
+	}
+
+	public Combustible getCombustible() {
+
+		return combustible;
+	}
+
+	public void setCombustible(Combustible combustible) {
+
+		this.combustible = combustible;
 	}
 }

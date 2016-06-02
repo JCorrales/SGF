@@ -28,7 +28,7 @@ import py.una.cnc.htroot.domain.Model;
 
 @Entity
 @Audited
-@Table(uniqueConstraints = @UniqueConstraint(name = "seguro_poliza_uq", columnNames = { "poliza" }) )
+@Table(uniqueConstraints = @UniqueConstraint(name = "seguro_poliza_uq", columnNames = { "poliza" }))
 public class Seguro extends Model {
 
 	private static final String SECUENCIA = "seguro_id_seq";
@@ -72,8 +72,12 @@ public class Seguro extends Model {
 
 	@OneToOne(fetch = FetchType.EAGER)
 	@NotNull(message = "seguro.camion.not_null")
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_seguro_camion") )
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_seguro_camion"))
 	private Camion camion;
+
+	@NotNull(message = "seguro.costo_mes.not_null")
+	@Min(value = 0, message = "seguro.costo.min")
+	private Integer costo;
 
 	@Override
 	public Long getId() {
@@ -162,6 +166,16 @@ public class Seguro extends Model {
 	public void setCamion(Camion camion) {
 
 		this.camion = camion;
+	}
+
+	public Integer getCosto() {
+
+		return costo;
+	}
+
+	public void setCosto(Integer costo) {
+
+		this.costo = costo;
 	}
 
 }

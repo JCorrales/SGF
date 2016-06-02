@@ -84,6 +84,14 @@
 						th:disabled="${vc.isFieldDisabled('diasAntelacion')}" />
 				</div>
 				
+				<div class="form-group">
+					<label for="costo" th:text="#{seguro.costo.lbl}"
+						class="field-label">Costo:</label> 
+						<div th:remove="tag"
+								th:include="fragments/includes :: format_number_input(inputId='costo', 
+							inputVal=${seguro.costo})">Costo</div>
+				</div>
+				
 				 <div class="form-group required">
                     <label for="camion" th:text="#{seguro.camion.lbl}" class="field-label">Camion:</label>
                     <div
