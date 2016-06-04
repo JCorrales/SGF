@@ -13,8 +13,8 @@
 				function initMap() {
 				  directionsService = new google.maps.DirectionsService;
 				  map = new google.maps.Map(document.getElementById('googleMap'), {
-				    center: {lat: -25.2872316023617, lng: -57.65097141265869}
-				  });
+				    center: {lat:[[${latitud}]], lng: [[${longitud}]]}
+				  })
 				  var directionsDisplay = new google.maps.DirectionsRenderer({
 					    draggable: true,
 					    map: map,
@@ -33,8 +33,8 @@
 				
 				function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 				  directionsService.route({
-				    origin: {lat: -25.2872316023617, lng: -57.65097141265869},  
-				    destination: {lat: -25.2872316023617, lng: -57.65097141265869}, 
+				    origin: {lat: [[${latitud}]], lng: [[${longitud}]]},  
+				    destination: {lat: [[${latitud}]], lng: [[${longitud}]]}, 
 				    travelMode: google.maps.TravelMode.DRIVING
 				  }, function(response, status) {
 				    if (status == google.maps.DirectionsStatus.OK) {

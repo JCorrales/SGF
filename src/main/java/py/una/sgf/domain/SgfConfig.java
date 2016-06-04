@@ -31,29 +31,27 @@ public class SgfConfig extends Model {
 	private Float iva;
 
 	@NotNull(message = "sgf_config.gananciaPorcentaje.not_null")
-	@Min(value = 0L)
+	@Min(value = 0L, message = "sgf_config.gananciaPorcentaje.min")
 	private BigDecimal gananciaPorcentaje;
 
 	@NotNull(message = "sgf_config.latitud_base.not_null")
-	private BigDecimal latitudBase;
+	private String latitudBase;
 
-	@NotNull(message = "sgf_config.latitud_base.not_null")
-	private BigDecimal longitudBase;
+	@NotNull(message = "sgf_config.longitud_base.not_null")
+	private String longitudBase;
 
 	@NotNull(message = "sgf_config.mail_host.not_null")
 	@NotBlank(message = "sgf_config.mail_host.not_null")
 	private String mailHost;
 
 	@NotNull(message = "sgf_config.mail_remitente.not_null")
-	@NotBlank(message = "sgf_config.mail_remitente.not_null")
+	@NotBlank(message = "sgf_config.mail_remitente.not_blank")
 	private String mailRemitente;
 
-	@NotNull(message = "sgf_config.mail_pass.not_null")
-	@NotBlank(message = "sgf_config.mail_pass.not_null")
 	private String mailPass;
 
 	@NotNull(message = "sgf_config.seguro_asunto.not_null")
-	@NotBlank(message = "sgf_config.seguro_asunto.not_null")
+	@NotBlank(message = "sgf_config.seguro_asunto.not_blank")
 	private String seguroAsunto;
 
 	@NotNull(message = "sgf_config.seguro_menseaje.not_null")
@@ -64,8 +62,8 @@ public class SgfConfig extends Model {
 	@NotBlank(message = "sgf_config.app_host.not_null")
 	private String appHost;
 
-	@NotNull(message = "sgf_config.app_host.not_null")
-	@Min(value = 0L) // minutos
+	@NotNull(message = "sgf_config.resetPassTimeWait.not_null")
+	@Min(value = 0L, message = "sgf_config.resetPassTimeWait.min") // minutos
 	private Integer resetPassTimeWait;
 
 	@Override
@@ -98,26 +96,6 @@ public class SgfConfig extends Model {
 	public void setGananciaPorcentaje(BigDecimal gananciaPorcentaje) {
 
 		this.gananciaPorcentaje = gananciaPorcentaje;
-	}
-
-	public BigDecimal getLatitudBase() {
-
-		return latitudBase;
-	}
-
-	public void setLatitudBase(BigDecimal latitudBase) {
-
-		this.latitudBase = latitudBase;
-	}
-
-	public BigDecimal getLongitudBase() {
-
-		return longitudBase;
-	}
-
-	public void setLongitudBase(BigDecimal longitudBase) {
-
-		this.longitudBase = longitudBase;
 	}
 
 	public String getMailHost() {
@@ -188,6 +166,26 @@ public class SgfConfig extends Model {
 	public void setResetPassTimeWait(Integer resetPassTimeWait) {
 
 		this.resetPassTimeWait = resetPassTimeWait;
+	}
+
+	public String getLatitudBase() {
+
+		return latitudBase;
+	}
+
+	public void setLatitudBase(String latitudBase) {
+
+		this.latitudBase = latitudBase;
+	}
+
+	public String getLongitudBase() {
+
+		return longitudBase;
+	}
+
+	public void setLongitudBase(String longitudBase) {
+
+		this.longitudBase = longitudBase;
 	}
 
 }

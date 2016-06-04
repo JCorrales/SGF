@@ -47,6 +47,12 @@ public class SgfConfigFormControlador extends FormControladorAncestro<SgfConfig>
 	}
 
 	@Override
+	public String index(SgfConfig bean, ModelMap model) {
+
+		return edicionRegistro(model, sgfConfigBC.getConfig().getId());
+	}
+
+	@Override
 	public boolean isBotonBorrarHabilitado() {
 
 		return false;

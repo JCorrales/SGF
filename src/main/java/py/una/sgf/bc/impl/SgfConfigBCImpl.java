@@ -10,6 +10,7 @@ import py.una.sgf.bc.SgfConfigBC;
 import py.una.sgf.dao.SgfConfigDao;
 import py.una.sgf.domain.SgfConfig;
 import py.una.sgf.util.SgfMessage;
+import py.una.sgf.util.SgfUtil;
 
 @Component
 @Scope
@@ -23,6 +24,8 @@ public class SgfConfigBCImpl extends BusinessControllerImpl<SgfConfig> implement
 	private SgfConfigDao sgfConfigDao;
 	@Autowired
 	private SgfMessage msg;
+	@Autowired
+	private SgfUtil sgfUtil;
 
 	@Override
 	public SgfConfigDao getDAOInstance() {
@@ -50,8 +53,8 @@ public class SgfConfigBCImpl extends BusinessControllerImpl<SgfConfig> implement
 		sgfConfig.setAppHost(msg.get("app.host"));
 		sgfConfig.setGananciaPorcentaje(new BigDecimal("10"));
 		sgfConfig.setIva(new Float(10));
-		sgfConfig.setLatitudBase(new BigDecimal("-25.282875876175524"));
-		sgfConfig.setLongitudBase(new BigDecimal("-57.634894251823425"));
+		sgfConfig.setLatitudBase("-25.282875876175524");
+		sgfConfig.setLongitudBase("-57.634894251823425");
 		sgfConfig.setMailHost(msg.get("mail.host"));
 		sgfConfig.setMailPass(msg.get("mail.password"));
 		sgfConfig.setMailRemitente(msg.get("mail.remitente"));
@@ -61,6 +64,15 @@ public class SgfConfigBCImpl extends BusinessControllerImpl<SgfConfig> implement
 		super.create(sgfConfig);
 		return sgfConfig;
 	}
+
+	@Override
+	public void edit(SgfConfig obj) {
+
+		if (obj.getMailPass() == null) {
+			obj.setMailPass(getConfig().getMailPass());
+		}
+		super.edit(obj);
+	};
 
 	@Override
 	public void destroy(SgfConfig obj) {

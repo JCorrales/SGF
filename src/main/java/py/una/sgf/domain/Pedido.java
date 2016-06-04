@@ -103,7 +103,9 @@ public class Pedido extends Model implements Serializable {
 	public void setBarrio(Barrio barrio) {
 
 		this.barrio = barrio;
-		this.ciudad = barrio.getCiudad();
+		if (barrio != null) {
+			this.ciudad = barrio.getCiudad();
+		}
 	}
 
 	public Ciudad getCiudad() {

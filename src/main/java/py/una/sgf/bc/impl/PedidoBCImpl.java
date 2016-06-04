@@ -1,6 +1,7 @@
 package py.una.sgf.bc.impl;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -10,6 +11,7 @@ import py.una.sgf.bc.CamionBC;
 import py.una.sgf.bc.ChoferBC;
 import py.una.sgf.bc.PedidoBC;
 import py.una.sgf.bc.SeguroBC;
+import py.una.sgf.bc.SgfConfigBC;
 import py.una.sgf.dao.PedidoDao;
 import py.una.sgf.domain.Chofer;
 import py.una.sgf.domain.Pedido;
@@ -30,6 +32,8 @@ public class PedidoBCImpl extends BusinessControllerImpl<Pedido> implements Pedi
 	private CamionBC camionBC;
 	@Autowired
 	private ChoferBC choferBC;
+	@Autowired
+	private SgfConfigBC sgfConfigBC;
 
 	@Override
 	public PedidoDao getDAOInstance() {
@@ -58,13 +62,27 @@ public class PedidoBCImpl extends BusinessControllerImpl<Pedido> implements Pedi
 		checkBarrioCiudad(pedido);
 		BigDecimal costo = new BigDecimal(0);
 		BigDecimal precio = new BigDecimal(0);
+		BigDecimal ganancia = sgfConfigBC.getConfig().getGananciaPorcentaje();
 
 		BigDecimal distancia = pedido.getDistancia();
 		Float iva = pedido.getIva();
 		BigDecimal mantenimiento = pedido.getCamion().getMantenimientoAnual();
 		Float depreciacion = pedido.getCamion().getDepreciacionAnual();
 		BigDecimal consumo = pedido.getCamion().getConsumoPorKm();
+		Integer sueldo = getSueldo(pedido);
+		Integer seguro = getSeguro(pedido);
 
+		costo = consumo.multiply(distancia);// consumo*distancia
+		costo = costo
+				.add(costo.divide(new BigDecimal(100), RoundingMode.HALF_UP).multiply(new BigDecimal(depreciacion)));// +depreciacion
+		costo = costo.add(mantenimiento.divide(new BigDecimal(365), RoundingMode.HALF_UP));// +mantenimiento
+		costo = costo.add(new BigDecimal(sueldo / 30));
+		costo = costo.add(new BigDecimal(seguro / 30));
+		costo = costo.add(new BigDecimal(iva / 10));
+		pedido.setCosto(costo.intValue());
+		precio = costo.divide(new BigDecimal(100), RoundingMode.HALF_UP);
+
+		pedido.setPrecio(precio.multiply(ganancia).intValue());
 	}
 
 	private Integer getSueldo(Pedido pedido) {

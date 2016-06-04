@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Barrio</title>
+<title>SgfConfig</title>
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="Content-Type" content="text/html;charset=UTF8" />
@@ -17,7 +17,6 @@
 <link href="../../../font-awesome-4.2.0/css/font-awesome.min.css"
 	rel="stylesheet" />
 <link href="../../../css/htroot.css" />
-<script src="../../../js/jquery-1.11.0.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
 <script src="../../../js/bootstrap.min.js"></script>
@@ -31,32 +30,71 @@
 	<div class="col-lg-12 col-lm-12">
 		<div th:fragment="content">
 
-			<h4 class="page-header" th:text="#{barrio.form.titulo}">Barrio</h4>
+			<h4 class="page-header" th:text="#{sgfConfig.form.titulo}">SgfConfig</h4>
 			<div th:replace="fragments/notificaciones :: content">notificiones</div>
 
-			<form action="#" th:action="@{/abm/barrio/op}"
-				th:object="${barrio}" method="post" role="form">
+			<form id="sgfConfigForm" action="#" th:action="@{/abm/sgf_config/op}"
+				th:object="${sgfConfig}" method="post" role="form">
 
 				<div th:replace="fragments/form_errores :: content">errores</div>
 
 				<input type="hidden" th:field="*{id}" />
 
-				<div class="form-group required">
-					<label for="codigo" th:text="#{barrio.codigo.lbl}"
-						class="field-label">Codigo:</label> <input type="text"
-						th:field="*{codigo}" class="form-control" autofocus="autofocus" maxlength="3" />
+				<div class="form-group required col-lg-4 col-md-4">
+					<label for="iva" th:text="#{sgfConfig.iva.lbl}"
+						class="field-label">IVA:</label> <input type="number"
+						th:field="*{iva}" class="form-control" maxlength="3" autofocus="autofocus"/>
 				</div>
-
-				<div class="form-group required">
-					<label for="nombre" th:text="#{barrio.nombre.lbl}"
-						class="field-label">Nombre:</label> <input type="text"
-						th:field="*{nombre}" class="form-control" maxlength="50"/>
+				
+				<div class="form-group required col-lg-4 col-md-4">
+					<label for="gananciaPorcentaje" th:text="#{sgfConfig.gananciaPorcentaje.lbl}"
+						class="field-label">gananciaPorcentaje:</label> <input type="number"
+						th:field="*{gananciaPorcentaje}" class="form-control"/>
 				</div>
-                <div class="form-group required">
-                    <label for="ciudad" th:text="#{barrio.ciudad.lbl}" class="field-label">País:</label>
-                    <div
-                        th:include="fragments/includes :: suggestbox_script(field='ciudad', source=@{/abm/ciudad/suggest}, idName='id', displayName='nombre', idValue=${barrio.ciudad != null? barrio.ciudad.id:null}, displayValue=${barrio.ciudad != null? barrio.ciudad.nombre:null}, required=true,)">Suggest</div>
-                </div>
+				
+				<div class="form-group required col-lg-4 col-md-4">
+					<label for="mailHost" th:text="#{sgfConfig.mailHost.lbl}"
+						class="field-label">mailHost:</label> <input type="text"
+						th:field="*{mailHost}" class="form-control"/>
+				</div>
+				
+				<div class="form-group required col-lg-4 col-md-4">
+					<label for="mailRemitente" th:text="#{sgfConfig.mailRemitente.lbl}"
+						class="field-label">remitente:</label> <input type="email"
+						th:field="*{mailRemitente}" class="form-control"/>
+				</div>
+				
+				<div class="form-group required col-lg-4 col-md-4">
+					<label for="mailPass" th:text="#{sgfConfig.mailPass.lbl}"
+						class="field-label">mailPass:</label> <input type="password"
+						th:field="*{mailPass}" class="form-control"/>
+				</div>
+				
+				<div class="form-group required col-lg-4 col-md-4">
+					<label for="seguroAsunto" th:text="#{sgfConfig.seguroAsunto.lbl}"
+						class="field-label">asunto:</label> <input type="text"
+						th:field="*{seguroAsunto}" class="form-control"/>
+				</div>
+				
+				<div class="form-group required col-lg-4 col-md-4">
+					<label for="seguroMensaje" th:text="#{sgfConfig.seguroMensaje.lbl}"
+						class="field-label">seguroMensaje:</label> 
+						<textarea rows="4" style="width: 100%" form="sgfConfigForm"
+						th:field="*{seguroMensaje}" th:errorclass="invalid" 
+						class="form-control"></textarea>
+				</div>
+				
+				<div class="form-group required col-lg-4 col-md-4">
+					<label for="appHost" th:text="#{sgfConfig.appHost.lbl}"
+						class="field-label">appHost:</label> <input type="text"
+						th:field="*{appHost}" class="form-control"/>
+				</div>
+				
+				<div class="form-group required col-lg-4 col-md-4">
+					<label for="resetPassTimeWait" th:text="#{sgfConfig.resetPassTimeWait.lbl}"
+						class="field-label">resetPassTimeWait:</label> <input type="number"
+						th:field="*{resetPassTimeWait}" class="form-control"/>
+				</div>
                <br></br>
                <br></br>
                <br></br>
@@ -73,8 +111,8 @@
 				var longitud = 0;
 
 				$(document).ready(function(){
-					latitud = $('#latitud').val();
-					longitud = $('#longitud').val();
+					latitud = $('#latitudBase').val();
+					longitud = $('#longitudBase').val();
 					if(new String(latitud).length == 0){
 						latitud = -25.282875876175524;
 						longitud = -57.634926438331604;
@@ -103,8 +141,8 @@
 
 				function placeMarker(location) {
   					marker.setPosition(location);
-  					$('#longitud').val(location.lng());
-  					$('#latitud').val(location.lat());
+  					$('#longitudBase').val(location.lng());
+  					$('#latitudBase').val(location.lat());
 				}
 
 				google.maps.event.addDomListener(window, 'load', initialize);
@@ -113,15 +151,15 @@
 				<div id="googleMap" style="width: 100%; height: 380px;"></div>
 
 				<div class="form-group">
-					<label for="latitud" th:text="#{barrio.latitud.lbl}"
-						class="field-label">Latitud:</label> <input type="text"
-						th:field="*{latitud}" class="form-control" />
+					<label for="latitudBase" th:text="#{sgfConfig.latitudBase.lbl}"
+						class="field-label">latitudBase:</label> <input type="text"
+						th:field="*{latitudBase}" class="form-control" />
 				</div>
 
 				<div class="form-group">
-					<label for="longitud" th:text="#{barrio.longitud.lbl}"
-						class="field-label">Longitud:</label> <input type="text"
-						th:field="*{longitud}" class="form-control" />
+					<label for="longitudBase" th:text="#{sgfConfig.longitudBase.lbl}"
+						class="field-label">longitudBase:</label> <input type="text"
+						th:field="*{longitudBase}" class="form-control" />
 				</div>
                         
 				<div th:replace="abm/formulario_botones :: content">botones</div>

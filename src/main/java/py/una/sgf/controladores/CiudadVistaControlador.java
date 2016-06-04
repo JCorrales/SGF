@@ -1,11 +1,13 @@
 package py.una.sgf.controladores;
 
+import java.math.BigDecimal;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +16,7 @@ import py.una.cnc.htroot.dataprovider.DataTableSqlDs;
 import py.una.cnc.htroot.main.Cons;
 import py.una.cnc.lib.db.dataprovider.DataTableModel;
 import py.una.sgf.bc.CiudadBC;
+import py.una.sgf.bc.SgfConfigBC;
 import py.una.sgf.domain.Ciudad;
 import py.una.sgf.registros.CiudadReg;
 
@@ -28,6 +31,9 @@ public class CiudadVistaControlador extends ControladorDatosGenerales<Ciudad> {
 	private CiudadBC ciudadBC;
 	private boolean botonElegirHabilitado = false;
 	private String urlModal = "/abm/ciudad/content_modal :: content";
+
+	@Autowired
+	private SgfConfigBC sgfConfigBC;
 
 	@Override
 	protected Ciudad getNuevaInstanciaBean() {
@@ -122,4 +128,15 @@ public class CiudadVistaControlador extends ControladorDatosGenerales<Ciudad> {
 		super.onGuardarFallido(bean, model);
 	}
 
+	@ModelAttribute("latitud")
+	public BigDecimal getLatitud() {
+
+		return new BigDecimal(sgfConfigBC.getConfig().getLatitudBase());
+	}
+
+	@ModelAttribute("longitud")
+	public BigDecimal getLongitud() {
+
+		return new BigDecimal(sgfConfigBC.getConfig().getLongitudBase());
+	}
 }

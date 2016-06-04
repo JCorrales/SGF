@@ -2,6 +2,8 @@ package py.una.sgf.bc.impl;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,8 @@ import py.una.cnc.htroot.exception.ObjectErrorException;
 import py.una.cnc.htroot.main.AppObjects;
 import py.una.cnc.htroot.main.CoreConfig;
 import py.una.cnc.htroot.main.Message;
+import py.una.cnc.htroot.main.ServiceResponse;
+import py.una.cnc.lib.core.util.AppLogger;
 import py.una.cnc.lib.db.dataprovider.SQLToObject;
 import py.una.sgf.bc.UsuarioBC2;
 import py.una.sgf.controladores.CredencialesUsuarioControlador2;
@@ -34,6 +38,7 @@ public class UsuarioBCImpl2 extends BusinessControllerImpl<Usuario> implements U
 	private AppObjects appObjects;
 	@Autowired
 	private CoreConfig coreConfig;
+	private AppLogger logger = new AppLogger(UsuarioBCImpl2.class);
 	/**
 	 *
 	 */
@@ -142,19 +147,26 @@ public class UsuarioBCImpl2 extends BusinessControllerImpl<Usuario> implements U
 	private void enviarMail(Usuario usuario) {
 
 		if (usuario.getActivo()) {
-			Thread thread = new Thread() {
+			Timer timer = new Timer(true);
+			TimerTask thread = new TimerTask() {
 
 				@Override
 				public void run() {
 
 					try {
-						credenciales.cambiarPass(usuario.getCodigo(), new ModelMap());
+						ServiceResponse<Usuario> response = credenciales.cambiarPass(usuario.getCodigo(),
+								new ModelMap());
+						if (!response.isSuccess()) {
+							logger.error("Error al enviar mail: {}", response.getMessage());
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+					cancel();
 				}
+
 			};
-			thread.start();
+			timer.schedule(thread, 10000);
 		}
 	}
 
