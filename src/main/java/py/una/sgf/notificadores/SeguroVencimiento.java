@@ -24,7 +24,6 @@ import py.una.sgf.dao.SingletonSeguroDao;
 import py.una.sgf.dao.SingletonSeguroNotificarUsuarioDao;
 import py.una.sgf.domain.Seguro;
 import py.una.sgf.domain.SeguroNotificarUsuario;
-import py.una.sgf.domain.SgfConfig;
 import py.una.sgf.util.SgfUtil;
 
 @Component
@@ -47,7 +46,6 @@ public class SeguroVencimiento {
 	@Autowired
 	@Lazy(true)
 	private SgfConfigBC sgfConfigBC;
-	private SgfConfig sgfConfig = null;
 
 	public SeguroVencimiento() {
 
@@ -109,11 +107,11 @@ public class SeguroVencimiento {
 
 	private void enviarMail(Seguro seguro, String destinatario) throws AddressException, MessagingException {
 
-		String host = getSgfConfig().getMailHost();
-		String remitente = getSgfConfig().getMailRemitente();
-		String password = getSgfConfig().getMailPass();
-		String asunto = getSgfConfig().getSeguroAsunto();
-		String mensaje = getSgfConfig().getSeguroMensaje();
+		String host = sgfConfigBC.getConfig().getMailHost();
+		String remitente = sgfConfigBC.getConfig().getMailRemitente();
+		String password = sgfConfigBC.getConfig().getMailPass();
+		String asunto = sgfConfigBC.getConfig().getSeguroAsunto();
+		String mensaje = sgfConfigBC.getConfig().getSeguroMensaje();
 		mensaje = mensaje.replace("#CHAPA#", seguro.getCamion().getChapa());
 		mensaje = mensaje.replace("#VENCIMIENTO#", seguro.getVencimiento().toString().subSequence(0, 10));
 		mensaje = mensaje.replace("#POLIZA#", seguro.getPoliza());
@@ -166,14 +164,6 @@ public class SeguroVencimiento {
 			return message;
 		}
 		return message;
-	}
-
-	private SgfConfig getSgfConfig() {
-
-		if (sgfConfig == null) {
-			sgfConfig = sgfConfigBC.getConfig();
-		}
-		return sgfConfig;
 	}
 
 }

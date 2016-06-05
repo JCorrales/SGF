@@ -40,13 +40,6 @@ public class SgfConfigFormControlador extends FormControladorAncestro<SgfConfig>
 	}
 
 	@Override
-	protected void addExtraAttributes(SgfConfig bean, ModelMap modelMap) {
-
-		modelMap.addAttribute(getNombreObjeto(), sgfConfigBC.getConfig());
-
-	}
-
-	@Override
 	public String index(SgfConfig bean, ModelMap model) {
 
 		return edicionRegistro(model, sgfConfigBC.getConfig().getId());

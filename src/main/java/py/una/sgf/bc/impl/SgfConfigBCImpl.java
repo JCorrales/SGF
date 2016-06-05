@@ -10,7 +10,6 @@ import py.una.sgf.bc.SgfConfigBC;
 import py.una.sgf.dao.SgfConfigDao;
 import py.una.sgf.domain.SgfConfig;
 import py.una.sgf.util.SgfMessage;
-import py.una.sgf.util.SgfUtil;
 
 @Component
 @Scope
@@ -24,8 +23,6 @@ public class SgfConfigBCImpl extends BusinessControllerImpl<SgfConfig> implement
 	private SgfConfigDao sgfConfigDao;
 	@Autowired
 	private SgfMessage msg;
-	@Autowired
-	private SgfUtil sgfUtil;
 
 	@Override
 	public SgfConfigDao getDAOInstance() {
@@ -68,7 +65,7 @@ public class SgfConfigBCImpl extends BusinessControllerImpl<SgfConfig> implement
 	@Override
 	public void edit(SgfConfig obj) {
 
-		if (obj.getMailPass() == null) {
+		if (obj.getMailPass() == null || obj.getMailPass().trim().length() == 0) {
 			obj.setMailPass(getConfig().getMailPass());
 		}
 		super.edit(obj);
