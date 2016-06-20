@@ -46,7 +46,7 @@ public class PerfilUsuarioControlador {
 	private AppObjects appObjects;
 	private AppLogger logger = new AppLogger(this.getClass());
 
-	@RequestMapping("/change_pass")
+	@RequestMapping("/change_pass2")
 	public @ResponseBody ServiceResponse<Usuario> changePassword(ModelMap model,
 			@RequestParam("oldpass") String oldPass, @RequestParam("newpass") String newPass,
 			@RequestParam("confirmpass") String confirmPass) {

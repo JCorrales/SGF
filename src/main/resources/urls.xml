@@ -1,23 +1,27 @@
 <urls>
 	<url>
 		<nombre>/inicio/**</nombre>
-		<permiso>root</permiso>
+		<permiso>cliente</permiso>
+	</url>
+	<url>
+		<nombre>/abm/usuario/foto/**</nombre>
+		<permiso>cliente</permiso>
 	</url>
 	<url>
 		<nombre>/abm/usuario/**</nombre>
-		<permiso>usuario_sel</permiso>
+		<permiso>root</permiso>
 	</url>
 	<url>
 		<nombre>/abm/barrio/**</nombre>
-		<permiso>Barrio_sel</permiso>
+		<permiso>root</permiso>
 	</url>
 	<url>
 		<nombre>/abm/ciudad/**</nombre>
-		<permiso>Ciudad_sel</permiso>
+		<permiso>root</permiso>
 	</url>
 	<url>
 		<nombre>/abm/multipleSave/**</nombre>
-		<permiso>Tramite_sel</permiso>
+		<permiso>root</permiso>
 	</url>
 	<url>
 		<nombre>/abm/cargador/**</nombre>
@@ -53,7 +57,11 @@
 	</url>
 	<url>
 		<nombre>/localizador/get_info_window/**</nombre>
-		<permiso>root</permiso>
+		<permiso>cliente</permiso>
+	</url>
+	<url>
+		<nombre>/localizador/get_position_pedidos/**</nombre>
+		<permiso>cliente</permiso>
 	</url>
 	<url>
 		<nombre>/localizador/registro/**</nombre>

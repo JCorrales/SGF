@@ -2,7 +2,9 @@
 package py.una.sgf.controladores;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import py.una.cnc.htroot.main.AppObjects;
 import py.una.cnc.htroot.main.ServiceResponse;
 import py.una.cnc.lib.core.util.AppLogger;
+import py.una.cnc.lib.db.dataprovider.SQLToObject;
 import py.una.sgf.dao.ChoferSingletonDao;
 import py.una.sgf.domain.Camion;
 import py.una.sgf.domain.Chofer;
@@ -25,6 +29,8 @@ public class LocalizadorControlador {
 	private ChoferSingletonDao choferDao;
 	private AppLogger logger = new AppLogger(LocalizadorControlador.class);
 	private Map<String, Chofer> registro = new HashMap<String, Chofer>();
+	@Autowired
+	private AppObjects appObjects;
 
 	@RequestMapping(value = "registrar", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	public @ResponseBody ServiceResponse<String> registrar(@RequestParam(required = true) String cedula) {
@@ -104,6 +110,31 @@ public class LocalizadorControlador {
 
 		model.addAttribute("choferList", registro.values());
 		return "abm/mapas/localizador-registro";
+	}
+
+	@RequestMapping(value = "get_position_pedidos", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+	public @ResponseBody Map<String, Chofer> getPositionPedidos(@RequestParam(required = true) String cedula) {
+
+		String sql = appObjects.getSqlSource().get("select_position_pedidos");
+		SQLToObject<Chofer> sqlToObject = new SQLToObject<>(appObjects.getDataSourcePool());
+		sqlToObject.setClassOfT(Chofer.class);
+		String dsName = "java:jboss/datasources/sgfDS";
+
+		List<Chofer> choferList;
+		try {
+			choferList = sqlToObject.createList(dsName, sql, cedula);
+		} catch (SQLException exception) {
+			throw new RuntimeException(exception.getMessage());
+		}
+
+		logger.warning("choferList size: {} cedula {}", choferList.size(), cedula);
+
+		Map<String, Chofer> clientePedidos = new HashMap<String, Chofer>();
+		for (Chofer chofer : choferList) {
+			clientePedidos.put(chofer.getCedula(), registro.get(chofer.getCedula()));
+		}
+
+		return clientePedidos;
 	}
 
 }

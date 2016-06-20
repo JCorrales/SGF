@@ -207,4 +207,17 @@
 		<name>filter_combustibles</name>
 		<value>codigo||nombre||precio</value>
 	</query>
+	
+	<query>
+		<name>select_position_pedidos</name>
+		<value>
+			SELECT ch.id, ch.categoria, ch.cedula, ch.personareferencia AS "personaReferencia", 
+			ch.sueldoneto AS "sueldoNeto"
+			FROM pedido p 
+			JOIN camion c ON p.camion_id = c.id
+			JOIN chofer ch ON ch.camion_id = c.id
+			JOIN cliente cl ON cl.id = p.cliente_id
+			WHERE cl.cedula = ?
+		</value>
+	</query>
 </queries>

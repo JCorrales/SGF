@@ -25,6 +25,12 @@ public class Dashboard {
 
 		model.addAttribute("sesionUsuario", sesionUsuario);
 		model.addAttribute("usuarioActual", sesionUsuario.getUsuario());
+
+		if (sesionUsuario.hasRole("root")) {
+			return "index";
+		} else if (sesionUsuario.hasRole("cliente")) {
+			return "index_cliente";
+		}
 		return "index";
 	}
 }

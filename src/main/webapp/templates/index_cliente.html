@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" th:include="main :: page">
+<head>
+<title>Dashboard</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="shortcut icon" href="/images/favicon.ico"
+	th:href="@{/images/favicon.ico}" type="image/x-icon" />
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="shortcut icon" href="../images/favicon.ico"
+	th:href="@{/images/favicon.ico}" type="image/x-icon" />
+
+<link href="../css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+
+<link href="../css/sb-admin-2.css" th:href="@{/css/sb-admin-2.css}"
+	rel="stylesheet" />
+
+<link href="../css/jquery-ui.css" th:href="@{/css/jquery-ui.css}"
+	rel="stylesheet" />
+
+<link href="../font-awesome-4.2.0/css/font-awesome.min.css"
+	th:href="@{/font-awesome-4.2.0/css/font-awesome.min.css}"
+	rel="stylesheet" />
+
+<link href="../css/htroot.css" th:href="@{/css/htroot.css}"
+	rel="stylesheet" />
+
+<link href="../css/dataTables.tableTools.css"
+	th:href="@{/css/dataTables.tableTools.css}" rel="stylesheet" />
+
+<link href="../css/jquery-ui.css" th:href="@{/css/jquery-ui.css}"
+	rel="stylesheet" />
+
+<link href="../css/plugins/dataTables.bootstrap.css"
+	th:href="@{/css/plugins/dataTables.bootstrap.css}" rel="stylesheet" />
+
+
+
+<script src="../js/jquery-1.11.0.js" th:src="@{/js/jquery-1.11.0.js}"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="../js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script src="../js/plugins/metisMenu/metisMenu.min.js"
+	th:src="@{/js/plugins/metisMenu/metisMenu.min.js}"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="../js/sb-admin-2.js" th:src="@{/js/sb-admin-2.js}"></script>
+<script src="../js/jquery-ui.js" th:src="@{/js/jquery-ui.js}"></script>
+
+<!-- DataTables JavaScript -->
+<script src="../js/plugins/dataTables/jquery.dataTables.js"
+	th:src="@{/js/plugins/dataTables/jquery.dataTables.js}"></script>
+<script src="../js/plugins/dataTables/dataTables.bootstrap.js"
+	th:src="@{/js/plugins/dataTables/dataTables.bootstrap.js}"></script>
+<script src="../js/htroot.js" th:src="@{/js/htroot.js}"></script>
+<script src="../js/dataTables.tableTools.js"
+	th:src="@{/js/dataTables.tableTools.js}"></script>
+
+
+</head>
+<body>
+	<div th:fragment="content">
+		<div class="container">
+			 <script th:inline="javascript">
+			 /*<![CDATA[*/
+				var map;
+				var infoList = [];//cierres en javascript
+				
+				function getInfoWindow(cedula){
+					var infoWindowHtml;
+					$.ajax({
+						"dataType" : 'html',
+						"type" : "GET",
+						"url" : [[@{/localizador/get_info_window}]]+'?cedula='+cedula,
+						"async" : false,
+						"success" : function(data) {
+							infoWindowHtml = data;
+						}
+					});
+					return infoWindowHtml.valueOf();
+				}
+				function getData(){
+					$.ajax({
+						"dataType" : 'json',
+						"type" : "GET",
+						"url" : [[@{/localizador/get_position_pedidos}]]+'?cedula='+[[${usuarioActual.codigo}]],
+						"async" : false,
+						"success" : function(data) {
+							var choferes = data;
+							var i = 0;
+							for(chofer in choferes){
+								infoList[i] = getInfoWindow(choferes[chofer].cedula);
+								
+								var marker = new google.maps.Marker({
+				    				label: choferes[chofer].usuario.nombre,
+				    				title: choferes[chofer].usuario.nombre,
+				    				map: map,
+				 				});
+								var posicion =new google.maps.LatLng(choferes[chofer].latitud, 
+										choferes[chofer].longitud);
+								marker.setPosition(posicion);
+								attachInfo(marker, infoList[i]);
+								/*var infowindow = new google.maps.InfoWindow({
+								    content: info
+								 });
+
+								marker.addListener('click', function() {
+								    infowindow.open(map, marker);
+								 });*/
+							}
+						}
+					});
+				}
+
+				function attachInfo(marker, info) {
+					  var infowindow = new google.maps.InfoWindow({
+					    content: info
+					  });
+
+					  marker.addListener('click', function() {
+					    infowindow.open(marker.get('map'), marker);
+					  });
+					}
+				function initialize(){
+					var myCenter=new google.maps.LatLng(-25.282875876175524, -57.634926438331604);
+					var mapProp = {
+	  					center:myCenter,
+	  					zoom:7,
+	 					mapTypeId:google.maps.MapTypeId.ROADMAP
+  					};
+
+	 				map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+	 				getData();
+
+				}
+
+				google.maps.event.addDomListener(window, 'load', initialize);
+				/*]]>*/
+				</script>
+				<div id="googleMap" style="width: 1100px; height: 500px;"></div>
+		</div>
+	</div>
+
+</body>
+
+</html>
