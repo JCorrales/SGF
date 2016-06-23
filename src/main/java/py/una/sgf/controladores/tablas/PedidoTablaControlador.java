@@ -26,13 +26,13 @@ public class PedidoTablaControlador extends TablaControladorAncestro<Pedido> {
 	@Override
 	public String[] getTableColumns() {
 
-		return new String[] { "id", "cliente", "ciudad", "fechapedido", "costo" };
+		return new String[] { "id", "cliente", "ciudadDestino", "fechapedido", "costo" };
 	}
 
 	@Override
 	public String[] getReportColumns() {
 
-		return new String[] { "cliente", "ciudad", "fechapedido", "costo", "precio" };
+		return new String[] { "cliente", "ciudadDestino", "fechapedido", "costo", "precio" };
 	}
 
 	@Override
