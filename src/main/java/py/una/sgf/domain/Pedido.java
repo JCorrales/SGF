@@ -3,6 +3,7 @@ package py.una.sgf.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -37,13 +38,13 @@ public class Pedido extends Model implements Serializable {
 	private String direccion;
 
 	@ManyToOne
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_pedido_barrio"))
-	private Barrio barrio;
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_pedido_barrio_origen"))
+	private Barrio barrioOrigen;
 
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_pedido_ciudad"))
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_pedido_ciudad_origen"))
 	@ManyToOne
-	@NotNull(message = "pedido.ciudad.not_null")
-	private Ciudad ciudad;
+	@NotNull(message = "pedido.ciudad_origen.not_null")
+	private Ciudad ciudadOrigen;
 
 	@NotNull(message = "pedido.camion.not_null")
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_pedido_camion"))
@@ -62,6 +63,25 @@ public class Pedido extends Model implements Serializable {
 	private BigDecimal distancia;
 
 	private Integer precio;
+
+	@ManyToOne
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_pedido_barrio_destino"))
+	private Barrio barrioDestino;
+
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_pedido_ciudad_destino"))
+	@ManyToOne
+	@NotNull(message = "pedido.ciudad_destino.not_null")
+	private Ciudad ciudadDestino;
+
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_pedido_coordenada_origen"))
+	@ManyToOne(cascade = CascadeType.ALL)
+	@NotNull(message = "pedido.ciudad_origen.not_null")
+	private Coordenada origen;
+
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_pedido_coordenada_destino"))
+	@ManyToOne(cascade = CascadeType.ALL)
+	@NotNull(message = "pedido.ciudad_destino.not_null")
+	private Coordenada destino;
 
 	@Override
 	public Long getId() {
@@ -95,28 +115,28 @@ public class Pedido extends Model implements Serializable {
 		this.direccion = direccion;
 	}
 
-	public Barrio getBarrio() {
+	public Barrio getBarrioOrigen() {
 
-		return barrio;
+		return barrioOrigen;
 	}
 
-	public void setBarrio(Barrio barrio) {
+	public void setBarrioOrigen(Barrio barrioOrigen) {
 
-		this.barrio = barrio;
-		if (barrio != null) {
-			this.ciudad = barrio.getCiudad();
+		this.barrioOrigen = barrioOrigen;
+		if (barrioOrigen != null) {
+			this.ciudadOrigen = barrioOrigen.getCiudad();
 		}
 	}
 
-	public Ciudad getCiudad() {
+	public Ciudad getCiudadOrigen() {
 
-		return ciudad;
+		return ciudadOrigen;
 	}
 
-	public void setCiudad(Ciudad ciudad) {
+	public void setCiudadOrigen(Ciudad ciudadOrigen) {
 
-		if (ciudad != null) {
-			this.ciudad = ciudad;
+		if (ciudadOrigen != null) {
+			this.ciudadOrigen = ciudadOrigen;
 		}
 	}
 
@@ -188,6 +208,51 @@ public class Pedido extends Model implements Serializable {
 	public void setPrecio(Integer precio) {
 
 		this.precio = precio;
+	}
+
+	public Barrio getBarrioDestino() {
+
+		return barrioDestino;
+	}
+
+	public void setBarrioDestino(Barrio barrioDestino) {
+
+		this.barrioDestino = barrioDestino;
+		if (barrioDestino != null) {
+			this.ciudadDestino = barrioDestino.getCiudad();
+		}
+	}
+
+	public Ciudad getCiudadDestino() {
+
+		return ciudadDestino;
+	}
+
+	public void setCiudadDestino(Ciudad ciudadDestino) {
+
+		if (ciudadDestino != null) {
+			this.ciudadDestino = ciudadDestino;
+		}
+	}
+
+	public Coordenada getOrigen() {
+
+		return origen;
+	}
+
+	public void setOrigen(Coordenada origen) {
+
+		this.origen = origen;
+	}
+
+	public Coordenada getDestino() {
+
+		return destino;
+	}
+
+	public void setDestino(Coordenada destino) {
+
+		this.destino = destino;
 	}
 
 }

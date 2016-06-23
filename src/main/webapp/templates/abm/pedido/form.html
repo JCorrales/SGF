@@ -35,7 +35,7 @@
 			<div th:replace="fragments/notificaciones :: content">notificiones</div>
 
 			<form action="#" th:action="@{/abm/pedido/op}"
-				th:object="${pedido}" method="post" role="form">
+				th:object="${pedido}" method="post" role="form" onsubmit="setOrigenDestino()">
 
 				<div th:replace="fragments/form_errores :: content">errores</div>
 
@@ -44,14 +44,29 @@
 				<input th:if="${pedido.cliente != null}" type="hidden" id="cliente" name="cliente" th:value="${pedido.cliente.id}"/>
 				<input th:if="${pedido.cliente == null}" type="hidden" id="cliente" name="cliente"/>
 				
-				<input th:if="${pedido.barrio != null}" type="hidden" id="barrio" name="barrio" th:value="${pedido.barrio.id}"/>
-				<input th:if="${pedido.barrio == null}" type="hidden" id="barrio" name="barrio"/>
+				<input disabled="disabled" type="hidden" id="barrio"/>
 				
-				<input th:if="${pedido.ciudad != null}" type="hidden" id="ciudad" name="ciudad" th:value="${pedido.ciudad.id}"/>
-				<input th:if="${pedido.ciudad == null}" type="hidden" id="ciudad" name="ciudad"/>
+				<input disabled="disabled" type="hidden" id="ciudad"/>
 				
 				<input th:if="${pedido.camion != null}" type="hidden" id="camion" name="camion" th:value="${pedido.camion.id}"/>
 				<input th:if="${pedido.camion == null}" type="hidden" id="camion" name="camion"/>
+				
+				<input th:if="${pedido.barrioOrigen != null}" type="hidden" id="barrioOrigen" name="barrioOrigen" th:value="${pedido.barrioOrigen.id}"/>
+				<input th:if="${pedido.barrioOrigen == null}" type="hidden" id="barrioOrigen" name="barrioOrigen"/>
+				
+				<input th:if="${pedido.ciudadOrigen != null}" type="hidden" id="ciudadOrigen" name="ciudadOrigen" th:value="${pedido.ciudadOrigen.id}"/>
+				<input th:if="${pedido.ciudadOrigen == null}" type="hidden" id="ciudadOrigen" name="ciudadOrigen"/>
+				
+				<input th:if="${pedido.barrioDestino != null}" type="hidden" id="barrioDestino" name="barrioDestino" th:value="${pedido.barrioDestino.id}"/>
+				<input th:if="${pedido.barrioDestino == null}" type="hidden" id="barrioDestino" name="barrioDestino"/>
+				
+				<input th:if="${pedido.ciudadDestino != null}" type="hidden" id="ciudadDestino" name="ciudadDestino" th:value="${pedido.ciudadDestino.id}"/>
+				<input th:if="${pedido.ciudadDestino == null}" type="hidden" id="ciudadDestino" name="ciudadDestino"/>
+				
+				<input type="hidden" th:field="*{origen.latitud}"/>
+				<input type="hidden" th:field="*{origen.longitud}"/>
+				<input type="hidden" th:field="*{destino.latitud}"/>
+				<input type="hidden" th:field="*{destino.longitud}"/>
 				
 				<!-- <input type="hidden" th:field="*{camion.id}"/>
 				<input type="hidden" th:field="*{ciudad.id}"/>
@@ -82,34 +97,67 @@
 				</div>
 				
 				<div class="form-group required">
-					<label for="barrioToShow" th:text="#{pedido.barrio.lbl}"
-						class="field-label">Barrio:</label> 
-						<input type="text" th:if="${pedido.barrio == null}"
-						id="barrioToShow" disabled="disabled" class="form-control"/>
-						<input type="text" th:if="${pedido.barrio != null}"
-						id="barrioToShow" disabled="disabled" class="form-control"
-						th:value="${pedido.barrio.nombre}"
+					<label for="barrioOrigenToShow" th:text="#{pedido.barrio_origen.lbl}"
+						class="field-label">BarrioOrigen:</label> 
+						<input type="text" th:if="${pedido.barrioOrigen == null}"
+						id="barrioOrigenToShow" disabled="disabled" class="form-control"/>
+						<input type="text" th:if="${pedido.barrioOrigen != null}"
+						id="barrioOrigenToShow" disabled="disabled" class="form-control"
+						th:value="${pedido.barrioOrigen.nombre}"
 						/>
 				</div>
 				<button class="btn btn-default" data-toggle="modal"
-					data-target='#largeModal' onclick="barrioModal()" type="button">
-					Elegir Barrio
+					data-target='#largeModal' onclick="barrioModal('barrioOrigenToShow', 'ciudadOrigenToShow', 'barrioOrigen')" type="button">
+					Elegir Barrio Origen
 				</button>
 				
 				
 				<div class="form-group required">
-					<label for="ciudadToShow" th:text="#{pedido.ciudad.lbl}"
-						class="field-label">Ciudad:</label> 
-						<input type="text" th:if="${pedido.ciudad == null}"
-						id="ciudadToShow" disabled="disabled" class="form-control"/>
-						<input type="text" th:if="${pedido.ciudad != null}"
-						id="ciudadToShow" disabled="disabled" class="form-control"
-						th:value="${pedido.ciudad.nombre}"
+					<label for="ciudadOrigenToShow" th:text="#{pedido.ciudad_origen.lbl}"
+						class="field-label">CiudadOrigen:</label> 
+						<input type="text" th:if="${pedido.ciudadOrigen == null}"
+						id="ciudadOrigenToShow" disabled="disabled" class="form-control"/>
+						<input type="text" th:if="${pedido.ciudadOrigen != null}"
+						id="ciudadOrigenToShow" disabled="disabled" class="form-control"
+						th:value="${pedido.ciudadOrigen.nombre}"
 						/>
 				</div>
 				<button class="btn btn-default" data-toggle="modal"
-					data-target='#largeModal' onclick="ciudadModal()" type="button">
-					Elegir Ciudad
+					data-target='#largeModal' onclick="ciudadModal('ciudadOrigenToShow', 'barrioOrigenToShow', 'ciudadOrigen')" type="button">
+					Elegir Ciudad Origen
+				</button>
+				
+				<!-- ahora destino XD -->
+				
+				<div class="form-group required">
+					<label for="barrioDestinoToShow" th:text="#{pedido.barrio_destino.lbl}"
+						class="field-label">Barrio Destino:</label> 
+						<input type="text" th:if="${pedido.barrioDestino == null}"
+						id="barrioDestinoToShow" disabled="disabled" class="form-control"/>
+						<input type="text" th:if="${pedido.barrioDestino != null}"
+						id="barrioDestinoToShow" disabled="disabled" class="form-control"
+						th:value="${pedido.barrioDestino.nombre}"
+						/>
+				</div>
+				<button class="btn btn-default" data-toggle="modal"
+					data-target='#largeModal' onclick="barrioModal('barrioDestinoToShow', 'ciudadDestinoToShow', 'barrioDestino')" type="button">
+					Elegir Barrio Destino
+				</button>
+				
+				
+				<div class="form-group required">
+					<label for="ciudadDestinoToShow" th:text="#{pedido.ciudad_destino.lbl}"
+						class="field-label">Ciudad Destino:</label> 
+						<input type="text" th:if="${pedido.ciudadDestino == null}"
+						id="ciudadDestinoToShow" disabled="disabled" class="form-control"/>
+						<input type="text" th:if="${pedido.ciudadDestino != null}"
+						id="ciudadDestinoToShow" disabled="disabled" class="form-control"
+						th:value="${pedido.ciudadDestino.nombre}"
+						/>
+				</div>
+				<button class="btn btn-default" data-toggle="modal"
+					data-target='#largeModal' onclick="ciudadModal('ciudadDestinoToShow', 'barrioDestinoToShow', 'ciudadDestino')" type="button">
+					Elegir Ciudad Destino
 				</button>
 				
 				<div class="form-group required">
@@ -153,14 +201,7 @@
 						 th:errorclass="fieldError"
 						class="form-control" />
 				</div>
-				
-				<div class="form-group required" th:unless="${pedido.id == null}">
-					<label for="costo" th:text="#{pedido.costo.lbl}" class="field-label">Costo:</label> 
-					<div th:remove="tag"
-								th:include="fragments/includes :: format_number_input(inputId='costo', 
-							inputVal=${pedido.costo})">Costo</div>
-				</div>
-				
+								
 				<div class="form-group required">
 					<label for="distancia" th:text="#{pedido.distancia.lbl}" class="field-label">Distancia:</label> 
 					<input type="text" id="distanciaToShow" th:value="${pedido.distancia}"
@@ -170,8 +211,15 @@
 						Escoger Ruta
 					</button>
 				</div>
-				 
-				<div class="form-group required">
+				
+				<div class="form-group required" th:unless="${pedido.id == null}">
+					<label for="costo" th:text="#{pedido.costo.lbl}" class="field-label">Costo:</label> 
+					<div th:remove="tag"
+								th:include="fragments/includes :: format_number_input(inputId='costo', 
+							inputVal=${pedido.costo})">Costo</div>
+				</div>
+				
+				<div class="form-group required" th:unless="${pedido.id == null}">
 					<label for="precio" th:text="#{pedido.precio.lbl}" class="field-label">Precio:</label> 
 					<div th:remove="tag"
 								th:include="fragments/includes :: format_number_input(inputId='precio', 
@@ -189,7 +237,10 @@
 					}
 				});
 			}
-			function barrioModal() {
+			function barrioModal(PbarrioToShowId, PciudadToShowId, PbarrioId) {
+				barrioToShowId=PbarrioToShowId;
+				barrioId=PbarrioId;
+				ciudadToShowId= PciudadToShowId;
 				$.ajax({
 					url : "/sgf/abm/barrio/modal",
 					success : function(datos) {
@@ -197,7 +248,10 @@
 					}
 				});
 			}
-			function ciudadModal() {
+			function ciudadModal(PciudadToShowId, PbarrioToShowId, PciudadId) {
+				ciudadToShowId= PciudadToShowId;
+				barrioToShowId= PbarrioToShowId;
+				ciudadId = PciudadId;
 				$.ajax({
 					url : "/sgf/abm/ciudad/modal",
 					success : function(datos) {
@@ -212,6 +266,31 @@
 						$("#largeModalContent").html(datos)
 					}
 				});
+			}
+			function setOrigenDestino(){
+				$("#origen\\.latitud").val(startLocation.lat);
+				$("#origen\\.longitud").val(startLocation.lng);
+				$("#destino\\.latitud").val(endLocation.lat);
+				$("#destino\\.longitud").val(endLocation.lng);
+			}
+
+			var ciudadToShowId;
+			var barrioToShowId;
+			var ciudadId;
+			var barrioId;
+			
+			var onElegirCiudadCallback = function(idSelected){
+				var nombre = $('#ajaxForm').find('#nombre').val();
+				document.getElementById(ciudadToShowId).value = nombre;
+				document.getElementById(barrioToShowId).value = '';
+				document.getElementById(ciudadId).value = idSelected;
+			}
+			var onElegirBarrioCallback = function(idSelected){
+				var nombre = $('#ajaxForm').find('#nombre').val();
+				document.getElementById(barrioToShowId).value = nombre;
+				document.getElementById(barrioId).value = idSelected;
+				$('#ajaxForm').remove();
+				document.getElementById(ciudadToShowId).value = suggestBoxMap['barrioCiudad'].getSelection()[0].nombre;
 			}
 			</script>
 		</div>

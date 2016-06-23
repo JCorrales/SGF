@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import py.una.cnc.htroot.bc.BusinessController;
+import py.una.cnc.htroot.controllers.ControladorBase;
 import py.una.cnc.htroot.controllers.UsuarioFormControlador;
 import py.una.cnc.htroot.dao.UsuarioDao;
+import py.una.cnc.htroot.domain.Model;
 import py.una.cnc.htroot.domain.Usuario;
 import py.una.cnc.htroot.main.AppObjects;
 import py.una.cnc.htroot.main.CoreConfig;
@@ -28,7 +31,7 @@ import py.una.sgf.registros.HistorialConexionUsuario;
 
 @Controller
 @Scope("request")
-public class PerfilUsuarioControlador {
+public class PerfilUsuarioControlador extends ControladorBase<Model> {
 
 	@Autowired
 	private SesionUsuario sesionUsuario;
@@ -153,6 +156,12 @@ public class PerfilUsuarioControlador {
 	public String getTableColumnsStr() {
 
 		return "rownum;fecha;ip";
+	}
+
+	@Override
+	public BusinessController<Model> getBusinessController() {
+
+		return null;
 	}
 
 }

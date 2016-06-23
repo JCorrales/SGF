@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import py.una.cnc.htroot.bc.impl.BusinessControllerImpl;
 import py.una.cnc.lib.core.util.AppLogger;
-import py.una.sgf.bc.BarrioBC;
-import py.una.sgf.bc.CamionBC;
 import py.una.sgf.bc.ChoferBC;
 import py.una.sgf.bc.PedidoBC;
 import py.una.sgf.bc.SeguroBC;
@@ -27,11 +25,7 @@ public class PedidoBCImpl extends BusinessControllerImpl<Pedido> implements Pedi
 	@Autowired
 	private PedidoDao pedidoDao;
 	@Autowired
-	private BarrioBC barrioBC;
-	@Autowired
 	private SeguroBC seguroBC;
-	@Autowired
-	private CamionBC camionBC;
 	@Autowired
 	private ChoferBC choferBC;
 	@Autowired
@@ -115,9 +109,15 @@ public class PedidoBCImpl extends BusinessControllerImpl<Pedido> implements Pedi
 
 	private void checkBarrioCiudad(Pedido pedido) {
 
-		if (pedido.getBarrio() != null) {
-			if (!pedido.getBarrio().getCiudad().getId().equals(pedido.getCiudad().getId())) {
-				pedido.setBarrio(null);
+		if (pedido.getBarrioOrigen() != null) {
+			if (!pedido.getBarrioOrigen().getCiudad().getId().equals(pedido.getCiudadOrigen().getId())) {
+				pedido.setBarrioOrigen(null);
+			}
+		}
+
+		if (pedido.getBarrioDestino() != null) {
+			if (!pedido.getBarrioDestino().getCiudad().getId().equals(pedido.getCiudadDestino().getId())) {
+				pedido.setBarrioDestino(null);
 			}
 		}
 	}

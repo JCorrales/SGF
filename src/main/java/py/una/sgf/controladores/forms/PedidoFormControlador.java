@@ -68,17 +68,25 @@ public class PedidoFormControlador extends FormControladorAncestro<Pedido> {
 	@Override
 	protected void addExtraAttributes(Pedido pedido, ModelMap modelMap) {
 
+		// algunas veces solo pedido solo tiene el id de la clase anidada
+		// pero yo necesito mas informacion
 		if (pedido.getCliente() != null) {
 			pedido.setCliente(clienteBC.find(pedido.getCliente().getId()));;
 		}
-		if (pedido.getBarrio() != null) {
-			pedido.setBarrio(barrioBC.find(pedido.getBarrio().getId()));
+		if (pedido.getBarrioOrigen() != null) {
+			pedido.setBarrioOrigen(barrioBC.find(pedido.getBarrioOrigen().getId()));
+		}
+		if (pedido.getCiudadOrigen() != null) {
+			pedido.setCiudadOrigen(ciudadBC.find(pedido.getCiudadOrigen().getId()));
+		}
+		if (pedido.getBarrioDestino() != null) {
+			pedido.setBarrioDestino(barrioBC.find(pedido.getBarrioDestino().getId()));
+		}
+		if (pedido.getCiudadDestino() != null) {
+			pedido.setCiudadDestino(ciudadBC.find(pedido.getCiudadDestino().getId()));
 		}
 		if (pedido.getCamion() != null) {
 			pedido.setCamion(camionBC.find(pedido.getCamion().getId()));
-		}
-		if (pedido.getCiudad() != null) {
-			pedido.setCiudad(ciudadBC.find(pedido.getCiudad().getId()));
 		}
 		modelMap.addAttribute(getNombreObjeto(), pedido);
 		super.addExtraAttributes(pedido, modelMap);

@@ -130,20 +130,13 @@
 						th:field="*{longitud}" class="form-control" />
 				</div>
 				
-				<div th:replace="abm/modal_formulario_botones :: content(onElegir='onElegirCallback')">botones</div>
+				<div th:replace="abm/modal_formulario_botones :: content(onElegir='onElegirBarrioCallback')">botones</div>
 			</form>
 			<script type="text/javascript">
 				var form = $('#ajaxForm');
 					form.submit(function(ev) {
 					ev.preventDefault();
 				});
-
-				var onElegirCallback = function(){
-					var nombre = $('#ajaxForm').find('#nombre').val();
-					document.getElementById('barrioToShow').value = nombre;
-					$('#ajaxForm').remove();
-					document.getElementById('ciudadToShow').value = suggestBoxMap['barrioCiudad'].getSelection()[0].nombre;
-				}
 			</script>
 		</div>
 	</div>

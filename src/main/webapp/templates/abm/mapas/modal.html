@@ -8,6 +8,8 @@
 	<div th:fragment="content">
 		<script th:inline="javascript">
 			 /*<![CDATA[*/
+			 	var startLocation;
+				var endLocation;
 			 	var map;
 			 	var directionsService;
 				function initMap() {
@@ -50,6 +52,10 @@
 				  var myroute = result.routes[0];
 				  for (var i = 0; i < myroute.legs.length; i++) {
 				    total += myroute.legs[i].distance.value;
+				    if (i == 0) { 
+				        startLocation = myroute.legs[i].start_location;
+				      }
+				      endLocation  = myroute.legs[i].end_location;
 				  }
 				  total = total / 1000;
 				  document.getElementById('total').innerHTML = total + ' km';

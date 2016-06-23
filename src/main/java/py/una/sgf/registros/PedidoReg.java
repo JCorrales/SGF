@@ -8,7 +8,6 @@ public class PedidoReg {
 	private Long id;
 	private Long rownum;
 	private String cliente;
-	private String ciudad;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private Date fechapedido;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
@@ -16,7 +15,7 @@ public class PedidoReg {
 	private Integer costo;
 	private Integer precio;
 	private String direccion;
-	private String barrio;
+	private String ciudadDestino;
 	private String camion;
 
 	public Long getId() {
@@ -47,16 +46,6 @@ public class PedidoReg {
 	public void setCliente(String cliente) {
 
 		this.cliente = cliente;
-	}
-
-	public String getCiudad() {
-
-		return ciudad;
-	}
-
-	public void setCiudad(String ciudad) {
-
-		this.ciudad = ciudad;
 	}
 
 	public Date getFechapedido() {
@@ -109,14 +98,14 @@ public class PedidoReg {
 		this.direccion = direccion;
 	}
 
-	public String getBarrio() {
+	public String getCiudadDestino() {
 
-		return barrio;
+		return ciudadDestino;
 	}
 
-	public void setBarrio(String barrio) {
+	public void setCiudadDestino(String ciudadDestino) {
 
-		this.barrio = barrio;
+		this.ciudadDestino = ciudadDestino;
 	}
 
 	public String getCamion() {

@@ -405,7 +405,7 @@ function modalElegir(fieldId, onElegir){
 	$('#largeModal').modal('hide');
 	
 	if(onElegir !== undefined && onElegir !== null){
-		onElegir.call();
+		onElegir(ajaxFormIdSelected);
 	}
 	
 }

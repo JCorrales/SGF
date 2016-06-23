@@ -169,13 +169,12 @@
 		<name>select_pedidos</name>
 		<value>
 			SELECT p.id AS id, c.cedula AS cliente, p.direccion AS direccion
-			, b.nombre AS barrio, ci.nombre AS ciudad, 
+			, ci.nombre AS "ciudadDestino", 
 			ca.marca||' '||ca.modelo AS camion, p.costo AS costo,
 			p.fechapedido AS fechapedido, p.fechaentrega AS fechaentrega
 			FROM pedido p 
 			JOIN cliente c ON p.cliente_id = c.id
-			FULL OUTER JOIN barrio b ON p.barrio_id = b.id
-			JOIN ciudad ci ON p.ciudad_id = ci.id
+			FULL OUTER JOIN ciudad ci ON p.ciudaddestino_id = ci.id
 			JOIN camion ca ON p.camion_id = ca.id
 		</value>
 	</query>
