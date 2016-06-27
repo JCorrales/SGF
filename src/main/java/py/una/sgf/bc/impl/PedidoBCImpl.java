@@ -76,11 +76,11 @@ public class PedidoBCImpl extends BusinessControllerImpl<Pedido> implements Pedi
 			costo = costo.add(mantenimiento.divide(new BigDecimal(365), RoundingMode.HALF_UP));// +mantenimiento
 			costo = costo.add(new BigDecimal(sueldo / 30));
 			costo = costo.add(new BigDecimal(seguro / 30));
-			costo = costo.add(new BigDecimal(iva / 10));
+			costo = costo.add(costo.divide(new BigDecimal(iva)));
 			pedido.setCosto(costo.intValue());
-			precio = costo.add(costo.divide(new BigDecimal(100), RoundingMode.HALF_UP));
+			precio = costo.add(costo.divide(new BigDecimal(100), RoundingMode.HALF_UP).multiply(ganancia));
 
-			pedido.setPrecio(precio.multiply(ganancia).intValue());
+			pedido.setPrecio(precio.intValue());
 		} catch (Throwable ex) {
 			logger.error("error en beforeSave: {}", ex.getMessage());
 			ex.printStackTrace();

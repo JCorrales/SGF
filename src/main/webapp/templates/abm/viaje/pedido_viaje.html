@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Viaje</title>
+</head>
+<body>
+
+	<div th:fragment="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+				<form action="#" th:object="${viajesPedidos}" id="pedidosListForm"
+					th:action="@{/abm/viaje/actualizar_pedidos}" method="post">
+			  		<input type="hidden" th:field="*{viajeId}"/>
+					<table id="pedidosPicker" class="table table-bordered table-hover table-condensed">
+					<thead>
+						<tr>
+							<th style="text-align: center">
+								<strong>Cliente</strong>
+							</th>
+							<th style="text-align: center">
+								<strong>Ciudad origen</strong>
+							</th>
+							<th style="text-align: center">
+								<strong>Ciudad destino</strong>
+							</th>
+							<th style="text-align: center">
+								<strong>Fecha pedido</strong>
+							</th>
+							<th style="text-align: center">
+								<strong>Costo</strong>
+							</th>
+							<th style="text-align: center">
+								<strong>Seleccionar</strong>
+							</th>
+						</tr>
+
+					</thead>
+					<tbody>
+						<tr th:each="pedido, rowStat : ${pedidosList}">
+							<td th:text="${pedido.cliente}"></td>
+							<td th:text="${pedido.ciudadOrigen}"></td>
+							<td th:text="${pedido.ciudadDestino}"></td>
+							<td th:text="${#dates.format(pedido.fechapedido,'dd/MM/yyyy')}"></td>
+							<td th:text="${pedido.costo}"></td>
+							<td><input type="hidden"
+								th:field="*{pedidosList[__${rowStat.index}__].id}"/>
+							<input type="checkbox"
+								th:field="*{pedidosList[__${rowStat.index}__].selected}"/></td>
+						</tr>
+					</tbody>
+				</table>
+				<input type="hidden" th:name="${_csrf.parameterName}"
+				th:value="${_csrf.token}" />
+				<button type="button" class="btn btn-default"
+					data-dismiss="modal" id="pedidosForm_btn"
+					th:text="#{popup.actualizar_pedidos.submit_btn}"
+					onclick="javascript:actualizarPedidos()">Cerrar</button>
+				</form>
+				</div>
+				<script type="text/javascript">
+				function actualizarPedidos() {
+
+					 var formPedidos = $('#pedidosListForm');
+
+					 formPedidos.submit(function(ev) {
+					  $.ajax({
+					   type : formPedidos.attr('method'),
+					   url : formPedidos.attr('action'),
+					   data : formPedidos.serialize(), // serializes the form's elements.
+					   success : function(data) {
+					    // alert('Roles Actualizados');
+					   }
+					  });
+					  ev.preventDefault();
+					 });
+					 formPedidos.submit();
+				}
+
+				$(document).ready(function() {
+					$('#pedidosPicker').dataTable({"paginate":false});
+				});
+				</script>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

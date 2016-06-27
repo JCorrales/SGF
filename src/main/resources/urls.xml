@@ -83,4 +83,8 @@
 		<nombre>/abm/sgf_config/**</nombre>
 		<permiso>root</permiso>
 	</url>
+	<url>
+		<nombre>/abm/viaje/**</nombre>
+		<permiso>root</permiso>
+	</url>
 </urls>

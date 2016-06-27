@@ -219,4 +219,43 @@
 			WHERE cl.cedula = ?
 		</value>
 	</query>
+	
+	<query>
+		<name>select_viajes</name>
+		<value>
+			SELECT v.id, ch.cedula||' '||u.apellido AS chofer, 
+			c.chapa||' '||c.marca||' '||c.modelo AS camion, 
+			v.costo AS costo,
+			v.fechasalida AS "fechaSalida",
+			v.fechallegada AS "fechaLlegada"
+			FROM viaje v 
+			JOIN camion c ON c.id = v.camion_id
+			JOIN chofer ch ON ch.camion_id = c.id
+			JOIN usuario u ON u.id = ch.usuario_id
+		</value>
+	</query>
+
+	<query>
+		<name>filter_viajes</name>
+		<value>nombre||cantidad||costo</value>
+	</query>
+	
+	<query>
+		<name>select_viaje_pedidos</name>
+		<value>SELECT p.id AS id, c.cedula AS cliente, p.direccion AS direccion
+			, cd.nombre AS "ciudadDestino", co.nombre AS "ciudadOrigen",
+			ca.marca||' '||ca.modelo AS camion, p.costo AS costo,
+			p.fechapedido AS fechapedido, p.fechaentrega AS fechaentrega,
+			CASE WHEN vp.id IS NULL THEN FALSE ELSE TRUE END AS selected
+			FROM pedido p 
+			JOIN cliente c ON p.cliente_id = c.id
+			JOIN ciudad cd ON p.ciudaddestino_id = cd.id
+			JOIN ciudad co ON p.ciudadorigen_id = co.id
+			JOIN camion ca ON p.camion_id = ca.id
+			LEFT JOIN viajepedido AS vp 
+			ON vp.pedido_id = p.id
+			AND vp.viaje_id = ?
+			WHERE vp.viaje_id = ? OR vp.viaje_id IS NULL
+		</value>
+	</query>
 </queries>

@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.packing.slide.Contenedor;
 import com.packing.slide.PackingInput;
 import com.packing.slide.Paquete;
+import py.una.cnc.htroot.domain.Usuario;
 import py.una.cnc.htroot.main.SesionUsuario;
 import py.una.sgf.registros.Estadisticas;
 import py.una.sgf.registros.PaqueteJSON;
@@ -86,5 +88,17 @@ public class CargadorRenderControlador {
 		Estadisticas estadisticas = (Estadisticas) sesionUsuario.getObject("estadisticas");
 		model.addAttribute("estadisticas", estadisticas);
 		return "/abm/cargador/estadisticas :: content";
+	}
+
+	@ModelAttribute("sesionUsuario")
+	public SesionUsuario getSesionUsuario() {
+
+		return sesionUsuario;
+	}
+
+	@ModelAttribute("usuarioActual")
+	public Usuario getUsuarioActual() {
+
+		return sesionUsuario.getUsuario();
 	}
 }

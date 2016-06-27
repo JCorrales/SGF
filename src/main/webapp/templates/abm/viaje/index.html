@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" th:include="main :: page">
+<head>
+<title>Viaje</title>
+</head>
+<body>
+
+	<div th:fragment="content">
+		<div class="container">
+			<div class="row">
+             <div class="col-lg-4">
+				<div th:include="abm/viaje/form :: content(vc=${controlador})">form</div>
+			</div>
+			<div class="col-lg-8">
+				<div th:include="fragments/lista_ancestro::content(name='viaje', serverSide='true', source=@{/abm/viaje/rest}, editUrl=@{/abm/viaje/}, vc=${controlador}, title=#{viaje.tabla.titulo}, withoutId='true')">lista</div>
+			</div>
+				<div th:include="fragments/largeModal :: content"></div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

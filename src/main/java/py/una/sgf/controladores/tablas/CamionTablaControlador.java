@@ -60,7 +60,6 @@ public class CamionTablaControlador extends TablaControladorAncestro<Camion> {
 				"filter_camiones", DataTableSqlDs.WITHOUT_WHERE, CamionReg.class);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "modal/rest", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	public @ResponseBody DataTableModel<?> getDataTableModalRest(
 			@Nullable @RequestParam(value = "iDisplayStart", required = false, defaultValue = "0") Integer iDisplayStart,
