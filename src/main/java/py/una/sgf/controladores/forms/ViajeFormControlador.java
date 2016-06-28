@@ -4,12 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import py.una.cnc.htroot.bc.BusinessController;
 import py.una.cnc.htroot.controllers.FormControladorAncestro;
-import py.una.sgf.bc.ChoferBC;
 import py.una.sgf.bc.PedidoBC;
 import py.una.sgf.bc.ViajeBC;
 import py.una.sgf.bc.ViajePedidoBC;
@@ -33,8 +31,6 @@ public class ViajeFormControlador extends FormControladorAncestro<Viaje> {
 	private PedidoBC pedidoBC;
 	@Autowired
 	private ViajePedidoBC viajePedidoBC;
-	@Autowired
-	private ChoferBC choferBC;
 	@Autowired
 	private ViajeTablaControlador viajeTablaControlador;
 
@@ -100,14 +96,6 @@ public class ViajeFormControlador extends FormControladorAncestro<Viaje> {
 		model.addAttribute("pedidosActivo", true);
 
 		return "abm/viaje/pedido_viaje";
-	}
-
-	@Override
-	protected Viaje getRegistroPreGuardado(Viaje bean, ModelMap model, BindingResult result) {
-
-		bean.setChofer(
-				choferBC.getDAOInstance().findEntityByCondition("WHERE camion_id = ?", bean.getCamion().getId()));
-		return super.getRegistroPreGuardado(bean, model, result);
 	}
 
 }

@@ -78,6 +78,9 @@ public class Camion extends Model {
 	@Transient
 	private MultipartFile tmpFoto;
 
+	@Transient
+	private Chofer chofer;
+
 	@Override
 	public Long getId() {
 
@@ -202,5 +205,15 @@ public class Camion extends Model {
 	public void setCombustible(Combustible combustible) {
 
 		this.combustible = combustible;
+	}
+
+	public Chofer getChofer() {
+
+		return chofer;
+	}
+
+	public void setChofer(Chofer chofer) {
+
+		this.chofer = chofer;
 	}
 }

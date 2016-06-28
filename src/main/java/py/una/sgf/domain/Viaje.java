@@ -35,7 +35,7 @@ public class Viaje extends Model implements Serializable {
 	@ManyToOne
 	private Camion camion;
 
-	// @NotNull(message = "viaje.chofer.not_null")
+	@NotNull(message = "viaje.chofer.not_null")
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_viaje_chofer"))
 	@ManyToOne
 	private Chofer chofer;
@@ -82,6 +82,9 @@ public class Viaje extends Model implements Serializable {
 	public void setCamion(Camion camion) {
 
 		this.camion = camion;
+		if (camion != null) {
+			setChofer(camion.getChofer());
+		}
 	}
 
 	public Chofer getChofer() {
@@ -91,7 +94,9 @@ public class Viaje extends Model implements Serializable {
 
 	public void setChofer(Chofer chofer) {
 
-		this.chofer = chofer;
+		if (chofer != null) {
+			this.chofer = chofer;
+		}
 	}
 
 	public Integer getCosto() {

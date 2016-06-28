@@ -7,8 +7,6 @@ import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,8 +14,6 @@ import org.springframework.stereotype.Component;
 import hirondelle.date4j.DateTime;
 import hirondelle.date4j.DateTime.DayOverflow;
 import py.una.cnc.htroot.domain.Usuario;
-import py.una.cnc.htroot.main.ApplicationContextProvider;
-import py.una.cnc.htroot.main.Message;
 import py.una.cnc.lib.core.util.AppLogger;
 import py.una.sgf.bc.SgfConfigBC;
 import py.una.sgf.dao.SingletonSeguroDao;
@@ -42,7 +38,6 @@ public class SeguroVencimiento {
 	private AppLogger logger;
 	private static final long PERIODO = 1000 * 120L;// 120 segundos
 	private Long dia = 1000 * 60 * 60 * 24 * 1L;// 1 dia
-	private Message message;
 	@Autowired
 	@Lazy(true)
 	private SgfConfigBC sgfConfigBC;
@@ -137,33 +132,7 @@ public class SeguroVencimiento {
 
 	private SgfUtil getUtil() {
 
-		/*
-		 * if (util == null) { BeanDefinitionRegistry registry =
-		 * (BeanDefinitionRegistry) ApplicationContextProvider.getContext()
-		 * .getAutowireCapableBeanFactory();
-		 *
-		 * BeanDefinition def = registry.getBeanDefinition("util");
-		 * def.setScope("singleton"); def.setAutowireCandidate(false);
-		 * registry.registerBeanDefinition("util2", def); util = (Util)
-		 * ApplicationContextProvider.getBeanStatic("util2"); return util; }
-		 */
 		return sgfUtil;
-	}
-
-	private Message getMessage() {
-
-		if (message == null) {
-			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) ApplicationContextProvider.getContext()
-					.getAutowireCapableBeanFactory();
-
-			BeanDefinition def = registry.getBeanDefinition("message");
-			def.setScope("singleton");
-			def.setAutowireCandidate(false);
-			registry.registerBeanDefinition("message2", def);
-			message = (Message) ApplicationContextProvider.getBeanStatic("message2");
-			return message;
-		}
-		return message;
 	}
 
 }

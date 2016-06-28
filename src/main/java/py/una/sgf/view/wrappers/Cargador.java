@@ -1,6 +1,7 @@
 package py.una.sgf.view.wrappers;
 
 import java.util.ArrayList;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import py.una.cnc.htroot.domain.Model;
 import py.una.sgf.domain.Contenedor;
@@ -9,8 +10,10 @@ import py.una.sgf.domain.PaqueteEntrada;
 public class Cargador extends Model {
 
 	@NotNull(message = "cargador.contenedor.not_null")
+	@Valid
 	private Contenedor contenedor;
 	@NotNull(message = "cargador.paqueteEntrada.not_null")
+	@Valid
 	private ArrayList<PaqueteEntrada> paquetesEntrada;
 
 	@Override

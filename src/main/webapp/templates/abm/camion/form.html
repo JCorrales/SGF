@@ -125,6 +125,15 @@
 					</select>
 				</div>
 				
+				<div class="form-group required" th:if="${camion.chofer != null}">
+					<label for="chofer" th:text="#{camion.chofer.lbl}"
+						class="field-label">Chofer:</label> 
+						<input type="text"
+						id="chofer" disabled="disabled" class="form-control"
+						th:value="${camion.chofer.cedula+' - '+camion.chofer.usuario.nombre+' '+camion.chofer.usuario.apellido}"
+						/>
+				</div>
+				
 				<div th:replace="abm/formulario_botones :: content">botones</div>
 				
 				<script type="text/javascript">

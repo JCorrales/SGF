@@ -115,7 +115,7 @@
 	<query>
 		<name>select_camiones</name>
 		<value>SELECT c.id AS id, c.chapa AS chapa, c.marca AS marca,
-			c.modelo AS modelo, c.anio AS anio, s.aseguradora AS aseguradora
+			c.modelo AS modelo, c.anio AS anio, COALESCE(s.aseguradora, 'SIN SEGURO') AS aseguradora
 			FROM camion c LEFT JOIN seguro s ON c.id = s.camion_id
 		</value>
 	</query>
@@ -187,7 +187,7 @@
 	<query>
 		<name>select_camiones_con_chofer</name>
 		<value>SELECT c.id AS id, c.chapa AS chapa, c.marca AS marca,
-			c.modelo AS modelo, c.anio AS anio, s.aseguradora AS aseguradora
+			c.modelo AS modelo, c.anio AS anio, COALESCE(s.aseguradora, 'SIN SEGURO') AS aseguradora
 			FROM camion c 
 			LEFT JOIN seguro s ON c.id = s.camion_id
 			JOIN chofer ch ON ch.camion_id = c.id
@@ -225,7 +225,7 @@
 		<value>
 			SELECT v.id, ch.cedula||' '||u.apellido AS chofer, 
 			c.chapa||' '||c.marca||' '||c.modelo AS camion, 
-			v.costo AS costo,
+			COALESCE(v.costo, 0) AS costo,
 			v.fechasalida AS "fechaSalida",
 			v.fechallegada AS "fechaLlegada"
 			FROM viaje v 
