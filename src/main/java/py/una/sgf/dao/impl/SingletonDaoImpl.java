@@ -17,7 +17,6 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import py.una.cnc.htroot.dao.Dao;
@@ -27,7 +26,10 @@ import py.una.cnc.htroot.exception.ValidationException;
 import py.una.cnc.lib.core.util.AppLogger;
 
 @Repository
-@Scope
+/**
+ * No hacia falta que el scope fuera singleton, solo tenia que eliminarse la
+ * dependencia de sessionUsuario, pero que flojera me da cambiarle el nombre
+ */
 public abstract class SingletonDaoImpl<T extends Model> implements Dao<T> {
 
 	private static final long serialVersionUID = 1L;

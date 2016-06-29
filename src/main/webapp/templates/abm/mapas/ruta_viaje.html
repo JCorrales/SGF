@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Escoger ruta</title>
+</head>
+<body>
+	<div th:fragment="content">
+		<script th:inline="javascript">
+			 /*<![CDATA[*/
+			 	var startLocation;
+				var endLocation;
+			 	var map;
+			 	var directionsService;
+			 	/*var pinColorOrigen = "00ff00";
+			    var pinImageOrigen = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColorOrigen,
+			        new google.maps.Size(21, 34),
+			        new google.maps.Point(0,0),
+			        new google.maps.Point(10, 34));
+
+			    var pinColorDestino = "ff0000";
+			    var pinImageDestino = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColorDestino,
+			        new google.maps.Size(21, 34),
+			        new google.maps.Point(0,0),
+			        new google.maps.Point(10, 34));*/
+
+			 	function getData(){
+					$.ajax({
+						"dataType" : 'json',
+						"type" : "GET",
+						"url" : [[@{/localizador/get_origen_destino_pedidos}]]+'?viajeId='+$("#id").val(),
+						"async" : false,
+						"success" : function(data) {
+							var pedidos = data;
+							var i = 0;
+							for(index in pedidos){
+								i = i + 1;						
+								var markerOrigen = new google.maps.Marker({
+				    				label: i+'',
+				    				map: map
+				 				});
+								var posicionOrigen =new google.maps.LatLng(pedidos[index].origen.latitud, 
+										pedidos[index].origen.longitud);
+								markerOrigen.setPosition(posicionOrigen);
+								
+								i = i + 1;
+								var markerDestino = new google.maps.Marker({
+				    				label: i+'',
+				    				map: map
+				 				});
+								var posicionDestino =new google.maps.LatLng(pedidos[index].destino.latitud, 
+										pedidos[index].destino.longitud);
+								markerDestino.setPosition(posicionDestino);
+							}
+						}
+					});
+				}
+
+			 	
+				function initMap() {
+				  directionsService = new google.maps.DirectionsService;
+				  map = new google.maps.Map(document.getElementById('googleMap'), {
+				    center: {lat:[[${latitud}]], lng: [[${longitud}]]}
+				  })
+				  var directionsDisplay = new google.maps.DirectionsRenderer({
+					    draggable: true,
+					    map: map,
+					    panel: document.getElementById('info-panel')
+					});
+
+				  directionsDisplay.addListener('directions_changed', function() {
+					    computeTotalDistance(directionsDisplay.getDirections());
+					  });
+				
+				  calculateAndDisplayRoute(directionsService, directionsDisplay);
+				  $(document).ready(function(){
+					  	window.setTimeout(function(){map.setZoom(12)}, 1000)
+					  });
+
+				  getData();
+				}
+				
+				function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+				  directionsService.route({
+				    origin: {lat: [[${latitud}]], lng: [[${longitud}]]},  
+				    destination: {lat: [[${latitud}]], lng: [[${longitud}]]}, 
+				    travelMode: google.maps.TravelMode.DRIVING
+				  }, function(response, status) {
+				    if (status == google.maps.DirectionsStatus.OK) {
+				      directionsDisplay.setDirections(response);
+				    } else {
+				      window.alert('Directions request failed due to ' + status);
+				    }
+				  });
+				}
+
+				function computeTotalDistance(result) {
+				  var total = 0;
+				  var myroute = result.routes[0];
+				  for (var i = 0; i < myroute.legs.length; i++) {
+				    total += myroute.legs[i].distance.value;
+				    if (i == 0) { 
+				        startLocation = myroute.legs[i].start_location;
+				      }
+				      endLocation  = myroute.legs[i].end_location;
+				  }
+				  total = total / 1000;
+				  document.getElementById('total').innerHTML = total + ' km';
+				  document.getElementById('distancia').value = total;
+				  document.getElementById('distanciaToShow').value = total;
+				}
+				$("#largeModal").on("shown.bs.modal", function () {
+				    google.maps.event.trigger(map, "resize");
+				}); 
+				//no hace falta hacerlo en onload, la pagina ya se cargo
+				initMap();
+				/*]]>*/
+			</script>
+			<div id="googleMap" style="width: 100%; height: 460px"></div>
+			<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#info-panel">Instrucciones</button>
+			<button type="button" class="btn btn-info" onclick="printRouterMap()">Imprimir</button>
+			<div id="info-panel" class="collapse">
+				<p>Distancia total: <span id="total"></span></p>
+		    </div>
+		</div>
+</body>
+
+</html>

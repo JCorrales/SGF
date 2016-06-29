@@ -53,6 +53,8 @@ public class ClienteBCImpl extends BusinessControllerImpl<Cliente> implements Cl
 		if (bean.getUsuario() == null) {
 			throw new BusinessLogicException("Usuario no debe ser nulo");
 		} else {
+			// si ha fallado el guardado anterior
+			bean.getUsuario().setId(null);
 			usuarioBC.create(bean.getUsuario());
 			PermisoUsuario clientePermiso = new PermisoUsuario();
 			clientePermiso.setPermiso(permisoBC.findByCode("cliente"));

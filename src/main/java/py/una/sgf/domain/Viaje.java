@@ -2,6 +2,7 @@
 package py.una.sgf.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -41,6 +42,8 @@ public class Viaje extends Model implements Serializable {
 	private Chofer chofer;
 
 	private Integer costo;
+
+	private BigDecimal distancia;
 
 	@Override
 	public Long getId() {
@@ -107,6 +110,16 @@ public class Viaje extends Model implements Serializable {
 	public void setCosto(Integer costo) {
 
 		this.costo = costo;
+	}
+
+	public BigDecimal getDistancia() {
+
+		return distancia;
+	}
+
+	public void setDistancia(BigDecimal distancia) {
+
+		this.distancia = distancia;
 	}
 
 }

@@ -3,6 +3,7 @@ package py.una.sgf.controladores;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +23,11 @@ import py.una.cnc.htroot.main.ServiceResponse;
 import py.una.cnc.lib.core.util.AppLogger;
 import py.una.cnc.lib.db.dataprovider.SQLToObject;
 import py.una.sgf.dao.ChoferSingletonDao;
+import py.una.sgf.dao.ViajePedidoSingletonDao;
 import py.una.sgf.domain.Camion;
 import py.una.sgf.domain.Chofer;
+import py.una.sgf.domain.Pedido;
+import py.una.sgf.domain.ViajePedido;
 
 @Controller
 @RequestMapping(value = "/localizador")
@@ -36,6 +40,8 @@ public class LocalizadorControlador extends ControladorBase<Model> {
 	private Map<String, Chofer> registro = new HashMap<String, Chofer>();
 	@Autowired
 	private AppObjects appObjects;
+	@Autowired
+	private ViajePedidoSingletonDao viajePedidoSingletonDao;
 
 	@RequestMapping(value = "registrar", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	public @ResponseBody ServiceResponse<String> registrar(@RequestParam(required = true) String cedula) {
@@ -140,6 +146,19 @@ public class LocalizadorControlador extends ControladorBase<Model> {
 		}
 
 		return clientePedidos;
+	}
+
+	@RequestMapping(value = "get_origen_destino_pedidos", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+	public @ResponseBody List<Pedido> getOrigenDestinoPedidos(@RequestParam(required = true) Long viajeId) {
+
+		List<ViajePedido> viajePedidosList = viajePedidoSingletonDao.findEntitiesByCondition("WHERE viaje_id = ?",
+				viajeId);
+		List<Pedido> pedidosList = new ArrayList<>();
+		for (int i = 0; i < viajePedidosList.size(); i++) {
+			pedidosList.add(viajePedidosList.get(i).getPedido());
+		}
+
+		return pedidosList;
 	}
 
 	@Override

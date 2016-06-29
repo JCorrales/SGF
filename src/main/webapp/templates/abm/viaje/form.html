@@ -40,6 +40,7 @@
 				<div th:replace="fragments/form_errores :: content">errores</div>
 
 				<input type="hidden" th:field="*{id}" />
+				<input type="hidden" th:field="*{distancia}"/>
 				
 				<input th:if="${viaje.camion != null}" type="hidden" id="camion" name="camion" th:value="${viaje.camion.id}"/>
 				<input th:if="${viaje.camion == null}" type="hidden" id="camion" name="camion"/>
@@ -91,6 +92,15 @@
 					Elegir pedidos
 				</button>
 				
+				<div class="form-group required" th:if="${viaje.id != null}">
+					<label for="distancia" th:text="#{pedido.distancia.lbl}" class="field-label">Distancia:</label> 
+					<input type="text" id="distanciaToShow" th:value="${viaje.distancia}"
+						class="form-control" disabled="disabled"/>
+					<button class="btn btn-default" data-toggle="modal"
+						data-target='#largeModal' onclick="escogerRutaViajeModal()" type="button">
+						Escoger Ruta
+					</button>
+				</div>
 				<div th:replace="abm/formulario_botones :: content">botones</div>
 			</form>
 			<script th:inline="javascript">
@@ -107,6 +117,15 @@
 			function pedidosModal() {
 				$.ajax({
 					url : [[@{/abm/viaje/get_pedidos?viajeId=} + ${viaje.id}]],
+					success : function(datos) {
+						$("#largeModalContent").html(datos)
+					}
+				});
+			}
+
+			function escogerRutaViajeModal() {
+				$.ajax({
+					url : "/sgf/router/viaje_modal",
 					success : function(datos) {
 						$("#largeModalContent").html(datos)
 					}

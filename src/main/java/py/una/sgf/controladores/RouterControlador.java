@@ -32,6 +32,12 @@ public class RouterControlador extends ControladorBase<Model> {
 		return "abm/mapas/modal :: content";
 	}
 
+	@RequestMapping(value = "viaje_modal")
+	public String viajeModal() {
+
+		return "abm/mapas/ruta_viaje :: content";
+	}
+
 	@ModelAttribute("latitud")
 	public BigDecimal getLatitud() {
 
